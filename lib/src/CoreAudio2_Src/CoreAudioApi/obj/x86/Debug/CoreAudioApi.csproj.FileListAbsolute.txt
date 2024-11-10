@@ -13,3 +13,9 @@ C:\mutefm\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Debug\CoreAudioApi.pdb
 C:\mutefm\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Debug\CoreAudioApi.dll
 C:\mutefm\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Debug\CoreAudioApi.pdb
 C:\mutefm\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Debug\CoreAudioApi.csprojResolveAssemblyReference.cache
+C:\Users\krase\Source\Repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Debug\CoreAudioApi.dll
+C:\Users\krase\Source\Repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Debug\CoreAudioApi.pdb
+C:\Users\krase\Source\Repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Debug\CoreAudioApi.csproj.AssemblyReference.cache
+C:\Users\krase\Source\Repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Debug\CoreAudioApi.csproj.CoreCompileInputs.cache
+C:\Users\krase\Source\Repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Debug\CoreAudioApi.dll
+C:\Users\krase\Source\Repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Debug\CoreAudioApi.pdb

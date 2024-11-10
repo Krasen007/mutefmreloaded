@@ -4,7 +4,7 @@ using System.Text;
 //using log4net;
 //using log4net.Config;
 
-namespace MuteFm.SmartVolManagerPackage
+namespace MuteFmReloaded.SmartVolManagerPackage
 {
     public class SoundEventLogger
     {
@@ -14,7 +14,7 @@ namespace MuteFm.SmartVolManagerPackage
 
         private static long _logFileSize = 0;
 
-        private static string _logFileNamePrefix = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm\mutefm";
+        private static string _logFileNamePrefix = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm reloaded\mutefm";
 
         private static System.IO.StreamWriter _sw = null;
         public static void LogBg(string action)
@@ -75,7 +75,7 @@ namespace MuteFm.SmartVolManagerPackage
             }
             try
             {
-                _sw.WriteLine(newStr);
+				_sw.WriteLine(newStr);
                 _sw.Flush();
             }
             catch

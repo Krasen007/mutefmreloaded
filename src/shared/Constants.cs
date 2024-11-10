@@ -5,13 +5,13 @@ using System.Text;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace MuteFm
+namespace MuteFmReloaded
 {
     public class Constants
     {
         public static string PatcherRoot = "http://www.mutetab.com/patcher";
 #if NOAWE
-        public static string ProgramName = "mute.fm";
+        public static string ProgramName = "mute.fm reloaded";
 #else
         public static string ProgramName = "mute.fm+";
 #endif
@@ -23,7 +23,7 @@ namespace MuteFm
 
         public static string GetExpirationDateString()
         {
-            return string.Format("{0}/{1}/{2}", MuteFm.Constants.ExpireMonth, MuteFm.Constants.ExpireDay, MuteFm.Constants.ExpireYear);
+            return string.Format("{0}/{1}/{2}", MuteFmReloaded.Constants.ExpireMonth, MuteFmReloaded.Constants.ExpireDay, MuteFmReloaded.Constants.ExpireYear);
         }
 
         private static FileVersionInfo GetFileVersionInfo()

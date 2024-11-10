@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MuteFm.SmartVolManagerPackage
+namespace MuteFmReloaded.SmartVolManagerPackage
 {
     // This is a SoundInfo struct that also keeps track of how long sound has/has not been playing over various periods of time
     // TODO: perhaps refactor this more in the future (designed like this for legacy reasons)

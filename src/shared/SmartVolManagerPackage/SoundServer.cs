@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace MuteFm.SmartVolManagerPackage
+namespace MuteFmReloaded.SmartVolManagerPackage
 {
     // Used for threads
     public class PerformOperationInfo
@@ -204,7 +204,7 @@ namespace MuteFm.SmartVolManagerPackage
                 }
                 catch (Exception ex)
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
             }            
             Thread t = new Thread(new ParameterizedThreadStart(_performOperation));
@@ -224,7 +224,7 @@ namespace MuteFm.SmartVolManagerPackage
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
         }
 
@@ -235,7 +235,7 @@ namespace MuteFm.SmartVolManagerPackage
             string operationArg = ((PerformOperationInfo)info).operationArg;
             Delegate postOperation = ((PerformOperationInfo)info).postOperation;
             Delegate onUpdate = ((PerformOperationInfo)info).onUpdate;
-            MuteFm.SmartVolManagerPackage.SoundEventLogger.LogMsg(string.Format("PerformOperation {0} {1}", operation, operationArg));
+            MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogMsg(string.Format("PerformOperation {0} {1}", operation, operationArg));
 
             try
             {
@@ -306,7 +306,7 @@ namespace MuteFm.SmartVolManagerPackage
                             {
                                 if (WinCoreAudioApiSoundServer.WinCoreAudioApiSoundServer.GetSoundStatus(sessionInstanceIdentifier, out vol, out muted))
                                 {
-                                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogBg("For sessioninstanceid " + sessionInstanceIdentifier + ": muted = " + muted);
+                                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogBg("For sessioninstanceid " + sessionInstanceIdentifier + ": muted = " + muted);
                                     if (muted)
                                     {
                                         WinCoreAudioApiSoundServer.WinCoreAudioApiSoundServer.SetVolume(sessionInstanceIdentifier, 0, 0, onUpdate);
@@ -350,7 +350,7 @@ namespace MuteFm.SmartVolManagerPackage
                 }
             } catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
 
             if (postOperation != null)

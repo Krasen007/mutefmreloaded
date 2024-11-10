@@ -5,7 +5,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 
-namespace MuteFm
+namespace MuteFmReloaded
 {
     public class WebServer
     {
@@ -74,7 +74,7 @@ namespace MuteFm
                 }
                 catch (Exception ex)
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
             }
             _lastAccessDateTime[filePath] = DateTime.Now;
@@ -280,7 +280,7 @@ namespace MuteFm
                 }
                 catch (Exception ex)
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
             }
 

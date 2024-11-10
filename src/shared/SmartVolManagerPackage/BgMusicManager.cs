@@ -8,7 +8,7 @@ using WinCoreAudioApiSoundServer;
 #endif
 
 
-namespace MuteFm
+namespace MuteFmReloaded
 {
     public enum Operation
     {
@@ -43,7 +43,7 @@ namespace MuteFm
 
 // This file includes code that maintains and updates state
 // It should not be updating the UI directly but rather should call assigned callbacks.  Have OnStateChange that passes in the new state and maintains the old state
-namespace MuteFm.SmartVolManagerPackage
+namespace MuteFmReloaded.SmartVolManagerPackage
 {
     public enum BgMusicState
     {
@@ -154,12 +154,12 @@ namespace MuteFm.SmartVolManagerPackage
         #endregion
 
         #region Background music state
-        public static MuteFm.SoundPlayerInfo ActiveBgMusic = null;
+        public static MuteFmReloaded.SoundPlayerInfo ActiveBgMusic = null;
         public static int[] BgMusicPids = new int[0];
         
         public static bool OwnBgMusicPid = true;
         private static Process BgMusicProcess = null;
-        public static MuteFm.MuteFmConfig MuteFmConfig = null;
+        public static MuteFmReloaded.MuteFmConfig MuteFmConfig = null;
         #endregion
 
         #region Foreground sounds state
@@ -167,16 +167,16 @@ namespace MuteFm.SmartVolManagerPackage
         public static bool ForegroundSoundPlaying = false; // anything is actually heard over last half second or so
         public static bool BgMusicHeard = false;
 
-        public static Dictionary<string, KeyValuePair<MuteFm.SoundPlayerInfo, DateTime>> RecentMusics = new Dictionary<string, KeyValuePair<MuteFm.SoundPlayerInfo, DateTime>>();
+        public static Dictionary<string, KeyValuePair<MuteFmReloaded.SoundPlayerInfo, DateTime>> RecentMusics = new Dictionary<string, KeyValuePair<MuteFmReloaded.SoundPlayerInfo, DateTime>>();
 
-        public static MuteFm.SoundPlayerInfo[] FgMusics = new SoundPlayerInfo[0];
+        public static MuteFmReloaded.SoundPlayerInfo[] FgMusics = new SoundPlayerInfo[0];
         public static Dictionary<long, float> FgMusicVol = null;
         public static Dictionary<long, bool> FgMusicMuted = null;
         public static Dictionary<long, bool> FgMusicIsActive = null;
         public static Dictionary<long, bool> FgMusicIgnore = null;
         public static Dictionary<string, SoundPlayerInfo> SessionInstanceToSoundPlayerInfoDict = null;
 
-        public static MuteFm.SoundPlayerInfo[] soundInfos;
+        public static MuteFmReloaded.SoundPlayerInfo[] soundInfos;
 
         public static DateTime EffectiveSilenceDateTime = DateTime.MaxValue;
         public class FgInfo
@@ -215,11 +215,11 @@ namespace MuteFm.SmartVolManagerPackage
             try
             {
                 MuteFmConfig = null;
-                MuteFmConfig = MuteFm.MuteFmConfigUtil.Load();
+                MuteFmConfig = MuteFmReloaded.MuteFmConfigUtil.Load();
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
 #endif  // WINDOWS
 
@@ -238,8 +238,8 @@ namespace MuteFm.SmartVolManagerPackage
                 }
                 catch
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogMsg("Could not read config off of disk (after just writing it.)");
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogMsg(MuteFmConfig);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogMsg("Could not read config off of disk (after just writing it.)");
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogMsg(MuteFmConfig);
                 }
             }
 
@@ -251,13 +251,13 @@ namespace MuteFm.SmartVolManagerPackage
             // How it works: 
             // Background music is muted if sound is heard for at least ACTIVE_OVER_DURATION_INTERVAL_IN_MS by fading out over interval fadetimeins.
             // Background music disappears if it is silent for at least SILENT_DURATION_IN_S by fading out over interval fadetimeins
-            MuteFm.SmartVolManagerPackage.SoundSourceInfo.SILENT_DURATION_IN_S = MuteFmConfig.GeneralSettings.SilentDuration;
-            MuteFm.SmartVolManagerPackage.SoundSourceInfo.ACTIVE_OVER_DURATION_INTERVAL_IN_MS = MuteFmConfig.GeneralSettings.ActiveOverDurationInterval * 1000;
-            MuteFm.SmartVolManagerPackage.SoundServer.FadeInTimeInS = MuteFmConfig.GeneralSettings.FadeInTime;
-            MuteFm.SmartVolManagerPackage.SoundServer.FadeOutTimeInS = MuteFmConfig.GeneralSettings.FadeOutTime;
-            MuteFm.SmartVolManagerPackage.SoundServer.SoundPollIntervalInS = MuteFmConfig.GeneralSettings.SoundPollIntervalInS;
-            MuteFm.SmartVolManagerPackage.SoundSourceInfo.SILENT_THRESHOLD = MuteFmConfig.GeneralSettings.SilentThreshold; // what volume means silence?
-            MuteFm.SmartVolManagerPackage.SoundSourceInfo.SILENT_SHORT_DURATION_IN_MS = MuteFmConfig.GeneralSettings.SilentShortDuration * 1000; // Used to detect if playing or not
+            MuteFmReloaded.SmartVolManagerPackage.SoundSourceInfo.SILENT_DURATION_IN_S = MuteFmConfig.GeneralSettings.SilentDuration;
+            MuteFmReloaded.SmartVolManagerPackage.SoundSourceInfo.ACTIVE_OVER_DURATION_INTERVAL_IN_MS = MuteFmConfig.GeneralSettings.ActiveOverDurationInterval * 1000;
+            MuteFmReloaded.SmartVolManagerPackage.SoundServer.FadeInTimeInS = MuteFmConfig.GeneralSettings.FadeInTime;
+            MuteFmReloaded.SmartVolManagerPackage.SoundServer.FadeOutTimeInS = MuteFmConfig.GeneralSettings.FadeOutTime;
+            MuteFmReloaded.SmartVolManagerPackage.SoundServer.SoundPollIntervalInS = MuteFmConfig.GeneralSettings.SoundPollIntervalInS;
+            MuteFmReloaded.SmartVolManagerPackage.SoundSourceInfo.SILENT_THRESHOLD = MuteFmConfig.GeneralSettings.SilentThreshold; // what volume means silence?
+            MuteFmReloaded.SmartVolManagerPackage.SoundSourceInfo.SILENT_SHORT_DURATION_IN_MS = MuteFmConfig.GeneralSettings.SilentShortDuration * 1000; // Used to detect if playing or not
         }
         #endregion
 
@@ -420,7 +420,7 @@ namespace MuteFm.SmartVolManagerPackage
                 }
                 catch (Exception ex)
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
             }
             if (isEffectiveSound)
@@ -538,7 +538,7 @@ namespace MuteFm.SmartVolManagerPackage
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
         }
         private static bool SoundSourceInfoIsBgMusic(SoundSourceInfo info, string bgMusicProcessName)
@@ -562,7 +562,7 @@ namespace MuteFm.SmartVolManagerPackage
                 catch (Exception ex)
                 {
                     string msg = ex.Message;
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogMsg("Error getting process info for pid " + info.Pid);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogMsg("Error getting process info for pid " + info.Pid);
                 }
             }
             if (isBgMusic)
@@ -610,9 +610,9 @@ namespace MuteFm.SmartVolManagerPackage
             return false;
         }
 
-        public static MuteFm.SoundPlayerInfo[] GetRecentMusics()
+        public static MuteFmReloaded.SoundPlayerInfo[] GetRecentMusics()
         {
-            List<MuteFm.SoundPlayerInfo> soundInfoList = new List<SoundPlayerInfo>();
+            List<MuteFmReloaded.SoundPlayerInfo> soundInfoList = new List<SoundPlayerInfo>();
             // Remove anything older than 5 minutes
             List<string> keys = RecentMusics.Keys.Take(RecentMusics.Keys.Count).ToList();
             for (int i = 0; i < keys.Count(); i++)
@@ -661,13 +661,13 @@ namespace MuteFm.SmartVolManagerPackage
             if (MusicState != state)
             {
                 MusicState = state;
-                UiPackage.UiCommands.UpdateUiForState(MuteFm.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), BgMusicWindowShown, IsRunning());
+                UiPackage.UiCommands.UpdateUiForState(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), BgMusicWindowShown, IsRunning());
             }
         }
         public static void UpdateFgMusicState()
         {
             // TODO: have this only update fgmusic info.  And maybe only for a specific id
-            UiPackage.UiCommands.UpdateUiForState(MuteFm.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), BgMusicWindowShown, IsRunning());
+            UiPackage.UiCommands.UpdateUiForState(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), BgMusicWindowShown, IsRunning());
         }
         private static void UpdateWindowShownState(bool visible)
         {
@@ -676,7 +676,7 @@ namespace MuteFm.SmartVolManagerPackage
 #if !NOAWE
             notRunning = notRunning || ((ActiveBgMusic.IsWeb == true) && !UiPackage.UiCommands.IsWebBgMusicSiteCurrent(ActiveBgMusic.UrlOrCommandLine)); // (MusicState == BgMusicState.Stop));
 #endif
-            UiPackage.UiCommands.UpdateUiForState(MuteFm.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), BgMusicWindowShown, !notRunning);
+            UiPackage.UiCommands.UpdateUiForState(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), BgMusicWindowShown, !notRunning);
         }
         #endregion
 
@@ -779,19 +779,19 @@ namespace MuteFm.SmartVolManagerPackage
                                 {
                                     case Operation.Mute:
                                         FgMusicMuted[playerInfoId] = true;
-                                        MuteFm.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifier, OperationEnum.Mute.ToString(), null, null, new PostVolumeOp(delegate() { UpdateFgMusicState(); }));
+                                        MuteFmReloaded.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifier, OperationEnum.Mute.ToString(), null, null, new PostVolumeOp(delegate() { UpdateFgMusicState(); }));
                                         break;
                                     case Operation.Unmute:
                                         FgMusicMuted[playerInfoId] = false;
-                                        MuteFm.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifier, OperationEnum.Unmute.ToString(), null, null, new PostVolumeOp(delegate() { UpdateFgMusicState(); }));
+                                        MuteFmReloaded.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifier, OperationEnum.Unmute.ToString(), null, null, new PostVolumeOp(delegate() { UpdateFgMusicState(); }));
                                         break;
                                     case Operation.SetVolumeTo:
                                         FgMusicVol[playerInfoId] = float.Parse(param);
-                                        MuteFm.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifier, OperationEnum.SetVolumeTo.ToString(), param, null, new PostVolumeOp(delegate() { UpdateFgMusicState(); }));
+                                        MuteFmReloaded.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifier, OperationEnum.SetVolumeTo.ToString(), param, null, new PostVolumeOp(delegate() { UpdateFgMusicState(); }));
                                         break;
                                     case Operation.SetVolumeToNoFade:
                                         FgMusicVol[playerInfoId] = float.Parse(param);
-                                        MuteFm.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifier, OperationEnum.SetVolumeToNoFade.ToString(), param, null, new PostVolumeOp(delegate() { UpdateFgMusicState(); }));
+                                        MuteFmReloaded.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifier, OperationEnum.SetVolumeToNoFade.ToString(), param, null, new PostVolumeOp(delegate() { UpdateFgMusicState(); }));
                                         break;
                                 }
                             }
@@ -802,7 +802,7 @@ namespace MuteFm.SmartVolManagerPackage
                 }
                 else
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogBg(op.ToString());
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogBg(op.ToString());
 
                     switch (op)
                     {
@@ -871,7 +871,7 @@ namespace MuteFm.SmartVolManagerPackage
                             else
                             {
                                 for (int i = 0; i < BgMusicPids.Length; i++)
-                                    MuteFm.OperationHelper.Hide(BgMusicPids[i]);
+                                    MuteFmReloaded.OperationHelper.Hide(BgMusicPids[i]);
                             }
                             UpdateWindowShownState(false);
                             break;
@@ -1038,17 +1038,17 @@ namespace MuteFm.SmartVolManagerPackage
                                         bool muted;
                                         if (BgMusicVolInit == false)
                                         {
-                                            if (false == MuteFm.SmartVolManagerPackage.SoundServer.GetSoundStatus(sessionInstanceIdentifiers[i], out vol, out muted))
+                                            if (false == MuteFmReloaded.SmartVolManagerPackage.SoundServer.GetSoundStatus(sessionInstanceIdentifiers[i], out vol, out muted))
                                                 vol = volWas;
                                         }
-                                        MuteFm.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifiers[i], OperationEnum.SetVolumeTo.ToString(), vol.ToString(), new OnUpdate(delegate() { UiPackage.UiCommands.UpdateUiForState(); }), new PostVolumeOp(delegate() { FadingThreadCount--; }));
+                                        MuteFmReloaded.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifiers[i], OperationEnum.SetVolumeTo.ToString(), vol.ToString(), new OnUpdate(delegate() { UiPackage.UiCommands.UpdateUiForState(); }), new PostVolumeOp(delegate() { FadingThreadCount--; }));
                                     }
                                     break;
 
                                 case Operation.SetVolumeToNoFade:
                                     for (int i = 0; i < sessionInstanceIdentifiers.Length; i++)
                                     {
-                                        MuteFm.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifiers[i], OperationEnum.SetVolumeToNoFade.ToString(), param, null, null);
+                                        MuteFmReloaded.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifiers[i], OperationEnum.SetVolumeToNoFade.ToString(), param, null, null);
                                     }
                                     float val;
                                     if (float.TryParse(param, out val))
@@ -1070,14 +1070,14 @@ namespace MuteFm.SmartVolManagerPackage
                                         for (int i = 0; i < sessionInstanceIdentifiers.Length; i++)
                                         {
                                             FadingThreadCount++;
-                                            MuteFm.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifiers[i], OperationEnum.SetVolumeTo.ToString(), param, new OnUpdate(delegate() { UiPackage.UiCommands.UpdateUiForState(); }), new PostVolumeOp(delegate() { FadingThreadCount--; }));
+                                            MuteFmReloaded.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifiers[i], OperationEnum.SetVolumeTo.ToString(), param, new OnUpdate(delegate() { UiPackage.UiCommands.UpdateUiForState(); }), new PostVolumeOp(delegate() { FadingThreadCount--; }));
                                         }
                                     }
                                     break;
 
                                 case Operation.ClearHistory:
                                     // Just call it once.  sessionidentifier, etc. don't matter
-                                    MuteFm.SmartVolManagerPackage.SoundServer.PerformOperation("(clearhistory)", OperationEnum.ClearHistory.ToString(), null, null, null);
+                                    MuteFmReloaded.SmartVolManagerPackage.SoundServer.PerformOperation("(clearhistory)", OperationEnum.ClearHistory.ToString(), null, null, null);
                                     break;
 
                             }
@@ -1087,7 +1087,7 @@ namespace MuteFm.SmartVolManagerPackage
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
         }
         public static SoundPlayerInfo FindPlayerInfo(long musicId)
@@ -1126,7 +1126,7 @@ namespace MuteFm.SmartVolManagerPackage
             for (int i = 0; i < sessionInstanceIdentifiers.Length; i++)
             {
                 FadingThreadCount++;
-                MuteFm.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifiers[i], OperationEnum.SetVolumeTo.ToString(), fadeDownTo.ToString(), new OnUpdate(delegate() { UiPackage.UiCommands.UpdateUiForState(); }), afterMute);
+                MuteFmReloaded.SmartVolManagerPackage.SoundServer.PerformOperation(sessionInstanceIdentifiers[i], OperationEnum.SetVolumeTo.ToString(), fadeDownTo.ToString(), new OnUpdate(delegate() { UiPackage.UiCommands.UpdateUiForState(); }), afterMute);
             }
 
             if (MusicState != BgMusicState.Mute)
@@ -1134,7 +1134,7 @@ namespace MuteFm.SmartVolManagerPackage
         }
         public static void Close()
         {
-            MuteFm.SmartVolManagerPackage.SoundEventLogger.LogBg("Close");
+            MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogBg("Close");
 
             if ((ActiveBgMusic.IsWeb == false)) //&& (OwnBgMusicPid == true)
             {
@@ -1147,7 +1147,7 @@ namespace MuteFm.SmartVolManagerPackage
                     }
                     catch (Exception ex)
                     {
-                        MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                        MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                     }
                 }
                 BgMusicPids = new int[] { };
@@ -1376,7 +1376,7 @@ namespace MuteFm.SmartVolManagerPackage
             if ((command == null) || (command == ""))
                 return false;
 
-            MuteFm.SmartVolManagerPackage.SoundEventLogger.LogBg("RunProc");
+            MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogBg("RunProc");
 
             string[] allArgs = Util.ParseArguments(command);
             string fileName = allArgs[0];
@@ -1462,7 +1462,7 @@ namespace MuteFm.SmartVolManagerPackage
                             BgMusicProcess.Exited += new EventHandler(OnBgMusicExited);
                             OwnBgMusicPid = true;
 
-                            MuteFm.SmartVolManagerPackage.SoundEventLogger.LogBg("RunProc");
+                            MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogBg("RunProc");
 
                             System.Threading.Thread.Sleep(2000); // Wait a bit before a command gets run so we don't have a race condition; don't like this but leaving it for now (since it ties up the ui thread for a bit)
                         }
@@ -1471,7 +1471,7 @@ namespace MuteFm.SmartVolManagerPackage
                     }
                     catch (Exception ex)
                     {
-                        MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                        MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                     }
                 }
             }

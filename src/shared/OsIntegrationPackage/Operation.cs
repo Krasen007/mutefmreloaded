@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
-namespace MuteFm
+namespace MuteFmReloaded
 {
     public class OperationHelper
     {
@@ -110,7 +110,7 @@ namespace MuteFm
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 			}
 #endif
 			return handles;
@@ -126,7 +126,7 @@ namespace MuteFm
 
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
         }
 
@@ -163,7 +163,7 @@ namespace MuteFm
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
         }
         public static void Hide(int pid)

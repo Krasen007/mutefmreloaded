@@ -1,4 +1,20 @@
-mutefm
+mutefm reloaded 2024
+======
+
+mute.fm mutes your music while watching videos. Updated for Windows 11.
+
+You can run this or view the source in Visual Studio 2022 (downloadable for free from Microsoft).
+
+Running/building mute.fm+ requires installing Awesomium. (not tested / not planned)
+Running/building mute.fm or mute.fm+ requires installing Innosetup.(for now it's working without it)
+Deploying requires placing pscp into C:\\. (haven't deployed yet, just ran the source)
+
+Get the software from Releases tab. (no release yet)
+
+Note: The build is focused on Windows only for now.
+
+
+mutefm 2012-2017 old readme
 ======
 
 mute.fm mutes your music while watching videos.  For Windows 7 and Windows 8 Desktop.

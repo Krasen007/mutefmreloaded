@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MuteFm
+namespace MuteFmReloaded
 {
     public enum OperationEnum
     {
@@ -253,11 +253,11 @@ namespace MuteFm
         {
             List<string> urls = new List<string>();
             List<bool> always = new List<bool>();
-            for (int i = 0; i < MuteFm.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics.Length; i++)
+            for (int i = 0; i < MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics.Length; i++)
             {
-                if (MuteFm.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics[i].IsWeb == true)
+                if (MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics[i].IsWeb == true)
                 {
-                    urls.Add(MuteFm.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics[i].UrlOrCommandLine);
+                    urls.Add(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics[i].UrlOrCommandLine);
                     always.Add(false);
                 }
             }
