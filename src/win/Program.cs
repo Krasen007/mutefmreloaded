@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using System.Threading;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Security.AccessControl;
-using System.Text;
-using Microsoft.Win32;
-// TODO: obfuscate?
-// TODO: remember to give credit for source code used
+// TODO: remove Growl as its outdated and the website doesn't even exist anymore.
+// TODO: clean the references for the licence and checks
+// TODO: update to .net 4.8 (seems to be working on its own)
+// TODO: do a lot of cleaning of code and comments
 
-namespace MuteFm
+namespace MuteFmReloaded
 {
     static public class Program
     {
-        public static bool LicenseExpired = false;
+		// TODO: obfuscate?
+		// TODO: remember to give credit for source code used
+		public static bool LicenseExpired = false;
 
         public static bool InternalBuildMode = false;
         public static bool FirstTime = false;
@@ -68,7 +68,7 @@ namespace MuteFm
                 return;
             }*/
 
-            MuteFm.SmartVolManagerPackage.SoundEventLogger.LogMsg(Constants.ProgramName + " loaded!");
+            MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogMsg(Constants.ProgramName + " loaded!");
 
             if (System.Environment.CommandLine.ToUpper().Contains("FIRSTTIME"))
                 FirstTime = true;
@@ -137,7 +137,7 @@ namespace MuteFm
                         if (hasHandle == false)
                         {
                             //MessageBox. Show(Constants.ProgramName + " is already running.  You can access it via the system tray.");
-                            MuteFm.UiPackage.PlayerForm playerForm = new UiPackage.PlayerForm();
+                            MuteFmReloaded.UiPackage.PlayerForm playerForm = new UiPackage.PlayerForm();
                             playerForm.Show();
                             playerForm.Init(true);
                             Application.Run(playerForm);
@@ -225,15 +225,15 @@ namespace MuteFm
                 //TODO: check if chrome extension (or other browsers if supported) is installed/enabled and install/enable it if necessary (perhaps honoring users' preferences)
                 //TODO: enable ppapi flash if chrome installed and not set, ensure each tab is opened in own process (honoring prefs) 
                 //TODO: also: hide sndvol based on preferences; force mixer icon to always be shown (just like sndvol is)
-                MuteFm.SmartVolManagerPackage.SoundServer.OnChange = MuteFm.SmartVolManagerPackage.BgMusicManager.OnUpdateSoundSourceInfos;
-                MuteFm.SmartVolManagerPackage.SoundServer.OnManualVolumeChange = MuteFm.SmartVolManagerPackage.BgMusicManager.OnManualVolumeChange;
-                MuteFm.SmartVolManagerPackage.SoundServer.OnMasterVolumeChange = MuteFm.SmartVolManagerPackage.BgMusicManager.OnMasterVolumeChange;
+                MuteFmReloaded.SmartVolManagerPackage.SoundServer.OnChange = MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.OnUpdateSoundSourceInfos;
+                MuteFmReloaded.SmartVolManagerPackage.SoundServer.OnManualVolumeChange = MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.OnManualVolumeChange;
+                MuteFmReloaded.SmartVolManagerPackage.SoundServer.OnMasterVolumeChange = MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.OnMasterVolumeChange;
                 InitExtensions(); // For now we just do this on startup
 
                 if (verTimesTen >= 61)
                 {
                     //SoundServerThread = new Thread(new ThreadStart(MuteApp.SmartVolManagerPackage.SoundServer.InitDoNothing));
-                    SoundServerThread = new Thread(new ThreadStart(MuteFm.SmartVolManagerPackage.SoundServer.Init));
+                    SoundServerThread = new Thread(new ThreadStart(MuteFmReloaded.SmartVolManagerPackage.SoundServer.Init));
                     SoundServerThread.Name = "SoundServer";
                     // This will be started by the UI [TODO]
                 }
@@ -249,7 +249,7 @@ namespace MuteFm
 
         private static void CheckLicensing(bool firstTime)
         {
-            DateTime LicenseEnd = new DateTime(MuteFm.Constants.ExpireYear, MuteFm.Constants.ExpireMonth, MuteFm.Constants.ExpireDay, 23, 59, 59, 0, DateTimeKind.Local);
+            DateTime LicenseEnd = new DateTime(MuteFmReloaded.Constants.ExpireYear, MuteFmReloaded.Constants.ExpireMonth, MuteFmReloaded.Constants.ExpireDay, 23, 59, 59, 0, DateTimeKind.Local);
 
             if (System.DateTime.Now > LicenseEnd)
             {
@@ -265,9 +265,9 @@ namespace MuteFm
 
                 firstTime = false;
 
-                if (Program.Installed == false)
+				if (Program.Installed == false)
                 {
-                    MuteFm.UiPackage.UiCommands.TrackEvent("install");
+                    MuteFmReloaded.UiPackage.UiCommands.TrackEvent("install");
                     Program.Installed = true;
                 }
             }
@@ -290,7 +290,7 @@ namespace MuteFm
                 }
                 catch (Exception ex)
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
 
                 try
@@ -303,7 +303,7 @@ namespace MuteFm
                 }
                 catch (Exception ex)
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
 
                 try
@@ -312,7 +312,7 @@ namespace MuteFm
                 }
                 catch (Exception ex)
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
 
                 /*
@@ -334,7 +334,7 @@ namespace MuteFm
                 }
                 catch (Exception ex)
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
 
                 try
@@ -346,12 +346,12 @@ namespace MuteFm
                     if (DateTime.Now.Date != prevDay)
                     {
                         prevDay = DateTime.Now.Date;
-                        MuteFm.UiPackage.UiCommands.TrackEvent("Running");
+                        MuteFmReloaded.UiPackage.UiCommands.TrackEvent("Running");
                     }
                 }
                 catch (Exception ex)
                 {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
 
                 System.Threading.Thread.Sleep(timeSpan);

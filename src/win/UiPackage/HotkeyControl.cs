@@ -36,7 +36,7 @@ internal static class NativeMethods
                                               IntPtr lParam);
 }
 
-namespace MuteFm.UiPackage
+namespace MuteFmReloaded.UiPackage
 {
 
 

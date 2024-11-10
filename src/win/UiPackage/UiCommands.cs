@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Growl.Connector;
 using Microsoft.Win32;
 
-namespace MuteFm.UiPackage
+namespace MuteFmReloaded.UiPackage
 {
     public class UiCommands
     {
@@ -46,7 +46,7 @@ namespace MuteFm.UiPackage
             System.ComponentModel.BackgroundWorker trackEventWorker = new BackgroundWorker();
             trackEventWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(delegate
             {
-                MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {
                     try
                     {
@@ -66,7 +66,7 @@ namespace MuteFm.UiPackage
                     }
                     catch (Exception ex)
                     {
-                        MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                        MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                     }
                 });
             });
@@ -86,7 +86,7 @@ namespace MuteFm.UiPackage
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
         }
 /*
@@ -164,7 +164,7 @@ namespace MuteFm.UiPackage
             //WebBgMusicForm.Show();
 #endif
             
-            _notificationType = new NotificationType("MUTEFM_NOTIFICATION", "mute.fm notification"); 
+            _notificationType = new NotificationType("MUTEFM_NOTIFICATION", "mute.fm reloaded notification"); 
 
             _growl = new GrowlConnector();
             _growl.NotificationCallback += new GrowlConnector.CallbackEventHandler(growl_notification_callback);
@@ -183,7 +183,7 @@ namespace MuteFm.UiPackage
 
             RegisterHotkeys();
 
-            UiPackage.UiCommands.UpdateUiForState(MuteFm.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), false, false, true);
+            UiPackage.UiCommands.UpdateUiForState(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), false, false, true);
 
             mPlayerForm = new PlayerForm();
             mPlayerForm.FormClosed += new FormClosedEventHandler(mPlayer_FormClosed);
@@ -230,7 +230,7 @@ namespace MuteFm.UiPackage
                 }
             }
 
-            System.Windows.Forms.Application.Run(MuteFm.UiPackage.WinSoundServerSysTray.Instance);
+            System.Windows.Forms.Application.Run(MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance);
         }
 
         public static void DoFirstTimeWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -275,7 +275,7 @@ namespace MuteFm.UiPackage
                 }
                 else if (SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.ShowBalloonNotifications)
                 {
-                    MuteFm.UiPackage.WinSoundServerSysTray.Instance.ShowBalloonTip(3000, Constants.ProgramName, text, ToolTipIcon.Info);
+                    MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.ShowBalloonTip(3000, Constants.ProgramName, text, ToolTipIcon.Info);
                 }
 
                 //OLDNOTIFY
@@ -291,7 +291,7 @@ namespace MuteFm.UiPackage
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
         }
 #if !NOAWE
@@ -352,7 +352,7 @@ namespace MuteFm.UiPackage
 
         public static void ShowMixer()
         {
-            MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 //HidePlayer();
 
@@ -370,7 +370,7 @@ namespace MuteFm.UiPackage
         {
             if (mPlayerForm == null)
                 return;
-            MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 //mPlayerForm.Close();
                 //mPlayerForm = null;
@@ -411,8 +411,8 @@ namespace MuteFm.UiPackage
                     validOperation,
                     isVisible,
                     isRunning,
-                    MuteFm.SmartVolManagerPackage.BgMusicManager.ActiveBgMusic,
-                    MuteFm.SmartVolManagerPackage.BgMusicManager.FgMusics,
+                    MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.ActiveBgMusic,
+                    MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.FgMusics,
                     SmartVolManagerPackage.BgMusicManager.BgMusicVolume,
                     SmartVolManagerPackage.BgMusicManager.BgMusicMuted,
                     SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic,
@@ -436,7 +436,7 @@ namespace MuteFm.UiPackage
                     }
                     catch (Exception ex)
                     {
-                        MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                        MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                     }
                 }
 
@@ -475,7 +475,7 @@ namespace MuteFm.UiPackage
                     }
                     catch (Exception ex)
                     {
-                        MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                        MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                     }
                 }
 
@@ -489,7 +489,7 @@ namespace MuteFm.UiPackage
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
         }
 
@@ -515,14 +515,14 @@ namespace MuteFm.UiPackage
             if (Program.LicenseExpired == true)
                 return;
 
-            if (MuteFm.UiPackage.WinSoundServerSysTray.Instance == null)
+            if (MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance == null)
                 return;
 
-            MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 if ((musicId == SmartVolManagerPackage.BgMusicManager.ActiveBgMusic.Id) && ((op == Operation.Play) || (op == Operation.Unmute)))
                 {
-                    MuteFm.SmartVolManagerPackage.BgMusicManager.PerformOperation(musicId, Operation.ClearHistory, "", ignoreCommand);
+                    MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.PerformOperation(musicId, Operation.ClearHistory, "", ignoreCommand);
                 }
 
                 if (op == Operation.Show)
@@ -537,8 +537,8 @@ namespace MuteFm.UiPackage
                     (!SmartVolManagerPackage.BgMusicManager.BgMusicHeard) && 
                     (SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.AutoMuteEnabled)))
                 {
-                    MuteFm.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
-                    MuteFm.SmartVolManagerPackage.BgMusicManager.PerformOperation(musicId, Operation.AutoMutedPlay, param, ignoreCommand);
+                    MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
+                    MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.PerformOperation(musicId, Operation.AutoMutedPlay, param, ignoreCommand);
                     return;
                 }
                 else
@@ -547,7 +547,7 @@ namespace MuteFm.UiPackage
                     x++;
                 }
 
-                MuteFm.SmartVolManagerPackage.BgMusicManager.PerformOperation(musicId, op, param, ignoreCommand);
+                MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.PerformOperation(musicId, op, param, ignoreCommand);
 
                 if ((musicId == SmartVolManagerPackage.BgMusicManager.ActiveBgMusic.Id) || (op == Operation.ChangeMusic))
                 {
@@ -556,7 +556,7 @@ namespace MuteFm.UiPackage
                     {
                         case Operation.Play:
                             SmartVolManagerPackage.BgMusicManager.AutoMuted = false; // TODO
-                            MuteFm.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
+                            MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
                             if (track) TrackEvent("Play");
                             break;
 
@@ -592,19 +592,19 @@ namespace MuteFm.UiPackage
                                     MuteFmConfigUtil.AddSoundPlayerInfo(playerInfo, SmartVolManagerPackage.BgMusicManager.MuteFmConfig);
                                     playerInfo.Id = tempId;
 
-                                    var fgMusicList = new List<MuteFm.SoundPlayerInfo>(SmartVolManagerPackage.BgMusicManager.FgMusics);
+                                    var fgMusicList = new List<MuteFmReloaded.SoundPlayerInfo>(SmartVolManagerPackage.BgMusicManager.FgMusics);
                                     fgMusicList.Remove(playerInfo);
                                     SmartVolManagerPackage.BgMusicManager.FgMusics = fgMusicList.ToArray();
                                 }
 
                                 // Save current music as new default
-                                MuteFm.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.ActiveBgMusicId = musicId;
-                                MuteFmConfigUtil.Save(MuteFm.SmartVolManagerPackage.BgMusicManager.MuteFmConfig);
+                                MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.ActiveBgMusicId = musicId;
+                                MuteFmConfigUtil.Save(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig);
                             }
                             break;
 
                         case Operation.Stop:
-                            MuteFm.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = false;
+                            MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = false;
                             if (_autoShowAfterPlayWorker != null)
                             {
                                 _autoShowAfterPlayWorker.CancelAsync();
@@ -614,7 +614,7 @@ namespace MuteFm.UiPackage
                         case Operation.Pause:
 
                         case Operation.Mute:
-                            MuteFm.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = false;
+                            MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = false;
 
                             _autoShowAfterPlayWorker = new System.ComponentModel.BackgroundWorker();
                             _autoShowAfterPlayWorker.WorkerSupportsCancellation = true;
@@ -624,7 +624,7 @@ namespace MuteFm.UiPackage
                             //MuteApp.SmartVolManagerPackage.BgMusicManager.PerformOperation(Operation.ClearHistory);
                             break;
                         case Operation.Unmute:
-                            MuteFm.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
+                            MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
                             break;
                         case Operation.Exit:
                             Exit();
@@ -648,7 +648,7 @@ namespace MuteFm.UiPackage
         {
             OnOperation(Operation.Stop);
 
-            MuteFm.SoundPlayerInfo bgm = new MuteFm.SoundPlayerInfo();
+            MuteFmReloaded.SoundPlayerInfo bgm = new MuteFmReloaded.SoundPlayerInfo();
             bgm.IsWeb = true;
             bgm.UrlOrCommandLine = url;
             bgm.Name = title; // TODO: get title as well and then show domain: title or something similar (like in mutetab)
@@ -662,7 +662,7 @@ namespace MuteFm.UiPackage
         }
         public static void Exit()
         {
-            MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 UnregisterHotkeys();
 
@@ -700,7 +700,7 @@ namespace MuteFm.UiPackage
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
         }
 
@@ -708,9 +708,9 @@ namespace MuteFm.UiPackage
         {
             // Prevent automute from seeing a brief pause as something that requires restoring again
             System.Threading.Thread.CurrentThread.Name = "IsPausing";
-            MuteFm.SmartVolManagerPackage.BgMusicManager.IsPausing = true;
+            MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.IsPausing = true;
             System.Threading.Thread.Sleep(750); // TODO: has to be sufficiently longer than the constant used to try to detect if paused or not
-            MuteFm.SmartVolManagerPackage.BgMusicManager.IsPausing = false;
+            MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.IsPausing = false;
         }
 
         public static void UnregisterHotkeys()
@@ -734,7 +734,7 @@ namespace MuteFm.UiPackage
                     }
                     catch (Exception ex)
                     {
-                        MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                        MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                         //MessageBox. Show("Error occurred registering hotkeys");
                     }
                 }

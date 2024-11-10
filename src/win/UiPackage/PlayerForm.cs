@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;      
 
-namespace MuteFm.UiPackage
+namespace MuteFmReloaded.UiPackage
 {
     public partial class PlayerForm : Form
     {
@@ -30,9 +30,9 @@ namespace MuteFm.UiPackage
         public PlayerForm()
         {
             InitializeComponent();
-            this.Text = MuteFm.Constants.ProgramName;
+            this.Text = MuteFmReloaded.Constants.ProgramName;
 
-            aboutToolStripMenuItem.Text = "About " + MuteFm.Constants.ProgramName + "...";
+            aboutToolStripMenuItem.Text = "About " + MuteFmReloaded.Constants.ProgramName + "...";
 
             Panel statusPanel = new Panel();
             statusPanel.Dock = DockStyle.Bottom;
@@ -311,13 +311,13 @@ namespace MuteFm.UiPackage
         }
         private void mResetSettingsMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(this, "Are you sure you want to reset mute.fm settings (both preferences and sound information) to the factory default?", Constants.ProgramName, MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+            if (MessageBox.Show(this, "Are you sure you want to reset mute.fm reloaded settings (both preferences and sound information) to the factory default?", Constants.ProgramName, MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
             {
                 UiCommands.OnOperation(Operation.Stop);
 
                 try
                 {
-                    System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm\config.json");
+                    System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm reloaded\config.json");
                 }
                 catch (Exception ex)
                 {
@@ -361,7 +361,7 @@ namespace MuteFm.UiPackage
         }
         private void showLogToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            string filename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm\mutefm.log";
+            string filename = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm reloaded\mutefm.log";
             try
             {
                 System.Diagnostics.Process.Start("notepad.exe", filename);
@@ -435,7 +435,7 @@ namespace MuteFm.UiPackage
                 MuteFmConfigUtil.GenerateIconImage(SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics[i], false);
             }
 
-            mBgMusicIcon.Image = MuteFmConfigUtil.GetImage(MuteFm.SmartVolManagerPackage.BgMusicManager.ActiveBgMusic.Id, 32);
+            mBgMusicIcon.Image = MuteFmConfigUtil.GetImage(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.ActiveBgMusic.Id, 32);
         }
 
         private void hotkeysToolStripMenuItem_Click(object sender, EventArgs e)

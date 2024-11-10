@@ -1,4 +1,4 @@
-﻿namespace MuteFm.UiPackage
+﻿namespace MuteFmReloaded.UiPackage
 {
     partial class MuteFmHotkeyControl
     {

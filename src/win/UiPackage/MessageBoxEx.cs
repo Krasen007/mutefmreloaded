@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace MuteFm.UiPackage
+namespace MuteFmReloaded.UiPackage
 {
     public partial class MessageBoxEx : Form
     {

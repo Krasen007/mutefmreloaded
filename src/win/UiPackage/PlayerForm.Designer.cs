@@ -1,4 +1,4 @@
-namespace MuteFm.UiPackage
+namespace MuteFmReloaded.UiPackage
 {
     partial class PlayerForm
     {
@@ -316,7 +316,7 @@ namespace MuteFm.UiPackage
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.aboutToolStripMenuItem.Text = "About mute.fm";
+            this.aboutToolStripMenuItem.Text = "About mute.fm reloaded";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // groupBox1

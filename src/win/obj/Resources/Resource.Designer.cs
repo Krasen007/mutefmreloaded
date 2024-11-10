@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MuteFm.obj.Resources {
+namespace MuteFmReloaded.obj.Resources {
     using System;
     
     

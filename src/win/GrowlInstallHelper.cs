@@ -25,7 +25,7 @@ namespace GrowlInstallHelper
             bool forceGrowl = true;
             try
             {
-                object temp = Registry.GetValue(@"HKEY_CURRENT_USER\Software\mute.fm", "forcegrowl", null);
+                object temp = Registry.GetValue(@"HKEY_CURRENT_USER\Software\mute.fm reloaded", "forcegrowl", null);
                 forceGrowl = !((string)temp == "False");
             }
             catch (Exception ex)
@@ -39,10 +39,10 @@ namespace GrowlInstallHelper
         {
             try
             {
-                Registry.SetValue(@"HKEY_CURRENT_USER\Software\mute.fm", "forcegrowl", val);
+                Registry.SetValue(@"HKEY_CURRENT_USER\Software\mute.fm reloaded", "forcegrowl", val);
             }
             catch
-            {
+            {                
             }
         }
 
@@ -94,14 +94,14 @@ namespace GrowlInstallHelper
         {
             string path = "";
 
-            if (_quietMode || MessageBox.Show(null, MuteFm.Constants.ProgramName + " can use Growl for notifications.  Press OK to launch the Growl installer, or cancel to ignore.  Uncheck 'Options->Autostart Growl for notifications' to prevent his message from coming back.", MuteFm.Constants.ProgramName, MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (_quietMode || MessageBox.Show(null, MuteFmReloaded.Constants.ProgramName + " can use Growl for notifications.  Press OK to launch the Growl installer, or cancel to ignore.  Uncheck 'Options->Autostart Growl for notifications' to prevent his message from coming back.", MuteFmReloaded.Constants.ProgramName, MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 System.Diagnostics.Process.Start(_growlInstallerUrlOrProcessName);
                 while (true)
                 {
                     if (!_quietMode)
                     {
-                        if (MessageBox.Show(null, "Press OK after installer is complete (or Cancel to ignore).", MuteFm.Constants.ProgramName, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                        if (MessageBox.Show(null, "Press OK after installer is complete (or Cancel to ignore).", MuteFmReloaded.Constants.ProgramName, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                             return false;
                     }
                     path = Growl_GetPath();

@@ -5,7 +5,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace MuteFm
+namespace MuteFmReloaded
 {
     //http://www.liensberger.it/web/blog/?p=207
     public sealed class KeyboardHook : IDisposable
@@ -95,11 +95,11 @@ namespace MuteFm
 
             int modifierFlags = 0;
             if ((key & Keys.Alt) == Keys.Alt)
-                modifierFlags |= (int)MuteFm.ModifierKeys.Alt;
+                modifierFlags |= (int)MuteFmReloaded.ModifierKeys.Alt;
             if ((key & Keys.Control) == Keys.Control)
-                modifierFlags |= (int)MuteFm.ModifierKeys.Control;
+                modifierFlags |= (int)MuteFmReloaded.ModifierKeys.Control;
             if ((key & Keys.Shift) == Keys.Shift)
-                modifierFlags |= (int)MuteFm.ModifierKeys.Shift;
+                modifierFlags |= (int)MuteFmReloaded.ModifierKeys.Shift;
 
             // increment the counter.
             _currentId = _currentId + 1;

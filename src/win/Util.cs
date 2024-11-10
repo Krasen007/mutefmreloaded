@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MuteFm
+namespace MuteFmReloaded
 {
     class Util
     {
@@ -45,14 +45,14 @@ namespace MuteFm
                         }
                         catch (Exception ex)
                         {
-                            MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                            MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
                     string msg = ex.Message;
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException("Error getting filename for pid " + pid);
+                    MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException("Error getting filename for pid " + pid);
                     //                MuteApp.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
                 }
             }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace MuteFm.UiPackage
+namespace MuteFmReloaded.UiPackage
 {
     // Adapted version of this code: http://www.blackbeltcoder.com/Articles/winforms/dynamically-creating-a-winforms-dialog
     class InputBoxWithCheck

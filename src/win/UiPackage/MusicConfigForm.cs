@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace MuteFm.UiPackage
+namespace MuteFmReloaded.UiPackage
 {
     public partial class MusicConfigForm : Form
     {
@@ -139,7 +139,7 @@ namespace MuteFm.UiPackage
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
             Cursor.Current = Cursors.Default;
 

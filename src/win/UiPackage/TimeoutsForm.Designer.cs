@@ -1,4 +1,4 @@
-﻿namespace MuteFm
+﻿namespace MuteFmReloaded
 {
     partial class mTimeoutsForm
     {

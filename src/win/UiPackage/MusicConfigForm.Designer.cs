@@ -1,4 +1,4 @@
-﻿namespace MuteFm.UiPackage
+﻿namespace MuteFmReloaded.UiPackage
 {
     partial class MusicConfigForm
     {
@@ -209,7 +209,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "mute.fm - Sound Players";
+            this.Text = "mute.fm reloaded - Sound Players";
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mBgMusicIcon)).EndInit();
             this.groupBox2.ResumeLayout(false);

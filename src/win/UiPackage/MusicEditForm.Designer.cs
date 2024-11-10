@@ -1,4 +1,4 @@
-﻿namespace MuteFm.UiPackage
+﻿namespace MuteFmReloaded.UiPackage
 {
     partial class MusicInfoEditForm
     {
@@ -355,7 +355,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "mute.fm - Edit Sound Player Info";
+            this.Text = "mute.fm reloaded - Edit Sound Player Info";
             this.Load += new System.EventHandler(this.MusicInfoEditForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace MuteFm
+namespace MuteFmReloaded
 {
     // TODO: make it easy for me to upgrade this.  have a version field and be able to parse the json correctly to check the version.
     [Serializable]
@@ -105,7 +105,7 @@ namespace MuteFm
 
     public class MuteFmConfigUtil
     {
-        public static MuteFm.SoundPlayerInfo CreateProgram(string name)
+        public static MuteFmReloaded.SoundPlayerInfo CreateProgram(string name)
         {
             SoundPlayerInfo playerInfo = new SoundPlayerInfo();
             playerInfo.Name = name;
@@ -113,13 +113,13 @@ namespace MuteFm
             return playerInfo;
         }
 
-        public static MuteFm.SoundPlayerInfo CreateWebWithCustomName(string title, string url)
+        public static MuteFmReloaded.SoundPlayerInfo CreateWebWithCustomName(string title, string url)
         {
             SoundPlayerInfo playerInfo = CreateWeb(title, url);
             playerInfo.UserEditedName = true;
             return playerInfo;
         }
-        public static MuteFm.SoundPlayerInfo CreateWeb(string title, string url)
+        public static MuteFmReloaded.SoundPlayerInfo CreateWeb(string title, string url)
         {
             SoundPlayerInfo playerInfo = new SoundPlayerInfo();
             playerInfo.IsWeb = true;
@@ -187,7 +187,7 @@ namespace MuteFm
         }
 
         // Id will be changed if actually added
-        public static MuteFm.SoundPlayerInfo AddSoundPlayerInfo(MuteFm.SoundPlayerInfo playerInfo, MuteFmConfig config)
+        public static MuteFmReloaded.SoundPlayerInfo AddSoundPlayerInfo(MuteFmReloaded.SoundPlayerInfo playerInfo, MuteFmConfig config)
         {
             /*
             // First check if bgmusic already exists (by matching isweb and urlorcommandline)  If there is a match, don't add again.
@@ -209,7 +209,7 @@ namespace MuteFm
 
         public static void Save(MuteFmConfig config)
         {
-            string configFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm";
+            string configFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm reloaded";
             if (!System.IO.Directory.Exists(configFolder))
                 System.IO.Directory.CreateDirectory(configFolder);
             string jsonText = Newtonsoft.Json.JsonConvert.SerializeObject(config);
@@ -222,12 +222,12 @@ namespace MuteFm
 
             try
             {
-                string configFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm";
+                string configFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\mute.fm reloaded";
                 string jsonified = System.IO.File.ReadAllText(configFolder + @"\config.json");
-                config = Newtonsoft.Json.JsonConvert.DeserializeObject<MuteFm.MuteFmConfig>(jsonified);
+                config = Newtonsoft.Json.JsonConvert.DeserializeObject<MuteFmReloaded.MuteFmConfig>(jsonified);
 
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogMsg("Loaded configuration file.");
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogMsg("Sound info count = " + config.BgMusics.Length);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogMsg("Loaded configuration file.");
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogMsg("Sound info count = " + config.BgMusics.Length);
 
                 for (int i = 0; i < config.BgMusics.Length; i++)
                 {
@@ -272,7 +272,7 @@ namespace MuteFm
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
             }
             return config;
         }
@@ -374,8 +374,8 @@ namespace MuteFm
             }
             catch (Exception ex)
             {
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogMsg("Error generating icon file for bgmusic " + bgm.GetName());
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogMsg("Error generating icon file for bgmusic " + bgm.GetName());
+                MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 //                bgm.Enabled = false;
             }
         }
@@ -404,7 +404,7 @@ namespace MuteFm
                 try
                 {                    
                     RegistryKey registrykeyHKLM = Registry.LocalMachine;
-                    string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Run\mute.fm";
+                    string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Run\mute.fm reloaded";
                     registrykeyHKLM.DeleteValue(keyPath);
                     registrykeyHKLM.Close();
                 }
@@ -428,11 +428,11 @@ namespace MuteFm
             config.Hotkeys = hotkeyList.ToArray();
         }
 
-        public static MuteFm.MuteFmConfig CreateDefaultConfig()
+        public static MuteFmReloaded.MuteFmConfig CreateDefaultConfig()
         {
-            MuteFm.MuteFmConfig defaultConfig = new MuteFm.MuteFmConfig();
+            MuteFmReloaded.MuteFmConfig defaultConfig = new MuteFmReloaded.MuteFmConfig();
 
-            defaultConfig.BgMusics = new MuteFm.SoundPlayerInfo[0];
+            defaultConfig.BgMusics = new MuteFmReloaded.SoundPlayerInfo[0];
 
             defaultConfig.Id = Program.Identity;
 
@@ -524,7 +524,7 @@ namespace MuteFm
             MuteFmConfigUtil.LoadDefaultHotkeys(defaultConfig);
 
             // General settings
-            defaultConfig.GeneralSettings = new MuteFm.GeneralSettings();
+            defaultConfig.GeneralSettings = new MuteFmReloaded.GeneralSettings();
             defaultConfig.GeneralSettings.AutokillMutedTime = MuteFmConfig.AutokillTimeoutDefault;
             defaultConfig.GeneralSettings.AutoShowAfterPlayTimeout = 4.0f;
             defaultConfig.GeneralSettings.FadeDownToLevel = 0.0f; //TODO: not used yet
@@ -542,7 +542,7 @@ namespace MuteFm
             defaultConfig.GeneralSettings.ActiveOverDurationInterval = MuteFmConfig.ActiveOverDurationIntervalDefault;
             defaultConfig.GeneralSettings.SilentDuration = MuteFmConfig.SilentDurationDefault;
 
-            MuteFm.MuteFmConfigUtil.Save(defaultConfig);
+            MuteFmReloaded.MuteFmConfigUtil.Save(defaultConfig);
 
             return defaultConfig;
         }

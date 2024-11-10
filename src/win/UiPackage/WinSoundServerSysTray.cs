@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace MuteFm.UiPackage
+namespace MuteFmReloaded.UiPackage
 {
     public sealed partial class WinSoundServerSysTray : Form
     {
@@ -60,7 +60,7 @@ namespace MuteFm.UiPackage
                        {
                             _instance = new WinSoundServerSysTray();
                             _instance._trayIcon = new NotifyIcon();
-                            _instance._trayIcon.Text = MuteFm.Constants.ProgramName;
+                            _instance._trayIcon.Text = MuteFmReloaded.Constants.ProgramName;
                             _instance._trayIcon.Icon = Resource1.favicon;
                             _instance._trayIcon.Visible = true;
                            
@@ -206,40 +206,40 @@ namespace MuteFm.UiPackage
 
         private static void OnValidOperation(object sender, EventArgs e)
         {
-            Operation op = MuteFm.SmartVolManagerPackage.BgMusicManager.GetValidOperation();
-            MuteFm.UiPackage.UiCommands.OnOperation(op);
+            Operation op = MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.GetValidOperation();
+            MuteFmReloaded.UiPackage.UiCommands.OnOperation(op);
         }
         private void OnStop(object sender, EventArgs e)
         {
-            MuteFm.UiPackage.UiCommands.OnOperation(Operation.Stop);
+            MuteFmReloaded.UiPackage.UiCommands.OnOperation(Operation.Stop);
         }
         private void OnShow(object sender, EventArgs e)
         {
-            MuteFm.UiPackage.UiCommands.OnOperation(Operation.Show);
+            MuteFmReloaded.UiPackage.UiCommands.OnOperation(Operation.Show);
         }
         private void OnHide(object sender, EventArgs e)
         {
-            MuteFm.UiPackage.UiCommands.OnOperation(Operation.Hide);
+            MuteFmReloaded.UiPackage.UiCommands.OnOperation(Operation.Hide);
         }
         private void OnNextTrack(object sender, EventArgs e)
         {
-            MuteFm.UiPackage.UiCommands.OnOperation(Operation.NextTrack);
+            MuteFmReloaded.UiPackage.UiCommands.OnOperation(Operation.NextTrack);
         }
         private void OnPrevTrack(object sender, EventArgs e)
         {
-            MuteFm.UiPackage.UiCommands.OnOperation(Operation.PrevTrack);
+            MuteFmReloaded.UiPackage.UiCommands.OnOperation(Operation.PrevTrack);
         }
         private void OnShuffle(object sender, EventArgs e)
         {
-            MuteFm.UiPackage.UiCommands.OnOperation(Operation.Shuffle);
+            MuteFmReloaded.UiPackage.UiCommands.OnOperation(Operation.Shuffle);
         }
         private void OnLike(object sender, EventArgs e)
         {
-            MuteFm.UiPackage.UiCommands.OnOperation(Operation.Like);
+            MuteFmReloaded.UiPackage.UiCommands.OnOperation(Operation.Like);
         }
         private void OnDislike(object sender, EventArgs e)
         {
-            MuteFm.UiPackage.UiCommands.OnOperation(Operation.Dislike);
+            MuteFmReloaded.UiPackage.UiCommands.OnOperation(Operation.Dislike);
         }        
 
         private void OnShowMixer(object sender, EventArgs e)

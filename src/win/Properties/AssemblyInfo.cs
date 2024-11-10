@@ -1,16 +1,15 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("mute.fm")]
+[assembly: AssemblyTitle("mute.fm reloaded")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("mute.fm")]
-[assembly: AssemblyProduct("mute.fm")]
-[assembly: AssemblyCopyright("Copyright © 2012-2017 mute.fm")]
+[assembly: AssemblyCompany("mute.fm reloaded")]
+[assembly: AssemblyProduct("mute.fm reloaded")]
+[assembly: AssemblyCopyright("Copyright © 2012-2017 mute.fm, 2024 mute.fm reloaded")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.15.0")]
-[assembly: AssemblyFileVersion("0.9.15.0")]
+[assembly: AssemblyVersion("0.9.16.0")]
+[assembly: AssemblyFileVersion("0.9.16.0")]
