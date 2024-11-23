@@ -13,10 +13,10 @@ namespace MuteFmReloaded
     [Serializable]
     public class MuteFmConfig
     {
-        public const float FadeinTimeoutDefault = 1.0f;
-        public const float FadeoutTimeoutDefault = 1.0f;
-        public const float SilentDurationDefault = 7.0f;
-        public const float ActiveOverDurationIntervalDefault = 0.5f;
+        public const float FadeinTimeoutDefault = 0.5f;
+        public const float FadeoutTimeoutDefault = 0.5f;
+        public const float SilentDurationDefault = 3.0f;
+        public const float ActiveOverDurationIntervalDefault = 1.0f;
         public const float SoundPollIntervalDefault = 0.5f;
         public const float AutokillTimeoutDefault = 5 * 60;
         public const int UseActiveId = 1;

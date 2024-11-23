@@ -81,10 +81,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>obj\Resources\favicon.ico</ApplicationIcon>
+    <ApplicationIcon>favicon2024.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MuteFmReloaded.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Growl.Connector">
@@ -254,6 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="favicon2024.ico" />
     <Content Include="locales\en-US.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -275,6 +275,7 @@ namespace MuteFmReloaded.UiPackage
         }
         private void OnExit(object sender, EventArgs e)
         {
+            // TODO: investigate a bug when exiting the app -Krasen
             string msg = "Are you sure you want to exit?";
             if ((SmartVolManagerPackage.BgMusicManager.MusicState == SmartVolManagerPackage.BgMusicState.Play) || (SmartVolManagerPackage.BgMusicManager.AutoMuted == true))
                 msg = msg + " " + "Your music will be stopped.";

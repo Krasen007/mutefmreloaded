@@ -153,27 +153,32 @@ namespace MuteFmReloaded.UiPackage
 
             if (showPrompt)
             {
-                if ((SmartVolManagerPackage.BgMusicManager.MusicState == SmartVolManagerPackage.BgMusicState.Play) || (SmartVolManagerPackage.BgMusicManager.AutoMuted == true))
-                    msg = msg + " " + "Your music will be stopped.";
+                // TODO: Fix bug when clicking EXIT from the file menu.
+				UiCommands.HideMixer();
 
-                MessageBoxEx msgBoxEx = new MessageBoxEx(msg, "Minimize to Tray");
-                msgBoxEx.ShowDialog();
-                switch (msgBoxEx.ButtonPressedIndex)
-                {
-                    case 0:
-                        if (_isStandAlone)
-                            Application.Exit();
-                        else
-                            UiCommands.Exit();
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        UiCommands.HideMixer();
-                        break;
-                }
+                // Code commented as it's default behaviour will be changed in the new version -Krasen
+				//if ((SmartVolManagerPackage.BgMusicManager.MusicState == SmartVolManagerPackage.BgMusicState.Play) || (SmartVolManagerPackage.BgMusicManager.AutoMuted == true))
+    //                msg = msg + " " + "Your music will be stopped.";
+
+    //            MessageBoxEx msgBoxEx = new MessageBoxEx(msg, "Minimize to Tray");
+    //            msgBoxEx.ShowDialog();
+    //            switch (msgBoxEx.ButtonPressedIndex)
+    //            {
+    //                case 0:
+    //                    if (_isStandAlone)
+    //                        Application.Exit();
+    //                    else
+    //                        UiCommands.Exit();
+    //                    break;
+    //                case 1:
+    //                    break;
+    //                case 2:
+    //                    UiCommands.HideMixer();
+    //                    break;
+    //            }
             }
             else
+            // TODO: check if this is called at all?? -Krasen
             {
                 if (_isStandAlone)
                     Application.Exit();
