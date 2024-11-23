@@ -19,20 +19,15 @@
      misrepresented as being the original source code.
   3. This notice may not be removed or altered from any source distribution.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace CoreAudioApi
 {
-    public enum AudioSessionDisconnectReason
-    {
-        DisconnectReasonDeviceRemoval = 0,
-        DisconnectReasonServerShutdown = (DisconnectReasonDeviceRemoval + 1),
-        DisconnectReasonFormatChanged = (DisconnectReasonServerShutdown + 1),
-        DisconnectReasonSessionLogoff = (DisconnectReasonFormatChanged + 1),
-        DisconnectReasonSessionDisconnected = (DisconnectReasonSessionLogoff + 1),
-        DisconnectReasonExclusiveModeOverride = (DisconnectReasonSessionDisconnected + 1) 
-    }
+	public enum AudioSessionDisconnectReason
+	{
+		DisconnectReasonDeviceRemoval = 0,
+		DisconnectReasonServerShutdown = (DisconnectReasonDeviceRemoval + 1),
+		DisconnectReasonFormatChanged = (DisconnectReasonServerShutdown + 1),
+		DisconnectReasonSessionLogoff = (DisconnectReasonFormatChanged + 1),
+		DisconnectReasonSessionDisconnected = (DisconnectReasonSessionLogoff + 1),
+		DisconnectReasonExclusiveModeOverride = (DisconnectReasonSessionDisconnected + 1)
+	}
 }

@@ -1,77 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MuteFmReloaded
 {
-    public enum OperationEnum
-    {
-        Unknown,
-        None,
+	public enum OperationEnum
+	{
+		Unknown,
+		None,
 
-        Show,
-        Close,
-        Mute,
-        Unmute,
-        Play,
-        Pause,
-        Stop,
-        SmartMute,
-        SmartMuteSafe,
-        Restore,
-        Block,
-        UnBlock,
+		Show,
+		Close,
+		Mute,
+		Unmute,
+		Play,
+		Pause,
+		Stop,
+		SmartMute,
+		SmartMuteSafe,
+		Restore,
+		Block,
+		UnBlock,
 
-        FlashStopPlay, // different name than in JavaScript; may need to resolve it...but probably not using this here
-        FlashPlay, // different name than in JavaScript; may need to resolve it...but probably not using this here
+		FlashStopPlay, // different name than in JavaScript; may need to resolve it...but probably not using this here
+		FlashPlay, // different name than in JavaScript; may need to resolve it...but probably not using this here
 
-        FastForward,
-        Rewind,
-        GoToTime,
-        Louder,
-        Quieter,
-        SetVolumeTo,
-        SetVolumeToNoFade,
+		FastForward,
+		Rewind,
+		GoToTime,
+		Louder,
+		Quieter,
+		SetVolumeTo,
+		SetVolumeToNoFade,
 
-        ClearHistory, // Internal command; i think it is for letting a user manually say bgmusic is gone; might not need it
+		ClearHistory, // Internal command; i think it is for letting a user manually say bgmusic is gone; might not need it
 
-    }
+	}
 
-    public enum AudioSourceType
-    {
-        Unknown,
-        HTML5Video,
-        HTML5Audio,
-        QuickTime,
-        UnknownObject,
-        UnknownEmbed,
-        JavaApplet,
-        LegacySound,
-        Silverlight,
-        RealPlayer,
-        WindowsMediaPlayer,
-        FlashMultiFrame,
-        FlashOther,
-        FlashYouTube,
-        FlashYouTubeNoJsApi,
-        FlashVimeo,
-        FlashVimeoNoJsApi,
-        FlashSoundManager2,
-        FlashDailyMotion,
-        FlashJWPlayer,
-        FlashJustinTv,
-    }
+	public enum AudioSourceType
+	{
+		Unknown,
+		HTML5Video,
+		HTML5Audio,
+		QuickTime,
+		UnknownObject,
+		UnknownEmbed,
+		JavaApplet,
+		LegacySound,
+		Silverlight,
+		RealPlayer,
+		WindowsMediaPlayer,
+		FlashMultiFrame,
+		FlashOther,
+		FlashYouTube,
+		FlashYouTubeNoJsApi,
+		FlashVimeo,
+		FlashVimeoNoJsApi,
+		FlashSoundManager2,
+		FlashDailyMotion,
+		FlashJWPlayer,
+		FlashJustinTv,
+	}
 
-    public enum ChangeType
-    {
-        Unknown = 0,
-        Add = 1,
-        Change = 2,
-        Remove = 3
-    }
+	public enum ChangeType
+	{
+		Unknown = 0,
+		Add = 1,
+		Change = 2,
+		Remove = 3
+	}
 
-    /* // This code is for MuteTab integration
+	/* // This code is for MuteTab integration
     //TO-DO: instead of creating the lookup here, could just do lookup manually each time and cache the lookup results (and invalidate it when new data is retrieved)
     public class BrowserSoundInfos
     {
@@ -235,107 +234,107 @@ namespace MuteFmReloaded
         public int Pid = -1; // only relevant if different than tab (i.e. for ppapi flash); also convenient to have it here
     }
     */
-        // Request is data leaving here and response are incoming data.  Terms are poorly used here.
+	// Request is data leaving here and response are incoming data.  Terms are poorly used here.
 
 
-    // Player or browser extension tries to authenticate with a password and server tells it if it succeeded.
+	// Player or browser extension tries to authenticate with a password and server tells it if it succeeded.
 
 
-    public class GetBgMusicSiteReceiveData
-    {
-    }
-    public class GetBgMusicSiteSendData
-    {
-        public string[] Urls;
-        public bool[] Always;
+	public class GetBgMusicSiteReceiveData
+	{
+	}
+	public class GetBgMusicSiteSendData
+	{
+		public string[] Urls;
+		public bool[] Always;
 
-        public GetBgMusicSiteSendData()
-        {
-            List<string> urls = new List<string>();
-            List<bool> always = new List<bool>();
-            for (int i = 0; i < MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics.Length; i++)
-            {
-                if (MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics[i].IsWeb == true)
-                {
-                    urls.Add(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics[i].UrlOrCommandLine);
-                    always.Add(false);
-                }
-            }
-            this.Urls = urls.ToArray();
-            this.Always = always.ToArray();
-        }
-    }
+		public GetBgMusicSiteSendData()
+		{
+			List<string> urls = new List<string>();
+			List<bool> always = new List<bool>();
+			for (int i = 0; i < MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics.Length; i++)
+			{
+				if (MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics[i].IsWeb == true)
+				{
+					urls.Add(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.MuteFmConfig.BgMusics[i].UrlOrCommandLine);
+					always.Add(false);
+				}
+			}
+			this.Urls = urls.ToArray();
+			this.Always = always.ToArray();
+		}
+	}
 
 
-    public enum AddUpdateRemove
-    {
-        Unknown = 0,
-        AddUpdate = 1,
-        Remove = 2,
-    }
-    public class TabInfoUpdateReceiveData
-    {
-        public Array TabIds;
-        public Array Urls;
-        public Array Titles;
-        public Array TabInfoOperations;
-        public bool ReplaceExisting;
-    }
-    public class TabInfoRulesSendData
-    {
-        public Array Urls;
-        public Array MinVols;
-        public Array IsInEffect;
-    }
-    public class TabInfoRulesReceiveData
-    {
-        public Array Urls;
-        public Array MinVols;
-        public Array RuleOperations; // Add/Change/Remove
-        public bool ReplaceExisting;
-    }
-    //TODO: idea: instead of sending data back and forth, have it only tell c# code to alter volume (so make this all on the extension side).  Maybe rules list will be stored in C# app so they can also be used in other browsers.
+	public enum AddUpdateRemove
+	{
+		Unknown = 0,
+		AddUpdate = 1,
+		Remove = 2,
+	}
+	public class TabInfoUpdateReceiveData
+	{
+		public Array TabIds;
+		public Array Urls;
+		public Array Titles;
+		public Array TabInfoOperations;
+		public bool ReplaceExisting;
+	}
+	public class TabInfoRulesSendData
+	{
+		public Array Urls;
+		public Array MinVols;
+		public Array IsInEffect;
+	}
+	public class TabInfoRulesReceiveData
+	{
+		public Array Urls;
+		public Array MinVols;
+		public Array RuleOperations; // Add/Change/Remove
+		public bool ReplaceExisting;
+	}
+	//TODO: idea: instead of sending data back and forth, have it only tell c# code to alter volume (so make this all on the extension side).  Maybe rules list will be stored in C# app so they can also be used in other browsers.
 
-    public class AuthReceiveData
-    {
-        public string Password;
-        public bool InternalUse = false;
-    }
-    public class AuthSendData
-    {
-        public bool Success;
-    }
+	public class AuthReceiveData
+	{
+		public string Password;
+		public bool InternalUse = false;
+	}
+	public class AuthSendData
+	{
+		public bool Success;
+	}
 
-    public class PerformOperationReceiveData
-    {
-        public long MusicId = -1;
-        public string Operation;
-        public string Param1;
-    }
-    public class PerformOperationSendData
-    {
-        public bool Success;
-    }
+	public class PerformOperationReceiveData
+	{
+		public long MusicId = -1;
+		public string Operation;
+		public string Param1;
+	}
+	public class PerformOperationSendData
+	{
+		public bool Success;
+	}
 
-    public class ShowSiteReceiveData
-    {
-        public string TabTitle = "";
-        public string TabUrl = "";
-        public bool AlwaysBgMusic = false;
-    }
+	public class ShowSiteReceiveData
+	{
+		public string TabTitle = "";
+		public string TabUrl = "";
+		public bool AlwaysBgMusic = false;
+	}
 
-    // Player/browser extension asks for player HTML and it gets returned
-    public class PlayerHtmlReceiveData
-    {
-        public bool InternalUse = false;
-    }
-    public class PlayerHtmlSendData
-    {
-        public string Html;
+	// Player/browser extension asks for player HTML and it gets returned
+	public class PlayerHtmlReceiveData
+	{
+		public bool InternalUse = false;
+	}
+	public class PlayerHtmlSendData
+	{
+		public string Html;
 
-        public PlayerHtmlSendData()
-        {
-            /*
+		public PlayerHtmlSendData()
+		{
+			/*
             this.PlayImage = WebServer.GetFileAsBase64String("play.png");
             this.PauseImage = WebServer.GetFileAsBase64String("pause.png");
             this.StopImage = WebServer.GetFileAsBase64String("stop.png");
@@ -346,8 +345,8 @@ namespace MuteFmReloaded
             this.LikeImage = WebServer.GetFileAsBase64String("like.png");
             this.MuteImage = WebServer.GetFileAsBase64String("mute.png");
             this.UnmuteImage = WebServer.GetFileAsBase64String("unmute.png");*/
-        }
-        /*
+		}
+		/*
         public string PlayImage;
         public string PauseImage;
         public string StopImage;
@@ -358,232 +357,232 @@ namespace MuteFmReloaded
         public string NextTrackImage;
         public string LikeImage;
         public string UnlikeImage;*/
-    }
+	}
 
-    public class SettingsUpdatedReceiveData
-    {
-        //TODO: list of settings here
-    }
+	public class SettingsUpdatedReceiveData
+	{
+		//TODO: list of settings here
+	}
 
-    public class SettingsRequestReceiveData
-    {
-    }
+	public class SettingsRequestReceiveData
+	{
+	}
 
-    public class SettingsSendData
-    {
-        //TODO: store settings here
+	public class SettingsSendData
+	{
+		//TODO: store settings here
 
-        public SettingsSendData(MuteFmConfig config)
-        {
-            // TODO: init settings
-        }
-    }
+		public SettingsSendData(MuteFmConfig config)
+		{
+			// TODO: init settings
+		}
+	}
 
-    public class BgMusicFavoritesSendData
-    {
-        public Array bgMusicTitles;
-        public Array bgMusicIds;
-        public Array bgMusicImages;
-        public bool AutoMutingEnabled;
-        public bool ForegroundSoundPlaying;
+	public class BgMusicFavoritesSendData
+	{
+		public Array bgMusicTitles;
+		public Array bgMusicIds;
+		public Array bgMusicImages;
+		public bool AutoMutingEnabled;
+		public bool ForegroundSoundPlaying;
 
-        public BgMusicFavoritesSendData(SoundPlayerInfo[] bgMusics, bool autoMutingEnabled, bool foregroundSoundPlaying)
-        {
-            AutoMutingEnabled = autoMutingEnabled;
-            ForegroundSoundPlaying = foregroundSoundPlaying;
+		public BgMusicFavoritesSendData(SoundPlayerInfo[] bgMusics, bool autoMutingEnabled, bool foregroundSoundPlaying)
+		{
+			AutoMutingEnabled = autoMutingEnabled;
+			ForegroundSoundPlaying = foregroundSoundPlaying;
 
-            List<string> bgMusicTitleList = new List<string>();
-            List<long> bgMusicIdList = new List<long>();
-            List<string> bgMusicImageList = new List<string>();
-            // TODO: maybe show these in LRU order?
-            if (bgMusics.Length > 0)
-            {
-                for (int i = 0; i < bgMusics.Length; i++)
-                {
-                    if (bgMusics[i].Enabled)
-                    {
-                        bgMusicTitleList.Add(SoundPlayerInfoUtility.GetFormattedTitle(bgMusics[i]));
-                        bgMusicIdList.Add(bgMusics[i].Id);
-                        bgMusicImageList.Add(WebServer.GetFileAsBase64String(@"playericon\" + bgMusics[i].Id + ".png"));
-                    }
-                }
-            }
-            bgMusicTitles = bgMusicTitleList.ToArray();
-            bgMusicIds = bgMusicIdList.ToArray();
-            bgMusicImages = bgMusicImageList.ToArray(); // TODO-base64
-        }
-    }
+			List<string> bgMusicTitleList = new List<string>();
+			List<long> bgMusicIdList = new List<long>();
+			List<string> bgMusicImageList = new List<string>();
+			// TODO: maybe show these in LRU order?
+			if (bgMusics.Length > 0)
+			{
+				for (int i = 0; i < bgMusics.Length; i++)
+				{
+					if (bgMusics[i].Enabled)
+					{
+						bgMusicTitleList.Add(SoundPlayerInfoUtility.GetFormattedTitle(bgMusics[i]));
+						bgMusicIdList.Add(bgMusics[i].Id);
+						bgMusicImageList.Add(WebServer.GetFileAsBase64String(@"playericon\" + bgMusics[i].Id + ".png"));
+					}
+				}
+			}
+			bgMusicTitles = bgMusicTitleList.ToArray();
+			bgMusicIds = bgMusicIdList.ToArray();
+			bgMusicImages = bgMusicImageList.ToArray(); // TODO-base64
+		}
+	}
 
-    // Player/browser extension can ask for updated status.  This should be rare (via a refresh button) since data will usually be pushed when it changes.
-    public class PlayerStateReceiveData
-    {
-        public bool Tbd;
-    }
-    public class PlayerStateSendData
-    {
-        public PlayerStateSendData(Operation validOperation, bool isVisible, bool isRunning, SoundPlayerInfo activeBgMusic, SoundPlayerInfo[] fgMusics, float bgMusicVolume, bool bgMusicMuted, bool userWantsBgMusic, bool autoMuted, bool autoMutingEnabled, bool foregroundSoundPlaying, float masterVol, bool masterMuted)
-        {
-            //string bgMusicImage = ""; //TODO
-            
-            TrackName = SmartVolManagerPackage.BgMusicManager.TrackName;
-            AlbumArtUrl = SmartVolManagerPackage.BgMusicManager.AlbumArtFileName;
-            AllowPlay = false;
-            AllowPause = false;
-            AllowMute = !bgMusicMuted;
-            AllowUnmute = bgMusicMuted;
-            switch (validOperation)
-            {
-                case Operation.Play:
-                    AllowPlay = true; break;
-                case Operation.Pause:
-                    AllowPause = true; break;
-               // case Operation.Mute:
-               //     AllowMute = true; break;
-               // case Operation.Unmute:
-               //     AllowUnmute = true; break;
-                default:
-                    AllowPlay = true; break;
-            }
-            if (AllowUnmute && AllowPlay && autoMuted)
-                AllowUnmute = false;
+	// Player/browser extension can ask for updated status.  This should be rare (via a refresh button) since data will usually be pushed when it changes.
+	public class PlayerStateReceiveData
+	{
+		public bool Tbd;
+	}
+	public class PlayerStateSendData
+	{
+		public PlayerStateSendData(Operation validOperation, bool isVisible, bool isRunning, SoundPlayerInfo activeBgMusic, SoundPlayerInfo[] fgMusics, float bgMusicVolume, bool bgMusicMuted, bool userWantsBgMusic, bool autoMuted, bool autoMutingEnabled, bool foregroundSoundPlaying, float masterVol, bool masterMuted)
+		{
+			//string bgMusicImage = ""; //TODO
 
-            AllowStop = isRunning;
-            AllowShow = true;
-            AllowHide = false; // TODO  isVisible; (stop supporting it...)
-            AllowExit = true;
-            AllowPrevTrack = !autoMuted && (activeBgMusic.PrevSongCommand != "");
-            AllowNextTrack = !autoMuted && (activeBgMusic.NextSongCommand != "");
-            AllowShuffle = !autoMuted && (activeBgMusic.ShuffleCommand != "");
-            AllowLike = !autoMuted && (activeBgMusic.LikeCommand != "");
-            AllowDislike = !autoMuted && (activeBgMusic.DislikeCommand != "");
-            AllowSettings = true;
+			TrackName = SmartVolManagerPackage.BgMusicManager.TrackName;
+			AlbumArtUrl = SmartVolManagerPackage.BgMusicManager.AlbumArtFileName;
+			AllowPlay = false;
+			AllowPause = false;
+			AllowMute = !bgMusicMuted;
+			AllowUnmute = bgMusicMuted;
+			switch (validOperation)
+			{
+				case Operation.Play:
+					AllowPlay = true; break;
+				case Operation.Pause:
+					AllowPause = true; break;
+				// case Operation.Mute:
+				//     AllowMute = true; break;
+				// case Operation.Unmute:
+				//     AllowUnmute = true; break;
+				default:
+					AllowPlay = true; break;
+			}
+			if (AllowUnmute && AllowPlay && autoMuted)
+				AllowUnmute = false;
 
-            ActiveBgMusicId = activeBgMusic.Id;
-            ActiveBgMusicTitle = SoundPlayerInfoUtility.GetFormattedTitle(activeBgMusic);
-            ActiveBgMusicImage = WebServer.GetFileAsBase64String(@"playericon\" + activeBgMusic.Id + ".png");
+			AllowStop = isRunning;
+			AllowShow = true;
+			AllowHide = false; // TODO  isVisible; (stop supporting it...)
+			AllowExit = true;
+			AllowPrevTrack = !autoMuted && (activeBgMusic.PrevSongCommand != "");
+			AllowNextTrack = !autoMuted && (activeBgMusic.NextSongCommand != "");
+			AllowShuffle = !autoMuted && (activeBgMusic.ShuffleCommand != "");
+			AllowLike = !autoMuted && (activeBgMusic.LikeCommand != "");
+			AllowDislike = !autoMuted && (activeBgMusic.DislikeCommand != "");
+			AllowSettings = true;
 
-            List<string> fgMusicTitleList = new List<string>();
-            List<long> fgMusicIdList = new List<long>();
-            List<float> fgMusicVolumeList = new List<float>();
-            List<bool> fgMusicIsMutedList = new List<bool>();
-            List<bool> fgMusicIsActiveList = new List<bool>();
-            List<bool> fgMusicIgnoreList = new List<bool>();
-            List<bool> fgMusicAllowAsBgList = new List<bool>();
-            List<string> fgMusicImageList = new List<string>();
+			ActiveBgMusicId = activeBgMusic.Id;
+			ActiveBgMusicTitle = SoundPlayerInfoUtility.GetFormattedTitle(activeBgMusic);
+			ActiveBgMusicImage = WebServer.GetFileAsBase64String(@"playericon\" + activeBgMusic.Id + ".png");
 
-            if (fgMusics.Length > 0)
-            {
-                for (int i = 0; i < fgMusics.Length; i++)
-                {
-                    if (fgMusics[i].Enabled)
-                    {
-                        float fgMusicVol = 0.5f;
-                        bool fgMusicMuted = false;
-                        bool fgMusicIsActive = false;
-                        bool fgMusicIgnore = false;
-                        bool fgMusicAllowAsBg = (fgMusics[i].ShortProcessName != "");
-                        //bool fgMusicAllowAsBg = (fgMusics[i].ShortProcessName != "chrome") && (fgMusics[i].ShortProcessName != "firefox") && (fgMusics[i].ShortProcessName != "");
+			List<string> fgMusicTitleList = new List<string>();
+			List<long> fgMusicIdList = new List<long>();
+			List<float> fgMusicVolumeList = new List<float>();
+			List<bool> fgMusicIsMutedList = new List<bool>();
+			List<bool> fgMusicIsActiveList = new List<bool>();
+			List<bool> fgMusicIgnoreList = new List<bool>();
+			List<bool> fgMusicAllowAsBgList = new List<bool>();
+			List<string> fgMusicImageList = new List<string>();
 
-                        //bool include = false;
-                        if ((SmartVolManagerPackage.BgMusicManager.FgMusicVol.Keys.Contains(fgMusics[i].Id)) &&
-                            (SmartVolManagerPackage.BgMusicManager.FgMusicMuted.Keys.Contains(fgMusics[i].Id)) &&
-                            (SmartVolManagerPackage.BgMusicManager.FgMusicIsActive.Keys.Contains(fgMusics[i].Id)) &&
-                            (SmartVolManagerPackage.BgMusicManager.FgMusicIgnore.Keys.Contains(fgMusics[i].Id)))
-                        {
-                            SmartVolManagerPackage.BgMusicManager.FgMusicVol.TryGetValue(fgMusics[i].Id, out fgMusicVol);
-                            SmartVolManagerPackage.BgMusicManager.FgMusicMuted.TryGetValue(fgMusics[i].Id, out fgMusicMuted);
-                            SmartVolManagerPackage.BgMusicManager.FgMusicIsActive.TryGetValue(fgMusics[i].Id, out fgMusicIsActive);
-                            SmartVolManagerPackage.BgMusicManager.FgMusicIgnore.TryGetValue(fgMusics[i].Id, out fgMusicIgnore);
-                            //include = true;
-                        }
-                        fgMusicImageList.Add(WebServer.GetFileAsBase64String(@"playericon\" + fgMusics[i].Id + ".png"));
+			if (fgMusics.Length > 0)
+			{
+				for (int i = 0; i < fgMusics.Length; i++)
+				{
+					if (fgMusics[i].Enabled)
+					{
+						float fgMusicVol = 0.5f;
+						bool fgMusicMuted = false;
+						bool fgMusicIsActive = false;
+						bool fgMusicIgnore = false;
+						bool fgMusicAllowAsBg = (fgMusics[i].ShortProcessName != "");
+						//bool fgMusicAllowAsBg = (fgMusics[i].ShortProcessName != "chrome") && (fgMusics[i].ShortProcessName != "firefox") && (fgMusics[i].ShortProcessName != "");
 
-                        //if (include)
-                        //{
-                            fgMusicTitleList.Add(SoundPlayerInfoUtility.GetFormattedTitle(fgMusics[i]));
-                            fgMusicIdList.Add(fgMusics[i].Id);
+						//bool include = false;
+						if ((SmartVolManagerPackage.BgMusicManager.FgMusicVol.Keys.Contains(fgMusics[i].Id)) &&
+							(SmartVolManagerPackage.BgMusicManager.FgMusicMuted.Keys.Contains(fgMusics[i].Id)) &&
+							(SmartVolManagerPackage.BgMusicManager.FgMusicIsActive.Keys.Contains(fgMusics[i].Id)) &&
+							(SmartVolManagerPackage.BgMusicManager.FgMusicIgnore.Keys.Contains(fgMusics[i].Id)))
+						{
+							SmartVolManagerPackage.BgMusicManager.FgMusicVol.TryGetValue(fgMusics[i].Id, out fgMusicVol);
+							SmartVolManagerPackage.BgMusicManager.FgMusicMuted.TryGetValue(fgMusics[i].Id, out fgMusicMuted);
+							SmartVolManagerPackage.BgMusicManager.FgMusicIsActive.TryGetValue(fgMusics[i].Id, out fgMusicIsActive);
+							SmartVolManagerPackage.BgMusicManager.FgMusicIgnore.TryGetValue(fgMusics[i].Id, out fgMusicIgnore);
+							//include = true;
+						}
+						fgMusicImageList.Add(WebServer.GetFileAsBase64String(@"playericon\" + fgMusics[i].Id + ".png"));
 
-                            fgMusicVolumeList.Add(fgMusicVol);
-                            fgMusicIsMutedList.Add(fgMusicMuted);
-                            fgMusicIsActiveList.Add(fgMusicIsActive);
-                            fgMusicIgnoreList.Add(fgMusicIgnore);
-                            fgMusicAllowAsBgList.Add(fgMusicAllowAsBg);
-                        //}
-                    }
-                }
-            }            
-            fgMusicTitles = fgMusicTitleList.ToArray();
-            fgMusicIds= fgMusicIdList.ToArray();
-            fgMusicVolumes = fgMusicVolumeList.ToArray();
-            fgMusicIsMuteds = fgMusicIsMutedList.ToArray();
-            fgMusicIsActives = fgMusicIsActiveList.ToArray();
-            fgMusicIgnores = fgMusicIgnoreList.ToArray();
-            fgMusicAllowAsBgs = fgMusicAllowAsBgList.ToArray();
-            fgMusicImages = fgMusicImageList.ToArray();
+						//if (include)
+						//{
+						fgMusicTitleList.Add(SoundPlayerInfoUtility.GetFormattedTitle(fgMusics[i]));
+						fgMusicIdList.Add(fgMusics[i].Id);
 
-            if (fgMusicIgnores.Length != fgMusicIds.Length)
-            {
-                int x = 0;
-                x++;
-            }
+						fgMusicVolumeList.Add(fgMusicVol);
+						fgMusicIsMutedList.Add(fgMusicMuted);
+						fgMusicIsActiveList.Add(fgMusicIsActive);
+						fgMusicIgnoreList.Add(fgMusicIgnore);
+						fgMusicAllowAsBgList.Add(fgMusicAllowAsBg);
+						//}
+					}
+				}
+			}
+			fgMusicTitles = fgMusicTitleList.ToArray();
+			fgMusicIds = fgMusicIdList.ToArray();
+			fgMusicVolumes = fgMusicVolumeList.ToArray();
+			fgMusicIsMuteds = fgMusicIsMutedList.ToArray();
+			fgMusicIsActives = fgMusicIsActiveList.ToArray();
+			fgMusicIgnores = fgMusicIgnoreList.ToArray();
+			fgMusicAllowAsBgs = fgMusicAllowAsBgList.ToArray();
+			fgMusicImages = fgMusicImageList.ToArray();
 
-            BgMusicVolume = bgMusicVolume;
-            BgMusicMuted = bgMusicMuted;
-            UserWantsBgMusic = userWantsBgMusic;
-            AutoMuted = autoMuted;
-            AutoMutingEnabled = autoMutingEnabled;
-            ForegroundSoundPlaying = foregroundSoundPlaying;
+			if (fgMusicIgnores.Length != fgMusicIds.Length)
+			{
+				int x = 0;
+				x++;
+			}
 
-            MasterVol = masterVol;
-            MasterMuted = masterMuted;
-        }
+			BgMusicVolume = bgMusicVolume;
+			BgMusicMuted = bgMusicMuted;
+			UserWantsBgMusic = userWantsBgMusic;
+			AutoMuted = autoMuted;
+			AutoMutingEnabled = autoMutingEnabled;
+			ForegroundSoundPlaying = foregroundSoundPlaying;
 
-        // TODO
-        public long ActiveBgMusicId;
-        public string ActiveBgMusicTitle;
-        public string ActiveBgMusicImage;
-        public float BgMusicVolume;
-        public bool BgMusicMuted;
-        public bool UserWantsBgMusic;
-        public bool AutoMuted;
-        public bool AutoMutingEnabled;
-        public bool ForegroundSoundPlaying;
+			MasterVol = masterVol;
+			MasterMuted = masterMuted;
+		}
 
-        public string TrackName;
-        public string AlbumArtUrl;
+		// TODO
+		public long ActiveBgMusicId;
+		public string ActiveBgMusicTitle;
+		public string ActiveBgMusicImage;
+		public float BgMusicVolume;
+		public bool BgMusicMuted;
+		public bool UserWantsBgMusic;
+		public bool AutoMuted;
+		public bool AutoMutingEnabled;
+		public bool ForegroundSoundPlaying;
 
-        public bool AllowPlay;
-        public bool AllowPause;
-        public bool AllowStop;
-        public bool AllowMute;
-        public bool AllowUnmute;
-        public bool AllowShow;
-        public bool AllowHide;
-        public bool AllowExit;
-        public bool AllowPrevTrack;
-        public bool AllowNextTrack;
-        public bool AllowShuffle;
-        public bool AllowLike;
-        public bool AllowDislike;
-        public bool AllowSettings;
+		public string TrackName;
+		public string AlbumArtUrl;
 
-        public float MasterVol;
-        public bool MasterMuted;
+		public bool AllowPlay;
+		public bool AllowPause;
+		public bool AllowStop;
+		public bool AllowMute;
+		public bool AllowUnmute;
+		public bool AllowShow;
+		public bool AllowHide;
+		public bool AllowExit;
+		public bool AllowPrevTrack;
+		public bool AllowNextTrack;
+		public bool AllowShuffle;
+		public bool AllowLike;
+		public bool AllowDislike;
+		public bool AllowSettings;
 
-        public Array fgMusicTitles;
-        public Array fgMusicIds;
-        public Array fgMusicVolumes;
-        public Array fgMusicIsMuteds;
-        public Array fgMusicIsActives;
-        public Array fgMusicIgnores;
-        public Array fgMusicAllowAsBgs;
-        public Array fgMusicImages;
+		public float MasterVol;
+		public bool MasterMuted;
 
-        public int SecondsUntilBgMusic;
-    }
+		public Array fgMusicTitles;
+		public Array fgMusicIds;
+		public Array fgMusicVolumes;
+		public Array fgMusicIsMuteds;
+		public Array fgMusicIsActives;
+		public Array fgMusicIgnores;
+		public Array fgMusicAllowAsBgs;
+		public Array fgMusicImages;
+
+		public int SecondsUntilBgMusic;
+	}
 
 
-    /* For MuteTab Plus
+	/* For MuteTab Plus
     // OS --> Browser
     public class GetWebStatusRequest
     {

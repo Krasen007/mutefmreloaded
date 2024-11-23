@@ -19,61 +19,58 @@
      misrepresented as being the original source code.
   3. This notice may not be removed or altered from any source distribution.
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
 using CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
 
 namespace CoreAudioApi
 {
-    public class AudioMeterInformation
-    {
-        private IAudioMeterInformation _AudioMeterInformation;
-        private EEndpointHardwareSupport _HardwareSupport;
-        private AudioMeterInformationChannels _Channels;
+	public class AudioMeterInformation
+	{
+		private IAudioMeterInformation _AudioMeterInformation;
+		private EEndpointHardwareSupport _HardwareSupport;
+		private AudioMeterInformationChannels _Channels;
 
-        internal AudioMeterInformation(IAudioMeterInformation realInterface)
-        {
-            int HardwareSupp;
+		internal AudioMeterInformation(IAudioMeterInformation realInterface)
+		{
+			int HardwareSupp;
 
-            _AudioMeterInformation = realInterface;
-            Marshal.ThrowExceptionForHR(_AudioMeterInformation.QueryHardwareSupport(out HardwareSupp));
-            _HardwareSupport = (EEndpointHardwareSupport)HardwareSupp;
-            _Channels = new AudioMeterInformationChannels(_AudioMeterInformation);
+			_AudioMeterInformation = realInterface;
+			Marshal.ThrowExceptionForHR(_AudioMeterInformation.QueryHardwareSupport(out HardwareSupp));
+			_HardwareSupport = (EEndpointHardwareSupport)HardwareSupp;
+			_Channels = new AudioMeterInformationChannels(_AudioMeterInformation);
 
-        }
+		}
 
-        public AudioMeterInformationChannels PeakValues
-        {
-            get
-            {
-                return _Channels;
-            }
-        }
+		public AudioMeterInformationChannels PeakValues
+		{
+			get
+			{
+				return _Channels;
+			}
+		}
 
-        public EEndpointHardwareSupport HardwareSupport
-        {
-            get
-            {
-                return _HardwareSupport;
-            }
-        }
+		public EEndpointHardwareSupport HardwareSupport
+		{
+			get
+			{
+				return _HardwareSupport;
+			}
+		}
 
-        public float MasterPeakValue
-        {
-            get
-            {
-                float result;
-                Marshal.ThrowExceptionForHR(_AudioMeterInformation.GetPeakValue(out result));
-                return result;
-            }
-        }
-
-       
-
-      
+		public float MasterPeakValue
+		{
+			get
+			{
+				float result;
+				Marshal.ThrowExceptionForHR(_AudioMeterInformation.GetPeakValue(out result));
+				return result;
+			}
+		}
 
 
-    }
+
+
+
+
+	}
 }

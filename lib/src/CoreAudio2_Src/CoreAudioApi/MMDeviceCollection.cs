@@ -19,41 +19,38 @@
      misrepresented as being the original source code.
   3. This notice may not be removed or altered from any source distribution.
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 using CoreAudioApi.Interfaces;
+using System.Runtime.InteropServices;
 
 namespace CoreAudioApi
 {
-    public class MMDeviceCollection
-    {
-        private IMMDeviceCollection _MMDeviceCollection;
+	public class MMDeviceCollection
+	{
+		private IMMDeviceCollection _MMDeviceCollection;
 
-        public int Count
-        {
-            get
-            {
-                uint result;
-                Marshal.ThrowExceptionForHR(_MMDeviceCollection.GetCount(out result));
-                return (int)result;
-            }
-        }
+		public int Count
+		{
+			get
+			{
+				uint result;
+				Marshal.ThrowExceptionForHR(_MMDeviceCollection.GetCount(out result));
+				return (int)result;
+			}
+		}
 
-        public MMDevice this[int index]
-        {
-            get
-            {
-                IMMDevice result;
-                _MMDeviceCollection.Item((uint)index, out result);
-                return new MMDevice(result);
-            }
-        }
+		public MMDevice this[int index]
+		{
+			get
+			{
+				IMMDevice result;
+				_MMDeviceCollection.Item((uint)index, out result);
+				return new MMDevice(result);
+			}
+		}
 
-        internal MMDeviceCollection(IMMDeviceCollection parent)
-        {
-            _MMDeviceCollection = parent;
-        }
-    }
+		internal MMDeviceCollection(IMMDeviceCollection parent)
+		{
+			_MMDeviceCollection = parent;
+		}
+	}
 }

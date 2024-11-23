@@ -19,47 +19,44 @@
      misrepresented as being the original source code.
   3. This notice may not be removed or altered from any source distribution.
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
 using CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
 
 namespace CoreAudioApi
 {
-    public class AudioEndPointVolumeVolumeRange
-    {
-        float _VolumeMindB;
-        float _VolumeMaxdB;
-        float _VolumeIncrementdB;
+	public class AudioEndPointVolumeVolumeRange
+	{
+		float _VolumeMindB;
+		float _VolumeMaxdB;
+		float _VolumeIncrementdB;
 
-        internal AudioEndPointVolumeVolumeRange(IAudioEndpointVolume parent)
-        {
-            Marshal.ThrowExceptionForHR(parent.GetVolumeRange(out _VolumeMindB,out _VolumeMaxdB,out _VolumeIncrementdB));
-        }
+		internal AudioEndPointVolumeVolumeRange(IAudioEndpointVolume parent)
+		{
+			Marshal.ThrowExceptionForHR(parent.GetVolumeRange(out _VolumeMindB, out _VolumeMaxdB, out _VolumeIncrementdB));
+		}
 
-        public float MindB
-        {
-            get
-            {
-                return _VolumeMindB;
-            }
-        }
+		public float MindB
+		{
+			get
+			{
+				return _VolumeMindB;
+			}
+		}
 
-        public float MaxdB
-        {
-            get
-            {
-                return _VolumeMaxdB;
-            }
-        }
+		public float MaxdB
+		{
+			get
+			{
+				return _VolumeMaxdB;
+			}
+		}
 
-        public float IncrementdB
-        {
-            get
-            {
-                return _VolumeIncrementdB;
-            }
-        }
-    }
+		public float IncrementdB
+		{
+			get
+			{
+				return _VolumeIncrementdB;
+			}
+		}
+	}
 }

@@ -20,30 +20,27 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace CoreAudioApi.Interfaces
 {
-    [Guid("77AA99A0-1BD6-484F-8BC7-2C654C9A9B6F"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    interface IAudioSessionManager2 
-    {
-        [PreserveSig]
-        int GetAudioSessionControl(ref Guid AudioSessionGuid, UInt32 StreamFlags,  IntPtr ISessionControl );
-        [PreserveSig]
-        int GetSimpleAudioVolume(ref Guid AudioSessionGuid, UInt32 StreamFlags, IntPtr  /*ISimpleAudioVolume*/ SimpleAudioVolume);
-        [PreserveSig]
-        int GetSessionEnumerator(out IAudioSessionEnumerator SessionEnum);
-        [PreserveSig]
-        int RegisterSessionNotification( IntPtr IAudioSessionNotification );
-        [PreserveSig]
-        int UnregisterSessionNotification( IntPtr IAudioSessionNotification );
-        [PreserveSig]
-        int RegisterDuckNotification( string sessionID, IntPtr IAudioVolumeDuckNotification);
-        [PreserveSig]
-        int UnregisterDuckNotification(IntPtr IAudioVolumeDuckNotification);
-    };
+	[Guid("77AA99A0-1BD6-484F-8BC7-2C654C9A9B6F"),
+	InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	interface IAudioSessionManager2
+	{
+		[PreserveSig]
+		int GetAudioSessionControl(ref Guid AudioSessionGuid, UInt32 StreamFlags, IntPtr ISessionControl);
+		[PreserveSig]
+		int GetSimpleAudioVolume(ref Guid AudioSessionGuid, UInt32 StreamFlags, IntPtr  /*ISimpleAudioVolume*/ SimpleAudioVolume);
+		[PreserveSig]
+		int GetSessionEnumerator(out IAudioSessionEnumerator SessionEnum);
+		[PreserveSig]
+		int RegisterSessionNotification(IntPtr IAudioSessionNotification);
+		[PreserveSig]
+		int UnregisterSessionNotification(IntPtr IAudioSessionNotification);
+		[PreserveSig]
+		int RegisterDuckNotification(string sessionID, IntPtr IAudioVolumeDuckNotification);
+		[PreserveSig]
+		int UnregisterDuckNotification(IntPtr IAudioVolumeDuckNotification);
+	};
 }

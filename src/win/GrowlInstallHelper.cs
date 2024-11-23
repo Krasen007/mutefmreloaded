@@ -1,175 +1,175 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.Win32;
+using System;
 using System.Windows.Forms;
-using Microsoft.Win32;
 
 namespace GrowlInstallHelper
 {
-    class GrowlInstallHelper
-    {
-        private static string _growlInstallerUrlOrProcessName = "http://www.growlforwindows.com/gfw/";
-        private static bool _quietMode = false;
+	class GrowlInstallHelper
+	{
+		private static string _growlInstallerUrlOrProcessName = "http://www.growlforwindows.com/gfw/";
+		private static bool _quietMode = false;
 
-        enum CheckGrowlState
-        {
-            CheckRegistry,
-            RunProcess,
-            Install,
-            Sleep,
-        }
+		enum CheckGrowlState
+		{
+			CheckRegistry,
+			RunProcess,
+			Install,
+			Sleep,
+		}
 
-        public static bool GetForceGrowl()
-        {
-            bool forceGrowl = true;
-            try
-            {
-                object temp = Registry.GetValue(@"HKEY_CURRENT_USER\Software\mute.fm reloaded", "forcegrowl", null);
-                forceGrowl = !((string)temp == "False");
-            }
-            catch (Exception ex)
-            {
-                string msg = ex.Message;
-            }
+		public static bool GetForceGrowl()
+		{
+			bool forceGrowl = true;
+			try
+			{
+				object temp = Registry.GetValue(@"HKEY_CURRENT_USER\Software\mute.fm reloaded", "forcegrowl", null);
+				forceGrowl = !((string)temp == "False");
+			}
+			catch (Exception ex)
+			{
+				string msg = ex.Message;
+			}
 
-            return forceGrowl;
-        }
-        public static void SetForceGrowl(bool val)
-        {
-            try
-            {
-                Registry.SetValue(@"HKEY_CURRENT_USER\Software\mute.fm reloaded", "forcegrowl", val);
-            }
-            catch
-            {                
-            }
-        }
+			return forceGrowl;
+		}
+		public static void SetForceGrowl(bool val)
+		{
+			try
+			{
+				Registry.SetValue(@"HKEY_CURRENT_USER\Software\mute.fm reloaded", "forcegrowl", val);
+			}
+			catch
+			{
+				// do nothihng -Krasen
+			}
+		}
 
-        private static string Growl_GetPath()
-        {
-            string path = "";
-            try
-            {
-                path = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Growl", "", null);
-            }
-            catch
-            {
-            }
+		private static string Growl_GetPath()
+		{
+			string path = "";
+			try
+			{
+				path = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Growl", "", null);
+			}
+			catch
+			{
+				// do nothihng -Krasen
+			}
 
-            return path;
-        }
-        private static bool Growl_ProcessRunning()
-        {
-            System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcessesByName("growl");
-            return (processes.Length != 0);
-        }
+			return path;
+		}
+		private static bool Growl_ProcessRunning()
+		{
+			System.Diagnostics.Process[] processes = System.Diagnostics.Process.GetProcessesByName("growl");
+			return (processes.Length != 0);
+		}
 
-        private static bool Growl_InstallAndRun()
-        {
-            string path;
+		private static bool Growl_InstallAndRun()
+		{
+			string path;
 
-            if (Growl_Install() == false)
-                return false;
+			if (Growl_Install() == false)
+				return false;
 
-            path = Growl_GetPath();
-            if (path != "")
-            {
-                try
-                {
-                    System.Diagnostics.Process.Start(path);
-                }
-                catch
-                {
-                }
-                if (!Growl_ProcessRunning())
-                {
-                    //                    MessageBox.Show("Unknown error starting Growl; perhaps run it manually?");
-                    return false;
-                }
-            }
-            return true;
-        }
-        private static bool Growl_Install()
-        {
-            string path = "";
+			path = Growl_GetPath();
+			if (path != "")
+			{
+				try
+				{
+					System.Diagnostics.Process.Start(path);
+				}
+				catch
+				{
+				}
+				if (!Growl_ProcessRunning())
+				{
+					//                    MessageBox.Show("Unknown error starting Growl; perhaps run it manually?");
+					return false;
+				}
+			}
+			return true;
+		}
+		private static bool Growl_Install()
+		{
+			string path = "";
 
-            if (_quietMode || MessageBox.Show(null, MuteFmReloaded.Constants.ProgramName + " can use Growl for notifications.  Press OK to launch the Growl installer, or cancel to ignore.  Uncheck 'Options->Autostart Growl for notifications' to prevent his message from coming back.", MuteFmReloaded.Constants.ProgramName, MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                System.Diagnostics.Process.Start(_growlInstallerUrlOrProcessName);
-                while (true)
-                {
-                    if (!_quietMode)
-                    {
-                        if (MessageBox.Show(null, "Press OK after installer is complete (or Cancel to ignore).", MuteFmReloaded.Constants.ProgramName, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
-                            return false;
-                    }
-                    path = Growl_GetPath();
-                    if (path != "")
-                    {
-                        try
-                        {
-                            System.Diagnostics.Process.Start(path);
-                        }
-                        catch
-                        {
-                        }
+			if (_quietMode || MessageBox.Show(null, MuteFmReloaded.Constants.ProgramName + " can use Growl for notifications.  Press OK to launch the Growl installer, or cancel to ignore.  Uncheck 'Options->Autostart Growl for notifications' to prevent his message from coming back.", MuteFmReloaded.Constants.ProgramName, MessageBoxButtons.OKCancel) == DialogResult.OK)
+			{
+				System.Diagnostics.Process.Start(_growlInstallerUrlOrProcessName);
+				while (true)
+				{
+					if (!_quietMode)
+					{
+						if (MessageBox.Show(null, "Press OK after installer is complete (or Cancel to ignore).", MuteFmReloaded.Constants.ProgramName, MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+							return false;
+					}
+					path = Growl_GetPath();
+					if (path != "")
+					{
+						try
+						{
+							System.Diagnostics.Process.Start(path);
+						}
+						catch
+						{
+							// do nothihng -Krasen
+						}
 
-                        if (Growl_ProcessRunning())
-                            break;
-                    }
-                }
-            }
-            else
-            {
-                return false;
-            }
+						if (Growl_ProcessRunning())
+							break;
+					}
+				}
+			}
+			else
+			{
+				return false;
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        // Check if Growl is running (and otherwise start it, possibly asking user to install it.)
-        public static void CheckAndRun()
-        {
-            CheckAndRun("http://www.growlforwindows.com/gfw/", false);
-        }
+		// Check if Growl is running (and otherwise start it, possibly asking user to install it.)
+		public static void CheckAndRun()
+		{
+			CheckAndRun("http://www.growlforwindows.com/gfw/", false);
+		}
 
-        public static void CheckAndRun(string growlInstallerUrlOrProcessName, bool quietMode)
-        {
-            _growlInstallerUrlOrProcessName = growlInstallerUrlOrProcessName;
-            _quietMode = quietMode;
+		public static void CheckAndRun(string growlInstallerUrlOrProcessName, bool quietMode)
+		{
+			_growlInstallerUrlOrProcessName = growlInstallerUrlOrProcessName;
+			_quietMode = quietMode;
 
-            if (!Growl_ProcessRunning())
-            {
-                string path = "";
-                try
-                {
-                    path = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Growl", "", null);
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.Write(ex);
-                }
-                if (path == "")
-                {
-                    Growl_InstallAndRun();
-                }
-                else
-                {
-                    try
-                    {
-                        System.Diagnostics.Process.Start(path);
-                    }
-                    catch
-                    {
+			if (!Growl_ProcessRunning())
+			{
+				string path = "";
+				try
+				{
+					path = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Growl", "", null);
+				}
+				catch (Exception ex)
+				{
+					System.Diagnostics.Debug.Write(ex);
+				}
+				if (path == "")
+				{
+					Growl_InstallAndRun();
+				}
+				else
+				{
+					try
+					{
+						System.Diagnostics.Process.Start(path);
+					}
+					catch
+					{
 
-                    }
-                    if (!Growl_ProcessRunning())
-                    {
-                        Growl_InstallAndRun();
-                    }
-                }
-            }
-        }
-    }
+					}
+					if (!Growl_ProcessRunning())
+					{
+						Growl_InstallAndRun();
+					}
+				}
+			}
+		}
+	}
 }

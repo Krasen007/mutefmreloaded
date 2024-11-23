@@ -20,16 +20,14 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoreAudioApi
 {
-    [Flags]
-    public enum EEndpointHardwareSupport
-    {
-        Volume = 0x00000001,
-        Mute   = 0x00000002,
-        Meter  = 0x00000004
-    }
+	[Flags]
+	public enum EEndpointHardwareSupport
+	{
+		Volume = 0x00000001,
+		Mute = 0x00000002,
+		Meter = 0x00000004
+	}
 }

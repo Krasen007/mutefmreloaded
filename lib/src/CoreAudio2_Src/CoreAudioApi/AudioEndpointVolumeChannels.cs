@@ -20,49 +20,46 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
 
 namespace CoreAudioApi
 {
-    public class AudioEndpointVolumeChannels
-    {
-        IAudioEndpointVolume _AudioEndPointVolume;
-        AudioEndpointVolumeChannel[] _Channels;
-        public int Count
-        {
-            get
-            {
-                int result;
-                Marshal.ThrowExceptionForHR(_AudioEndPointVolume.GetChannelCount(out result));
-                return result;
-            }
-        }
+	public class AudioEndpointVolumeChannels
+	{
+		IAudioEndpointVolume _AudioEndPointVolume;
+		AudioEndpointVolumeChannel[] _Channels;
+		public int Count
+		{
+			get
+			{
+				int result;
+				Marshal.ThrowExceptionForHR(_AudioEndPointVolume.GetChannelCount(out result));
+				return result;
+			}
+		}
 
-        public AudioEndpointVolumeChannel this[int index]
-        {
-            get
-            {
-                return _Channels[index];
-            }
-        }
+		public AudioEndpointVolumeChannel this[int index]
+		{
+			get
+			{
+				return _Channels[index];
+			}
+		}
 
-        internal AudioEndpointVolumeChannels(IAudioEndpointVolume parent)
-        {
-            int ChannelCount;
-            _AudioEndPointVolume = parent;
+		internal AudioEndpointVolumeChannels(IAudioEndpointVolume parent)
+		{
+			int ChannelCount;
+			_AudioEndPointVolume = parent;
 
-            ChannelCount = Count;
-            _Channels = new AudioEndpointVolumeChannel[ChannelCount];
-            for (int i = 0; i < ChannelCount; i++)
-            {
-                _Channels[i] = new AudioEndpointVolumeChannel(_AudioEndPointVolume, i);
-            }
-        }
+			ChannelCount = Count;
+			_Channels = new AudioEndpointVolumeChannel[ChannelCount];
+			for (int i = 0; i < ChannelCount; i++)
+			{
+				_Channels[i] = new AudioEndpointVolumeChannel(_AudioEndPointVolume, i);
+			}
+		}
 
 
-    }
+	}
 }

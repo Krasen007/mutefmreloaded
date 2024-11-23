@@ -20,17 +20,15 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace CoreAudioApi.Interfaces
 {
-    [Guid("1BE09788-6894-4089-8586-9A2A6C265AC5"),
-      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IMMEndpoint 
-    {
-        [PreserveSig]
-        int GetDataFlow(out EDataFlow pDataFlow);
-    }; 
+	[Guid("1BE09788-6894-4089-8586-9A2A6C265AC5"),
+	  InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	internal interface IMMEndpoint
+	{
+		[PreserveSig]
+		int GetDataFlow(out EDataFlow pDataFlow);
+	};
 }

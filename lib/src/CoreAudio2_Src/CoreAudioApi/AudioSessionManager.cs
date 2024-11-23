@@ -20,43 +20,40 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CoreAudioApi.Interfaces;
+using System;
 using System.Runtime.InteropServices;
 
 namespace CoreAudioApi
 {
-    public class AudioSessionManager
-    {
-        private IAudioSessionManager2 _AudioSessionManager;
-        private SessionCollection _Sessions;
+	public class AudioSessionManager
+	{
+		private IAudioSessionManager2 _AudioSessionManager;
+		private SessionCollection _Sessions;
 
-        internal AudioSessionManager(IAudioSessionManager2 realAudioSessionManager)
-        {
-            try
-            {
-                _AudioSessionManager = realAudioSessionManager;
-                IAudioSessionEnumerator _SessionEnum;
-                Marshal.ThrowExceptionForHR(_AudioSessionManager.GetSessionEnumerator(out _SessionEnum));
-                _Sessions = new SessionCollection(_SessionEnum);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Trace.WriteLine(DateTime.Now);
-                System.Diagnostics.Trace.WriteLine(ex);                
-            }
-        }
+		internal AudioSessionManager(IAudioSessionManager2 realAudioSessionManager)
+		{
+			try
+			{
+				_AudioSessionManager = realAudioSessionManager;
+				IAudioSessionEnumerator _SessionEnum;
+				Marshal.ThrowExceptionForHR(_AudioSessionManager.GetSessionEnumerator(out _SessionEnum));
+				_Sessions = new SessionCollection(_SessionEnum);
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Trace.WriteLine(DateTime.Now);
+				System.Diagnostics.Trace.WriteLine(ex);
+			}
+		}
 
-        public SessionCollection Sessions
-        {
-            get
-            {
-                return _Sessions;
-            }
-        }
+		public SessionCollection Sessions
+		{
+			get
+			{
+				return _Sessions;
+			}
+		}
 
-    }
+	}
 }

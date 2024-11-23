@@ -20,15 +20,13 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CoreAudioApi
 {
-    public struct PropertyKey
-    {
-        public Guid fmtid;
-        public int pid;
-    }; 
+	public struct PropertyKey
+	{
+		public Guid fmtid;
+		public int pid;
+	};
 
 }

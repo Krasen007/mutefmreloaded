@@ -20,41 +20,37 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CoreAudioApi.Interfaces;
 using System.Runtime.InteropServices;
 
 namespace CoreAudioApi
 {
-    public class SessionCollection
-    {
-        IAudioSessionEnumerator _AudioSessionEnumerator;
-        internal SessionCollection(IAudioSessionEnumerator realEnumerator)
-        {
-            _AudioSessionEnumerator = realEnumerator;
-        }
+	public class SessionCollection
+	{
+		IAudioSessionEnumerator _AudioSessionEnumerator;
+		internal SessionCollection(IAudioSessionEnumerator realEnumerator)
+		{
+			_AudioSessionEnumerator = realEnumerator;
+		}
 
-        public AudioSessionControl this[int index]
-        {
-            get
-            {
-                IAudioSessionControl2 _Result;
-                Marshal.ThrowExceptionForHR(_AudioSessionEnumerator.GetSession(index, out _Result));
-                return new AudioSessionControl(_Result);
-            }
-        }
+		public AudioSessionControl this[int index]
+		{
+			get
+			{
+				IAudioSessionControl2 _Result;
+				Marshal.ThrowExceptionForHR(_AudioSessionEnumerator.GetSession(index, out _Result));
+				return new AudioSessionControl(_Result);
+			}
+		}
 
-        public int Count
-        {
-            get
-            {
-                int result;
-                Marshal.ThrowExceptionForHR(_AudioSessionEnumerator.GetCount(out result));
-                return (int)result;
-            }
-        }
-    }
+		public int Count
+		{
+			get
+			{
+				int result;
+				Marshal.ThrowExceptionForHR(_AudioSessionEnumerator.GetCount(out result));
+				return (int)result;
+			}
+		}
+	}
 }

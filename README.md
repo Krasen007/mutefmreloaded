@@ -13,6 +13,12 @@ Get the software from Releases tab. (no release yet)
 
 Note: The build is focused on Windows only for now.
 
+New or changed:
+Updated default timings of volume stop and volume increase.
+The app will minimize on close by default.
+Sharpened and upscaled the app icon and increased it's resolution.
+Updated to target .Net Framework 4.8 and Windows 11.
+
 
 mutefm 2012-2017 old readme
 ======
