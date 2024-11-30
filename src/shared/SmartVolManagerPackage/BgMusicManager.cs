@@ -269,8 +269,8 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 		}
 		public static void OnManualVolumeChange(SoundSourceInfo info)
 		{
-			if (Program.LicenseExpired)
-				return;
+			//if (Program.LicenseExpired)
+			//	return;
 
 			if (SoundSourceInfoIsBgMusic(info, ActiveBgMusic.ShortProcessName) && (FadingThreadCount == 0) && (IsMuting == false) && (IsUnmuting == false))
 			{
@@ -293,8 +293,8 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 		// This gets called when an active sound has been added or removed (and every five seconds)
 		public static void OnUpdateSoundSourceInfos(SoundSourceInfo[] soundSourceInfos)
 		{
-			if (Program.LicenseExpired)
-				return;
+			//if (Program.LicenseExpired)
+			//	return;
 
 			Dictionary<string, SoundPlayerInfo> prevSessionInstanceToPlayerInfoDict = SessionInstanceToSoundPlayerInfoDict;
 			SessionInstanceToSoundPlayerInfoDict = new Dictionary<string, SoundPlayerInfo>();
@@ -437,7 +437,7 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 					{
 						AutoMuted = true;
 						UiPackage.UiCommands.SetNotification("Music fading out...", true);
-						UiPackage.UiCommands.TrackEvent("automute");
+						//UiPackage.UiCommands.TrackEvent("automute"); -31.11.24 remove tracking..??..??
 						PerformOperation(Operation.SmartMute);
 					}
 					else if ((MusicState != BgMusicState.Play) && (nonBgMusicHeard == false))
@@ -727,8 +727,8 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 
 		public static void PerformOperation(long playerInfoId, Operation op, string param, bool ignoreCommand)
 		{
-			if (Program.LicenseExpired == true)
-				return;
+			//if (Program.LicenseExpired == true)
+			//	return;
 
 			try
 			{

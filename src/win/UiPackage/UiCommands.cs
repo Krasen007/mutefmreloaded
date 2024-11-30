@@ -37,38 +37,39 @@ namespace MuteFmReloaded.UiPackage
 
 		private static string _uri = "";
 
-		public static void TrackEvent(string msg)
-		{
-			// Unfortunate that this uses UI thread (moving it to background worker isn't as useful; perhaps undo that)
-			System.ComponentModel.BackgroundWorker trackEventWorker = new BackgroundWorker();
-			trackEventWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(delegate
-			{
-				MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
-				{
-					try
-					{
-						_uri = "http://www.mutefm.com/track_" + msg.ToLower() + ".html?identity=" + Program.Identity;
+		// what bs is this kind of tracking??? -30.11.24
+		//public static void TrackEvent(string msg)
+		//{
+		//	// Unfortunate that this uses UI thread (moving it to background worker isn't as useful; perhaps undo that)
+		//	System.ComponentModel.BackgroundWorker trackEventWorker = new BackgroundWorker();
+		//	trackEventWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(delegate
+		//	{
+		//		MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
+		//		{
+		//			try
+		//			{
+		//				_uri = "http://www.mutefm.com/track_" + msg.ToLower() + ".html?identity=" + Program.Identity;
 
-						_browserControl = new System.Windows.Forms.WebBrowser();
-						_browserControl.ScriptErrorsSuppressed = true;
-						_browserControl.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(browser_DocumentCompleted);
-						_browserControl.Url = new Uri(_uri);
+		//				_browserControl = new System.Windows.Forms.WebBrowser();
+		//				_browserControl.ScriptErrorsSuppressed = true;
+		//				_browserControl.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(browser_DocumentCompleted);
+		//				_browserControl.Url = new Uri(_uri);
 
-						// TODO: use ie for this at least for now
-						/* 
-                        _trackSession = Awesomium.Core.WebCore.CreateWebSession(new Awesomium.Core.WebPreferences());
-                        _webView = Awesomium.Core.WebCore.CreateWebView(100, 100, _trackSession, Awesomium.Core.WebViewType.Offscreen);
-                        _webView.DocumentReady += new Awesomium.Core.UrlEventHandler(webView_DocumentReady);
-                        _webView.Source = new Uri(_uri); */
-					}
-					catch (Exception ex)
-					{
-						MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-					}
-				});
-			});
-			trackEventWorker.RunWorkerAsync();
-		}
+		//				// TODO: use ie for this at least for now
+		//				/* 
+  //                      _trackSession = Awesomium.Core.WebCore.CreateWebSession(new Awesomium.Core.WebPreferences());
+  //                      _webView = Awesomium.Core.WebCore.CreateWebView(100, 100, _trackSession, Awesomium.Core.WebViewType.Offscreen);
+  //                      _webView.DocumentReady += new Awesomium.Core.UrlEventHandler(webView_DocumentReady);
+  //                      _webView.Source = new Uri(_uri); */
+		//			}
+		//			catch (Exception ex)
+		//			{
+		//				MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+		//			}
+		//		});
+		//	});
+		//	trackEventWorker.RunWorkerAsync();
+		//}
 
 		static void browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
 		{
@@ -509,8 +510,8 @@ namespace MuteFmReloaded.UiPackage
 		}
 		public static void OnOperation(long musicId, Operation op, string param, bool ignoreCommand, bool track)
 		{
-			if (Program.LicenseExpired == true)
-				return;
+			//if (Program.LicenseExpired == true)
+			//	return;
 
 			if (MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance == null)
 				return;
@@ -554,7 +555,7 @@ namespace MuteFmReloaded.UiPackage
 						case Operation.Play:
 							SmartVolManagerPackage.BgMusicManager.AutoMuted = false; // TODO
 							MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
-							if (track) TrackEvent("Play");
+							if (track) /*TrackEvent("Play")*/;
 							break;
 
 						case Operation.ChangeMusic:

@@ -15,11 +15,11 @@ namespace MuteFmReloaded
 	{
 		// TODO: obfuscate?
 		// TODO: remember to give credit for source code used
-		public static bool LicenseExpired = false;
+		//public static bool LicenseExpired = false; -30.11.24
 
-		public static bool InternalBuildMode = false;
+		//public static bool InternalBuildMode = false; -30.11.24
 		public static bool FirstTime = false;
-		public static bool IsService = false;
+		//public static bool IsService = false; -30.11.24
 
 		public static Thread SoundServerThread;
 		//public static Thread WebSocketServerThread;
@@ -73,11 +73,11 @@ namespace MuteFmReloaded
 			if (System.Environment.CommandLine.ToUpper().Contains("FIRSTTIME"))
 				FirstTime = true;
 
-			if (System.Environment.CommandLine.ToUpper().Contains("SERVICE"))
-				IsService = true;
+			//if (System.Environment.CommandLine.ToUpper().Contains("SERVICE"))
+			//	IsService = true; -30.11.24
 
-			if ((args.Length > 0) && (args[0].ToUpper().Contains("INTERNALBUILDMODE")))
-				InternalBuildMode = true;
+			//if ((args.Length > 0) && (args[0].ToUpper().Contains("INTERNALBUILDMODE"))) -30.11.24
+			//	InternalBuildMode = true;
 
 			// Initialize Awesomium (the browser control)
 			/*            if (Awesomium.Core.WebCore.IsChildProcess)
@@ -176,26 +176,26 @@ namespace MuteFmReloaded
 
 			int verTimesTen = (System.Environment.OSVersion.Version.Major * 10) + (System.Environment.OSVersion.Version.Minor);
 
-			if ((verTimesTen < 61) && (!InternalBuildMode))
+			if ((verTimesTen < 61) /*&& (!InternalBuildMode)*/) // the magic number is the current version of windows
 			{
 				MessageBox.Show("This program requires Windows 7 or higher.");
 				return;
 			}
 
-			if ((verTimesTen >= 61) && (InternalBuildMode || IsService))
-			{
-				////Start up background thread that will respond to sound events and that will constantly poll the OS
-				//SoundServerThread = new Thread(new ThreadStart(MuteApp.SmartVolManagerPackage.SoundServer.Init));
-				//SoundServerThread.Name = "SoundServer";
-				//SoundServerThread.Start();
-				////TODO: when you exit, properly kill this thread http://stackoverflow.com/questions/1327102/how-to-kill-a-thread-instantly-in-c
-				///*
-				//winSysTray.PidMonitoringThread = new Thread(new ThreadStart(WinSoundServer.OsIntegrationPackage.PidManager.Init));
-				//winSysTray.PidMonitoringThread.Name = "PidMonitoring";
-				//winSysTray.PidMonitoringThread.Start();*/
-			}
+			//if ((verTimesTen >= 61) && (/*InternalBuildMode ||*/ IsService)) 
+			//{
+			//	////Start up background thread that will respond to sound events and that will constantly poll the OS
+			//	//SoundServerThread = new Thread(new ThreadStart(MuteApp.SmartVolManagerPackage.SoundServer.Init));
+			//	//SoundServerThread.Name = "SoundServer";
+			//	//SoundServerThread.Start();
+			//	////TODO: when you exit, properly kill this thread http://stackoverflow.com/questions/1327102/how-to-kill-a-thread-instantly-in-c
+			//	///*
+			//	//winSysTray.PidMonitoringThread = new Thread(new ThreadStart(WinSoundServer.OsIntegrationPackage.PidManager.Init));
+			//	//winSysTray.PidMonitoringThread.Name = "PidMonitoring";
+			//	//winSysTray.PidMonitoringThread.Start();*/
+			//}
 
-			if (true) // (InternalBuildMode || IsService)
+			else // (InternalBuildMode || IsService)
 			{
 				/* TODO-UAC
                 // Start up webserver thread
@@ -230,68 +230,63 @@ namespace MuteFmReloaded
 				MuteFmReloaded.SmartVolManagerPackage.SoundServer.OnMasterVolumeChange = MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.OnMasterVolumeChange;
 				InitExtensions(); // For now we just do this on startup
 
-				if (verTimesTen >= 61)
-				{
-					//SoundServerThread = new Thread(new ThreadStart(MuteApp.SmartVolManagerPackage.SoundServer.InitDoNothing));
-					SoundServerThread = new Thread(new ThreadStart(MuteFmReloaded.SmartVolManagerPackage.SoundServer.Init));
-					SoundServerThread.Name = "SoundServer";
-					// This will be started by the UI [TODO]
-				}
-			}
+				//SoundServerThread = new Thread(new ThreadStart(MuteApp.SmartVolManagerPackage.SoundServer.InitDoNothing));
+				SoundServerThread = new Thread(new ThreadStart(MuteFmReloaded.SmartVolManagerPackage.SoundServer.Init));
+				SoundServerThread.Name = "SoundServer";
+				// This will be started by the UI [TODO]
+				
 
-			//if ((!IsService) || (InternalBuildMode))
-			{
-				UiPackage.UiCommands.InitUI(FirstTime);
+				UiPackage.UiCommands.InitUI(FirstTime); //TODO: check if there is ever secondTime??
 			}
 		}
 
 		// Every four hours, we check the licensing and if a new version is available
 
-		private static void CheckLicensing(bool firstTime)
-		{
-			DateTime LicenseEnd = new DateTime(MuteFmReloaded.Constants.ExpireYear, MuteFmReloaded.Constants.ExpireMonth, MuteFmReloaded.Constants.ExpireDay, 23, 59, 59, 0, DateTimeKind.Local);
+		//private static void CheckLicensing(bool firstTime)
+		//{
+		//	//DateTime LicenseEnd = new DateTime(MuteFmReloaded.Constants.ExpireYear, MuteFmReloaded.Constants.ExpireMonth, MuteFmReloaded.Constants.ExpireDay, 23, 59, 59, 0, DateTimeKind.Local);
 
-			if (System.DateTime.Now > LicenseEnd)
-			{
-				//LicenseExpired = true;
-				//MessageBox.Show("This version of mute.fm is beta software and has expired.  Thanks for demoing!  Get a new version at http://www.mutefm.com/.");
-				//MuteFm.UiPackage.UiCommands.UnregisterHotkeys();
-				//Application.Exit();
-			}
+		//	//if (System.DateTime.Now > LicenseEnd)
+		//	//{
+		//	//	//LicenseExpired = true;
+		//	//	//MessageBox.Show("This version of mute.fm is beta software and has expired.  Thanks for demoing!  Get a new version at http://www.mutefm.com/.");
+		//	//	//MuteFm.UiPackage.UiCommands.UnregisterHotkeys();
+		//	//	//Application.Exit();
+		//	//}
 
-			if (firstTime)
-			{
-				System.Threading.Thread.Sleep(30000); // Sleep thirty seconds the first time.  UI should be loaded so that we can track the install.
+		//	//if (firstTime)
+		//	//{
+		//	//	System.Threading.Thread.Sleep(30000); // Sleep thirty seconds the first time.  UI should be loaded so that we can track the install.
 
-				firstTime = false;
+		//	//	firstTime = false;
 
-				if (Program.Installed == false)
-				{
-					MuteFmReloaded.UiPackage.UiCommands.TrackEvent("install");
-					Program.Installed = true;
-				}
-			}
-		}
+		//	//	if (Program.Installed == false)
+		//	//	{
+		//	//		MuteFmReloaded.UiPackage.UiCommands.TrackEvent("install");
+		//	//		Program.Installed = true;
+		//	//	}
+		//	//}
+		//}
 
 		// Checks licensing, updates, Growl integration, and clears out old entries from the image cache
 		public static void DoPeriodicTasks()
 		{
 			bool updateFound = false;
-			bool firstTime = true;
+			//bool firstTime = true;
 			TimeSpan timeSpan = new TimeSpan(4, 0, 0);
 			DateTime prevTime = DateTime.MinValue;
 			DateTime prevDay = DateTime.MinValue;
 			while (true)
 			{
-				try
-				{
-					CheckLicensing(firstTime);
-					firstTime = false;
-				}
-				catch (Exception ex)
-				{
-					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-				}
+				//try
+				//{
+				//	CheckLicensing(firstTime);
+				//	firstTime = false;
+				//}
+				//catch (Exception ex)
+				//{
+				//	MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+				//}
 
 				try
 				{
@@ -306,14 +301,14 @@ namespace MuteFmReloaded
 					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 				}
 
-				try
-				{
-					CheckGrowl();
-				}
-				catch (Exception ex)
-				{
-					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-				}
+				//try
+				//{
+				//	CheckGrowl();
+				//}
+				//catch (Exception ex)
+				//{
+				//	MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+				//}
 
 				/*
                 try
@@ -329,6 +324,7 @@ namespace MuteFmReloaded
 				// Reset unused entries in image cache occasionally
 				try
 				{
+					//TODO: maybe move to main or run on start once, skip periodic checks?
 					WebServer.ClearOldEntries(prevTime);
 					prevTime = DateTime.Now;
 				}
@@ -337,22 +333,22 @@ namespace MuteFmReloaded
 					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 				}
 
-				try
-				{
-					if (prevDay == DateTime.MinValue)
-					{
-						System.Threading.Thread.Sleep(60 * 1000);
-					}
-					if (DateTime.Now.Date != prevDay)
-					{
-						prevDay = DateTime.Now.Date;
-						MuteFmReloaded.UiPackage.UiCommands.TrackEvent("Running");
-					}
-				}
-				catch (Exception ex)
-				{
-					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-				}
+				//try
+				//{
+				//	if (prevDay == DateTime.MinValue)
+				//	{
+				//		System.Threading.Thread.Sleep(60 * 1000);
+				//	}
+				//	if (DateTime.Now.Date != prevDay)
+				//	{
+				//		prevDay = DateTime.Now.Date;
+				//		MuteFmReloaded.UiPackage.UiCommands.TrackEvent("Running");
+				//	}
+				//}
+				//catch (Exception ex)
+				//{
+				//	MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+				//}
 
 				System.Threading.Thread.Sleep(timeSpan);
 			}
