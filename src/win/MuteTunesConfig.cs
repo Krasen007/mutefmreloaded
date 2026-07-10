@@ -260,9 +260,8 @@ namespace MuteFmReloaded
 
 				if ((config.IgnoreForAutoMute == null) || (config.IgnoreForAutoMute.Length == 0))
 				{
-					SmartVolManagerPackage.BgMusicManager.IgnoreProcNameForAutomuteDict[""] = true;
+SmartVolManagerPackage.BgMusicManager.IgnoreProcNameForAutomuteDict[""] = true;
 					SmartVolManagerPackage.BgMusicManager.IgnoreProcNameForAutomuteDict["camrecorder"] = true;
-					SmartVolManagerPackage.BgMusicManager.IgnoreProcNameForAutomuteDict["growl"] = true;
 				}
 
 				for (int i = 0; i < config.IgnoreForAutoMute.Length; i++)

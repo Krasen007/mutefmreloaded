@@ -4,10 +4,8 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
-// TODO: remove Growl as its outdated and the website doesn't even exist anymore.
-// TODO: clean the references for the licence and checks
-// TODO: update to .net 4.8 (seems to be working on its own)
 // TODO: do a lot of cleaning of code and comments
+// TODO: update to .net 4.8 (seems to be working on its own)
 
 namespace MuteFmReloaded
 {
