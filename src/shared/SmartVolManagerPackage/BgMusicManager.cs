@@ -282,9 +282,6 @@ public static void OnManualVolumeChange(SoundSourceInfo info)
 		// This gets called when an active sound has been added or removed (and every five seconds)
 		public static void OnUpdateSoundSourceInfos(SoundSourceInfo[] soundSourceInfos)
 		{
-			//if (Program.LicenseExpired)
-			//	return;
-
 			Dictionary<string, SoundPlayerInfo> prevSessionInstanceToPlayerInfoDict = SessionInstanceToSoundPlayerInfoDict;
 			SessionInstanceToSoundPlayerInfoDict = new Dictionary<string, SoundPlayerInfo>();
 

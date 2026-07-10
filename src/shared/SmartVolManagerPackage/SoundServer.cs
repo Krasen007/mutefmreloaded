@@ -188,7 +188,7 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 		public static void PerformOperation(string sessionInstanceIdentifier, string operation, string operationArg, Delegate onUpdate, Delegate postOperation)
 		{
 			System.Threading.Thread thread;
-			if (_sessionInstanceIdentifierThreadDict.TryGetValue(sessionInstanceIdentifier, out thread)) //TODO: if this is for a pid that already has something happening to it, cancel the old thread and launch this one to replace it
+			if (_sessionInstanceIdentifierThreadDict.TryGetValue(sessionInstanceIdentifier, out thread))
 			{
 				PerformOperationInfo existingInfo;
 				if (_sessionInstanceIdThreadInfoDict.TryGetValue(sessionInstanceIdentifier, out existingInfo))
@@ -196,21 +196,15 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 					if ((existingInfo.operation == operation) && (existingInfo.operationArg == operationArg) && existingInfo.postOperation == postOperation)
 						return;
 				}
-				try
-				{
-					_sessionInstanceIdentifierThreadDict[sessionInstanceIdentifier].Abort();
-				}
-				catch (Exception ex)
-				{
-					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-				}
+				// Remove the old thread entry - the thread will complete on its own
+				_sessionInstanceIdentifierThreadDict.Remove(sessionInstanceIdentifier);
+				_sessionInstanceIdThreadInfoDict.Remove(sessionInstanceIdentifier);
 			}
 			Thread t = new Thread(new ParameterizedThreadStart(_performOperation));
 			t.Name = "PerformOperation(" + sessionInstanceIdentifier + ", " + operation + ", " + operationArg + ")";
 			PerformOperationInfo info = new PerformOperationInfo();
 			try
 			{
-				//info.pid = pid;
 				info.operation = operation;
 				info.operationArg = operationArg;
 				info.postOperation = postOperation;

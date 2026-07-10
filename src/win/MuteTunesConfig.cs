@@ -470,12 +470,9 @@ SmartVolManagerPackage.BgMusicManager.IgnoreProcNameForAutomuteDict[""] = true;
 			demoBg.UrlOrCommandLine = executablePath;
 			demoBg.ShortProcessName = "wmplayer";
 			InitDefaultsProcess(demoBg, "wmplayer");
-			//demoBg.CommandLineArgs = "\"" + Environment.SpecialFolder.CommonMusic + "\\Sample Music\\Maid with the Flaxen Hair.mp3\" /Task MediaLibrary";
 			demoBg.CommandLineArgs = "\"" + System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\bwv849b.mid\"";
 			demoBg.Name = "Demo music";
 			demoBg.AutoPlaysOnStartup = true;
-
-			// TODO: set commandline here to play a specific song
 
 			if (mplayerDetected)
 			{
@@ -484,9 +481,6 @@ SmartVolManagerPackage.BgMusicManager.IgnoreProcNameForAutomuteDict[""] = true;
 				wmplayerBG.ShortProcessName = "wmplayer";
 				InitDefaultsProcess(wmplayerBG, "wmplayer");
 			}
-
-
-			//MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("Classical (YouTube)", "http://www.youtube.com/watch?v=ZYwqKKc1VCQ"), defaultConfig);
 
 			// Modern music services
 			SoundPlayerInfo spotifyWebBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("Spotify Web", "https://open.spotify.com"), defaultConfig);
@@ -497,25 +491,6 @@ SmartVolManagerPackage.BgMusicManager.IgnoreProcNameForAutomuteDict[""] = true;
 
 			SoundPlayerInfo systemSoundBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateProgram("System Sounds"), defaultConfig);
 			systemSoundBG.UrlOrCommandLine = "";
-			//            systemSoundBG.IconPath = @"mixer\windows.png";
-
-			//getButton('Love Track').click();
-
-			/*          //TODO: ex.fm doesn't seem to play music at all in awesomium
-                       BackgroundMusic exfmBG = MuteTunesConfigUtil.AddBgMusic(MuteTunesConfigUtil.CreateWebWithCustomName("ex.fm", "http://www.ex.fm/"), defaultConfig);
-                        rdioBG.PlayCommand = "if (document.getElementById('bottom_controls').getElementsByClassName('paused').length == 0) { document.getElementById('play_button').click(); }";
-                        rdioBG.PauseCommand = "if (document.getElementById('bottom_controls').getElementsByClassName('paused').length == 1) { document.getElementById('play_button').click(); }";
-                        rdioBG.NextSongCommand = "document.getElementById('next_button').click();";
-                        rdioBG.PrevSongCommand = "document.getElementById('prev_button').click()";
-            */
-
-			// broken since it doesn't maintain state
-			/*BackgroundMusic burnFmBG = MuteTunesConfigUtil.AddBgMusic(MuteTunesConfigUtil.CreateWebWithCustomName("burn.fm", "http://www.burn.fm/"), defaultConfig);
-            burnFmBG.PlayCommand = "player.playVideo();";
-            burnFmBG.PauseCommand = "player.stopVideo();";
-            burnFmBG.PrevSongCommand = Resource1.burnfm_nextprevtrack + "nextPrevTrack(1);";
-            burnFmBG.OnLoadCommand = Resource1.burnfm_nextprevtrack;
-            */
 
 			MuteFmConfigUtil.LoadDefaultHotkeys(defaultConfig);
 
