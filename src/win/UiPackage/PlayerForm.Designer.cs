@@ -40,7 +40,6 @@ namespace MuteFmReloaded.UiPackage
             this.timeoutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notificationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.growlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.systrayBalloonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripSeparator();
@@ -161,7 +160,6 @@ namespace MuteFmReloaded.UiPackage
             // notificationsToolStripMenuItem
             // 
             this.notificationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.growlToolStripMenuItem,
             this.systrayBalloonsToolStripMenuItem,
             this.noneToolStripMenuItem,
             this.toolStripMenuItem9,
@@ -170,13 +168,6 @@ namespace MuteFmReloaded.UiPackage
             this.notificationsToolStripMenuItem.Name = "notificationsToolStripMenuItem";
             this.notificationsToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.notificationsToolStripMenuItem.Text = "&Notifications";
-            // 
-            // growlToolStripMenuItem
-            // 
-            this.growlToolStripMenuItem.Name = "growlToolStripMenuItem";
-            this.growlToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.growlToolStripMenuItem.Text = "Growl";
-            this.growlToolStripMenuItem.Click += new System.EventHandler(this.growlToolStripMenuItem_Click);
             // 
             // systrayBalloonsToolStripMenuItem
             // 
@@ -503,7 +494,6 @@ namespace MuteFmReloaded.UiPackage
         private System.Windows.Forms.Label mBgMusicNameLabel;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripMenuItem notificationsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem growlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem systrayBalloonsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem9;

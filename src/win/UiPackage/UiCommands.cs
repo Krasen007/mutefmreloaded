@@ -1,5 +1,4 @@
-﻿using Growl.Connector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -8,9 +7,6 @@ namespace MuteFmReloaded.UiPackage
 {
 	public class UiCommands
 	{
-		private static GrowlConnector _growl;
-		private static NotificationType _notificationType;
-		private static Growl.Connector.Application _growlApp;
 
 		public static PlayerForm mPlayerForm = null;
 #if !NOAWE
@@ -144,14 +140,6 @@ namespace MuteFmReloaded.UiPackage
 #endif
 		}
 
-		private static void growl_notification_callback(Growl.Connector.Response response, Growl.Connector.CallbackData callbackData, object state)
-		{
-			if ((callbackData.Result == Growl.CoreLibrary.CallbackResult.CLICK) && callbackData.Type.Contains("Cannot hear anything"))
-			{
-				OnOperation(Operation.Show);
-			}
-		}
-
 		// Must be run within UI thread
 		public static void InitUI(bool firstTime)
 		{
@@ -161,12 +149,6 @@ namespace MuteFmReloaded.UiPackage
             WebBgMusicForm.Resize += new EventHandler(WebBgMusicForm_Resize);
             //WebBgMusicForm.Show();
 #endif
-
-			_notificationType = new NotificationType("MUTEFM_NOTIFICATION", "mute.fm reloaded notification");
-
-			_growl = new GrowlConnector();
-			_growl.NotificationCallback += new GrowlConnector.CallbackEventHandler(growl_notification_callback);
-			_growl.EncryptionAlgorithm = Cryptography.SymmetricAlgorithmType.PlainText; // set to ease debugging
 
 			// OLDNOTIFY TopForm.Instance.Show();
 			//UiPackage.UiCommands.SetNotification(Constants.ProgramName + " started (expires " + Constants.GetExpirationDateString() + ")", false);
@@ -262,16 +244,7 @@ namespace MuteFmReloaded.UiPackage
 					});
 				}
 
-				if (GrowlInstallHelper.GrowlInstallHelper.GetForceGrowl())
-				{
-					_growlApp = new Growl.Connector.Application(Constants.ProgramName);
-					_growl.Register(_growlApp, new NotificationType[] { _notificationType });
-
-					CallbackContext callbackContext = new CallbackContext("setNotification", text);
-					Notification notification = new Notification(_growlApp.Name, _notificationType.Name, DateTime.Now.Ticks.ToString(), Constants.ProgramName, text);
-					_growl.Notify(notification, callbackContext);
-				}
-				else if (SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.ShowBalloonNotifications)
+				if (SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.ShowBalloonNotifications)
 				{
 					MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.ShowBalloonTip(3000, Constants.ProgramName, text, ToolTipIcon.Info);
 				}

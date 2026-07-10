@@ -45,9 +45,8 @@ namespace MuteFmReloaded.UiPackage
 			this.notifyAboutProgramUpdatesToolStripMenuItem.Checked = SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.NotifyAboutUpdates;
 			this.notifyWhenNoMusicToPlayToolStripMenuItem.Checked = SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.NotifyWhenNoMusicToPlay;
 
-			this.growlToolStripMenuItem.Checked = GrowlInstallHelper.GrowlInstallHelper.GetForceGrowl();
-			this.systrayBalloonsToolStripMenuItem.Checked = !this.growlToolStripMenuItem.Checked && SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.ShowBalloonNotifications;
-			this.noneToolStripMenuItem.Checked = (!growlToolStripMenuItem.Checked) && (!systrayBalloonsToolStripMenuItem.Checked);
+			this.systrayBalloonsToolStripMenuItem.Checked = SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.ShowBalloonNotifications;
+			this.noneToolStripMenuItem.Checked = !systrayBalloonsToolStripMenuItem.Checked;
 
 
 			//mToolStrip.Items.Add("Send To Chrome", null, new EventHandler(mAlwaysOnTopToolStripButton_Click)); // TODO: also for other browsers
@@ -485,19 +484,7 @@ namespace MuteFmReloaded.UiPackage
 							// We will show a notification if we haven't heard anything for seven seconds and we haven't shown the user this warning over the past 60 seconds.
 							if (SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.NotifyWhenNoMusicToPlay && ((cannotHearNotificationShown == false) && (DateTime.Now.Subtract(cannotHearStartDateTime).TotalSeconds > 10)))
 							{
-								string notificationTypeSpecificText = "";
-								if (GrowlInstallHelper.GrowlInstallHelper.GetForceGrowl())
-								{
-									notificationTypeSpecificText = "Click here to launch the player";
-								}
-								else
-								{
-									notificationTypeSpecificText = "Launch the player";
-								}
-								UiCommands.SetNotification("Music expected. " + notificationTypeSpecificText + " (then Play or add more music) or Stop or disable this notification.", false);
-								//Maybe you need to add more to the playlist or click through an ad.  Click here to interact with player.  Or if you don't want music click Stop.  You can remove this message in the Notifications menu.", false);
-
-								//Cannot hear anything.  Either wait for music to play, click here to interact with player, or stop the music.", false);
+								UiCommands.SetNotification("Music expected. Launch the player (then Play or add more music) or Stop or disable this notification.", false);
 								cannotHearNotificationShown = true;
 							}
 
@@ -550,11 +537,9 @@ namespace MuteFmReloaded.UiPackage
 			{
 				systrayBalloonsToolStripMenuItem.Checked = true;
 				noneToolStripMenuItem.Checked = false;
-				growlToolStripMenuItem.Checked = false;
 				SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.ShowBalloonNotifications = true;
 
 				MuteFmConfigUtil.Save(SmartVolManagerPackage.BgMusicManager.MuteFmConfig);
-				GrowlInstallHelper.GrowlInstallHelper.SetForceGrowl(false);
 			}
 		}
 
@@ -563,31 +548,16 @@ namespace MuteFmReloaded.UiPackage
 			if (!noneToolStripMenuItem.Checked)
 			{
 				noneToolStripMenuItem.Checked = true;
-				growlToolStripMenuItem.Checked = false;
 				systrayBalloonsToolStripMenuItem.Checked = false;
 				SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.ShowBalloonNotifications = false;
 
 				MuteFmConfigUtil.Save(SmartVolManagerPackage.BgMusicManager.MuteFmConfig);
-				GrowlInstallHelper.GrowlInstallHelper.SetForceGrowl(false);
-			}
-		}
-
-		private void growlToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (!growlToolStripMenuItem.Checked)
-			{
-				growlToolStripMenuItem.Checked = true;
-				this.systrayBalloonsToolStripMenuItem.Checked = false;
-				this.noneToolStripMenuItem.Checked = false;
-
-				GrowlInstallHelper.GrowlInstallHelper.SetForceGrowl(true);
-				GrowlInstallHelper.GrowlInstallHelper.CheckAndRun();
 			}
 		}
 
 		private void mDonateToolStripButton_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start("http://www.mutefm.com/donate.html");
+			System.Diagnostics.Process.Start("https://github.com/sponsors");
 		}
 	}
 }

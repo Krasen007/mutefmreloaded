@@ -268,26 +268,14 @@ namespace MuteFmReloaded
 		//	//}
 		//}
 
-		// Checks licensing, updates, Growl integration, and clears out old entries from the image cache
+		// Checks for updates and clears out old entries from the image cache
 		public static void DoPeriodicTasks()
 		{
 			bool updateFound = false;
-			//bool firstTime = true;
 			TimeSpan timeSpan = new TimeSpan(4, 0, 0);
 			DateTime prevTime = DateTime.MinValue;
-			DateTime prevDay = DateTime.MinValue;
 			while (true)
 			{
-				//try
-				//{
-				//	CheckLicensing(firstTime);
-				//	firstTime = false;
-				//}
-				//catch (Exception ex)
-				//{
-				//	MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-				//}
-
 				try
 				{
 					if ((SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.NotifyAboutUpdates == true) && !updateFound && CheckForUpdates.Check())
@@ -301,30 +289,9 @@ namespace MuteFmReloaded
 					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 				}
 
-				//try
-				//{
-				//	CheckGrowl();
-				//}
-				//catch (Exception ex)
-				//{
-				//	MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-				//}
-
-				/*
-                try
-                {
-                    // TODO: checkflash (add new code here)
-                }
-                catch (Exception ex)
-                {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-                }
-                */
-
 				// Reset unused entries in image cache occasionally
 				try
 				{
-					//TODO: maybe move to main or run on start once, skip periodic checks?
 					WebServer.ClearOldEntries(prevTime);
 					prevTime = DateTime.Now;
 				}
@@ -333,32 +300,7 @@ namespace MuteFmReloaded
 					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 				}
 
-				//try
-				//{
-				//	if (prevDay == DateTime.MinValue)
-				//	{
-				//		System.Threading.Thread.Sleep(60 * 1000);
-				//	}
-				//	if (DateTime.Now.Date != prevDay)
-				//	{
-				//		prevDay = DateTime.Now.Date;
-				//		MuteFmReloaded.UiPackage.UiCommands.TrackEvent("Running");
-				//	}
-				//}
-				//catch (Exception ex)
-				//{
-				//	MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-				//}
-
 				System.Threading.Thread.Sleep(timeSpan);
-			}
-		}
-
-		public static void CheckGrowl()
-		{
-			if (GrowlInstallHelper.GrowlInstallHelper.GetForceGrowl() == true)
-			{
-				GrowlInstallHelper.GrowlInstallHelper.CheckAndRun();
 			}
 		}
 
