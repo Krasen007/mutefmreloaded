@@ -331,20 +331,31 @@ namespace MuteFmReloaded
 					if (bgm.IconPath != "")
 						x = x + 1;
 					string path = bgm.IconPath != "" ? bgm.IconPath : bgm.UrlOrCommandLine;
+					// Use Google's favicon service as fallback (more reliable than getfavicon.appspot.com)
 					if ((bgm.IconPath == "") && (bgm.UrlOrCommandLine.StartsWith("http://")))
-						path = @"http://getfavicon.appspot.com/" + path;
+						path = @"https://www.google.com/s2/favicons?domain=" + new Uri(bgm.UrlOrCommandLine).Host;
 					if ((bgm.IconPath == "") && (bgm.UrlOrCommandLine.StartsWith("https://")))
-						path = @"https://getfavicon.appspot.com/" + path;
+						path = @"https://www.google.com/s2/favicons?domain=" + new Uri(bgm.UrlOrCommandLine).Host;
 
 					if (_iconContents.TryGetValue(path, out bitmap) == false)
 					{
 						if ((path.ToLower().StartsWith("http://")) || (path.ToLower().StartsWith("https://")))
 						{
-							string tempFile = System.IO.Path.GetTempFileName();
-							var client = new System.Net.WebClient();
-							client.DownloadFile(path, tempFile);
-							icon = System.Drawing.Icon.ExtractAssociatedIcon(tempFile);
-							System.IO.File.Delete(tempFile);
+							try
+							{
+								string tempFile = System.IO.Path.GetTempFileName();
+								var client = new System.Net.WebClient();
+								client.DownloadFile(path, tempFile);
+								if (System.IO.File.Exists(tempFile))
+								{
+									icon = System.Drawing.Icon.ExtractAssociatedIcon(tempFile);
+									System.IO.File.Delete(tempFile);
+								}
+							}
+							catch
+							{
+								// Icon download failed, will use default icon
+							}
 						}
 						else
 						{
@@ -478,27 +489,12 @@ namespace MuteFmReloaded
 
 			//MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("Classical (YouTube)", "http://www.youtube.com/watch?v=ZYwqKKc1VCQ"), defaultConfig);
 
-			SoundPlayerInfo pandoraBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("Pandora", "http://www.pandora.com"), defaultConfig);
-			InitDefaultsWeb(pandoraBG);
+			// Modern music services
+			SoundPlayerInfo spotifyWebBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("Spotify Web", "https://open.spotify.com"), defaultConfig);
+			InitDefaultsWeb(spotifyWebBG);
 
-			//SoundPlayerInfo grooveSharkBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("Grooveshark", "http://www.grooveshark.com"), defaultConfig);
-			//InitDefaultsWeb(grooveSharkBG);
-
-			//SoundPlayerInfo musicFellasBg = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("Musicfellas", "http://www.musicfellas.com"), defaultConfig);
-			//musicFellasBg.IconPath = "http://musicfellas.com/favicon.png";
-			//InitDefaultsWeb(musicFellasBg);
-
-			SoundPlayerInfo rdioBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("Rdio", "http://www.rdio.com"), defaultConfig);
-			rdioBG.IconPath = "http://www.rdio.com/favicon.ico";
-			InitDefaultsWeb(rdioBG);
-
-			SoundPlayerInfo lastfmBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("last.fm", "http://www.last.fm"), defaultConfig);
-			InitDefaultsWeb(lastfmBG);
-
-			SoundPlayerInfo mogBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("MOG", "http://www.mog.com"), defaultConfig);
-			//mogBG.IconPath = @"mixer\mog.png"; // TODO
-			//mogBG.IconPath = "http://www.mog.com/favicon.ico";
-			InitDefaultsWeb(mogBG);
+			SoundPlayerInfo youtubeMusicBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateWebWithCustomName("YouTube Music", "https://music.youtube.com"), defaultConfig);
+			InitDefaultsWeb(youtubeMusicBG);
 
 			SoundPlayerInfo systemSoundBG = MuteFmConfigUtil.AddSoundPlayerInfo(MuteFmConfigUtil.CreateProgram("System Sounds"), defaultConfig);
 			systemSoundBG.UrlOrCommandLine = "";
@@ -563,13 +559,8 @@ namespace MuteFmReloaded
 				case "winamp":
 				case "wmplayer":
 				case "zune":
-				case "http://www.pandora.com":
-
-				case "http://www.grooveshark.com":
-				case "http://www.rdio.com":
-				case "http://www.last.fm":
-				case "http://www.mog.com":
-				case "http://www.musicfellas.com":
+				case "https://open.spotify.com":
+				case "https://music.youtube.com":
 					return true;
 			}
 
@@ -580,53 +571,21 @@ namespace MuteFmReloaded
 		{
 			switch (soundInfo.UrlOrCommandLine)
 			{
-				case "http://www.pandora.com":
-					soundInfo.PlayCommand = "$('.playButton').click();";
-					soundInfo.PauseCommand = "$('.pauseButton').click();";
-					soundInfo.NextSongCommand = "$('.skipButton').click();";
-					soundInfo.LikeCommand = "$('.thumbUpButton').click();";
-					soundInfo.DislikeCommand = "$('.thumbDownButton').click();";
-					//soundInfo.OnLoadCommand = "var imListening = function(){$('.still_listening.button.btn_bg').click();setTimeout(imListening,1000);return true;};";
+				case "https://open.spotify.com":
+					// Spotify Web - basic play/pause controls
+					soundInfo.PlayCommand = "document.querySelector('[data-testid=\"play-button\"]').click();";
+					soundInfo.PauseCommand = "document.querySelector('[data-testid=\"pause-button\"]').click();";
+					soundInfo.NextSongCommand = "document.querySelector('[data-testid=\"next-button\"]').click();";
+					soundInfo.PrevSongCommand = "document.querySelector('[data-testid=\"previous-button\"]').click();";
 					soundInfo.StopCommand = "";
 					break;
-				case "http://www.grooveshark.com":
-					soundInfo.PlayCommand = "var obj = Grooveshark.getCurrentSongStatus(); if (obj.status === 'paused') Grooveshark.togglePlayPause();";
-					soundInfo.PauseCommand = "Grooveshark.pause();";
-					soundInfo.NextSongCommand = "Grooveshark.next();";
-					soundInfo.PrevSongCommand = "Grooveshark.previous();";
+				case "https://music.youtube.com":
+					// YouTube Music - basic play/pause controls
+					soundInfo.PlayCommand = "document.querySelector('.ytp-play-button').click();";
+					soundInfo.PauseCommand = "document.querySelector('.ytp-play-button').click();";
+					soundInfo.NextSongCommand = "document.querySelector('.ytp-next-button').click();";
+					soundInfo.PrevSongCommand = "document.querySelector('.ytp-prev-button').click();";
 					soundInfo.StopCommand = "";
-					break;
-				case "http://www.rdio.com":
-					soundInfo.PlayCommand = " if ($('.playing').length === 0) { $('.play_pause').click(); }";
-					soundInfo.PauseCommand = "if ($('.playing').length === 1) { $('.play_pause').click(); }";
-					soundInfo.NextSongCommand = "$('.next').click();";
-					soundInfo.PrevSongCommand = "$('.prev').click();";
-					// this just toggles shuffle rdioBG.ShuffleCommand = "$('.shuffle').click();";
-					soundInfo.OnLoadCommand = "var takeControl = function(){$('.uncontrollable_player').find('.icon').click();};setTimeout(takeControl,1000);";
-					soundInfo.StopCommand = "";
-					break;
-				case "http://www.mog.com":
-					soundInfo.PlayCommand = "var node = document.getElementById('play'); if (document.getElementsByClassName('pause').length == 0) { node.click(); }";
-					soundInfo.PauseCommand = "var node = document.getElementById('play'); if (document.getElementsByClassName('pause').length != 0) { node.click(); }";
-					soundInfo.NextSongCommand = "document.getElementById('next').click();";
-					soundInfo.PrevSongCommand = "document.getElementById('previous').click();";
-					soundInfo.StopCommand = "";
-					break;
-				case "http://www.last.fm":
-					string lastFmGeneralCode = "var getButton = function(text) { var controls = document.getElementsByClassName('radiocontrol'); for (i = 0; i < controls.length; i++) { if (controls[i].text === text) return controls[i]; } return null; };";
-					soundInfo.PlayCommand = lastFmGeneralCode + "getButton('Resume Radio').click();";
-					soundInfo.PauseCommand = lastFmGeneralCode + "getButton('Pause Radio').click();";
-					soundInfo.NextSongCommand = lastFmGeneralCode + "getButton('Skip Track').click();";
-					soundInfo.OnLoadCommand = "var takeControl = function(){$('.uncontrollable_player').find('.icon').click();};setTimeout(takeControl,1000);";
-					soundInfo.StopCommand = "";
-					break;
-				case "http://www.musicfellas.com":
-					soundInfo.PlayCommand = "if (!musicfellas.viewModel.playlist.isPlaying()) { musicfellas.viewModel.playlist.pause(); }";
-					soundInfo.PauseCommand = "if (musicfellas.viewModel.playlist.isPlaying()) { musicfellas.viewModel.playlist.pause(); }";
-
-					soundInfo.PrevSongCommand = "musicfellas.viewModel.playlist.prev();";
-					soundInfo.NextSongCommand = "musicfellas.viewModel.playlist.next();";
-					soundInfo.StopCommand = "musicfellas.viewModel.playlist.stop();";
 					break;
 			}
 
