@@ -67,29 +67,6 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe /p:Configuration=Relea
 
 ---
 
-## Future Development Plan
-
-### Phase 1: Testing (Next)
-- [ ] Test audio detection with modern browsers (Chrome, Edge, Firefox)
-- [ ] Test with music players (Spotify, YouTube, etc.)
-- [ ] Verify system tray functionality
-- [ ] Test auto-mute/restore behavior
-- [ ] Test hotkey functionality
-
-### Phase 2: Code Cleanup
-- [x] Remove Awesomium files (InitWizForm.cs, WebBgMusicForm.cs)
-- [x] Clean up commented code blocks
-- [x] Fix potential null reference issues (Thread.Abort replaced with graceful shutdown)
-
-### Phase 3: Feature Updates
-
-### Phase 4: Distribution
-- [ ] Create simple distribution script (copy exe + DLLs to output folder)
-- [ ] No installer needed - app runs directly!
-- [ ] Optional: Create ZIP package for easy distribution
-
----
-
 ## Key Files to Understand
 
 | File | Purpose |

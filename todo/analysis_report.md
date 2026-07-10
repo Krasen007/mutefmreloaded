@@ -144,10 +144,6 @@ mutefmreloaded/
 The application builds successfully on Windows 11 with MSBuild.
 
 
-### Files Still Present (Awesomium - disabled via NOAWE)
-- `src/win/UiPackage/InitWizForm.cs` - Still exists but disabled
-- `src/win/UiPackage/WebBgMusicForm.cs` - Still exists but disabled
-
 ---
 
 ## Action Plan
@@ -158,15 +154,6 @@ The application builds successfully on Windows 11 with MSBuild.
 - [ ] Verify system tray functionality
 - [ ] Test auto-mute/restore behavior
 - [ ] Test hotkey functionality
-
-### Phase 2: Code Cleanup (Medium Priority)
-- [ ] Remove Awesomium files (InitWizForm.cs, WebBgMusicForm.cs)
-- [ ] Clean up commented code blocks
-- [ ] Fix potential null reference issues
-
-### Phase 3: Feature Updates (Low Priority)
-- [ ] Update update checking to use GitHub releases
-- [ ] Improve UI/UX
 
 ---
 
@@ -267,12 +254,6 @@ if (Program.SoundServerThread != null)
 5. `src/win/UiPackage/PlayerForm.cs` - Main UI
 6. `src/win/UiPackage/WinSoundServerSysTray.cs` - System tray
 
-### To Remove/Clean
-1. ~~`src/win/GrowlInstallHelper.cs` - Remove entirely~~ - **DONE**
-2. ~~`lib/Growl.Connector.dll` - Remove~~ - **DONE**
-3. ~~`lib/Growl.CoreLibrary.dll` - Remove~~ - **DONE**
-4. `src/win/UiPackage/InitWizForm.cs` - Remove (Awesomium, disabled)
-5. `src/win/UiPackage/WebBgMusicForm.cs` - Remove (Awesomium, disabled)
 
 ---
 
