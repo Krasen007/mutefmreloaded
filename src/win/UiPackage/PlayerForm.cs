@@ -142,8 +142,6 @@ namespace MuteFmReloaded.UiPackage
 
 		public void Exit(bool showPrompt)
 		{
-			string msg = "Are you sure you want to exit?";
-
 			if (showPrompt)
 			{
 				// TODO: Fix bug when clicking EXIT from the file menu.
@@ -151,24 +149,24 @@ namespace MuteFmReloaded.UiPackage
 
 				// Code commented as it's default behaviour will be changed in the new version -Krasen
 				//if ((SmartVolManagerPackage.BgMusicManager.MusicState == SmartVolManagerPackage.BgMusicState.Play) || (SmartVolManagerPackage.BgMusicManager.AutoMuted == true))
-				//                msg = msg + " " + "Your music will be stopped.";
-
-				//            MessageBoxEx msgBoxEx = new MessageBoxEx(msg, "Minimize to Tray");
-				//            msgBoxEx.ShowDialog();
-				//            switch (msgBoxEx.ButtonPressedIndex)
-				//            {
-				//                case 0:
-				//                    if (_isStandAlone)
-				//                        Application.Exit();
-				//                    else
-				//                        UiCommands.Exit();
-				//                    break;
-				//                case 1:
-				//                    break;
-				//                case 2:
-				//                    UiCommands.HideMixer();
-				//                    break;
-				//            }
+				//    MessageBoxEx msgBoxEx = new MessageBoxEx("Are you sure you want to exit? Your music will be stopped.", "Minimize to Tray");
+				//else
+				//    MessageBoxEx msgBoxEx = new MessageBoxEx("Are you sure you want to exit?", "Minimize to Tray");
+				//msgBoxEx.ShowDialog();
+				//switch (msgBoxEx.ButtonPressedIndex)
+				//{
+				//    case 0:
+				//        if (_isStandAlone)
+				//            Application.Exit();
+				//        else
+				//            UiCommands.Exit();
+				//        break;
+				//    case 1:
+				//        break;
+				//    case 2:
+				//        UiCommands.HideMixer();
+				//        break;
+				//}
 			}
 			else
 			// TODO: check if this is called at all?? -Krasen

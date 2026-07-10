@@ -1163,47 +1163,46 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 		// Mute all fgsounds or unmute them.  After calling this, should also unmute the bgmusic        
 		public static void ToggleFgMute()
 		{
-			return; // disabled for now
-
+			// disabled for now
 			//System.Diagnostics.Debug.WriteLine("-----------------------------------------------------------------------------");
 			//System.Diagnostics.Debug.WriteLine("ToggleFgMute");
 			//System.Diagnostics.Debug.WriteLine("-----------------------------------------------------------------------------");
 
-			if (MutedFgSessionIds.Count == 0)
-			{
-				string[] sessionIds = new string[SessionInstanceToSoundPlayerInfoDict.Count];
-				SessionInstanceToSoundPlayerInfoDict.Keys.CopyTo(sessionIds, 0);
+			//if (MutedFgSessionIds.Count == 0)
+			//{
+			//    string[] sessionIds = new string[SessionInstanceToSoundPlayerInfoDict.Count];
+			//    SessionInstanceToSoundPlayerInfoDict.Keys.CopyTo(sessionIds, 0);
 
-				DisableAutomuteTemporarily = true;
-				for (int i = 0; i < sessionIds.Length; i++)
-				{
-					MutedFgSessionIds.Add(sessionIds[i]);
+			//    DisableAutomuteTemporarily = true;
+			//    for (int i = 0; i < sessionIds.Length; i++)
+			//    {
+			//        MutedFgSessionIds.Add(sessionIds[i]);
 
-					SoundPlayerInfo soundPlayerInfo;
-					if (SessionInstanceToSoundPlayerInfoDict.TryGetValue(sessionIds[i], out soundPlayerInfo))
-						PerformOperation(soundPlayerInfo.Id, Operation.Mute, "", false);
-				}
-				System.Threading.Thread.Sleep(100);
-				PerformOperation(Operation.ClearHistory, "");
-				System.Threading.Thread.Sleep(100);
-				DisableAutomuteTemporarily = false;
+			//        SoundPlayerInfo soundPlayerInfo;
+			//        if (SessionInstanceToSoundPlayerInfoDict.TryGetValue(sessionIds[i], out soundPlayerInfo))
+			//            PerformOperation(soundPlayerInfo.Id, Operation.Mute, "", false);
+			//    }
+			//    System.Threading.Thread.Sleep(100);
+			//    PerformOperation(Operation.ClearHistory, "");
+			//    System.Threading.Thread.Sleep(100);
+			//    DisableAutomuteTemporarily = false;
 
-			}
-			else
-			{
-				string[] mutedFgSessionIds = MutedFgSessionIds.ToArray();
-				int len = mutedFgSessionIds.Count();
-				for (int i = 0; i < len; i++)
-				{
-					SoundPlayerInfo soundPlayerInfo;
-					if (SessionInstanceToSoundPlayerInfoDict.TryGetValue(mutedFgSessionIds[i], out soundPlayerInfo))
-					{
-						PerformOperation(soundPlayerInfo.Id, Operation.Unmute, "", false);
-					}
-				}
+			//}
+			//else
+			//{
+			//    string[] mutedFgSessionIds = MutedFgSessionIds.ToArray();
+			//    int len = mutedFgSessionIds.Count();
+			//    for (int i = 0; i < len; i++)
+			//    {
+			//        SoundPlayerInfo soundPlayerInfo;
+			//        if (SessionInstanceToSoundPlayerInfoDict.TryGetValue(mutedFgSessionIds[i], out soundPlayerInfo))
+			//        {
+			//            PerformOperation(soundPlayerInfo.Id, Operation.Unmute, "", false);
+			//        }
+			//    }
 
-				MutedFgSessionIds.Clear();
-			}
+			//    MutedFgSessionIds.Clear();
+			//}
 		}
 		#endregion
 

@@ -29,10 +29,6 @@ namespace MuteFmReloaded.UiPackage
 
 		public static bool TrayLoaded = false;
 
-		private static System.Windows.Forms.WebBrowser _browserControl = null;
-
-		private static string _uri = "";
-
 		// what bs is this kind of tracking??? -30.11.24
 		//public static void TrackEvent(string msg)
 		//{
@@ -67,6 +63,7 @@ namespace MuteFmReloaded.UiPackage
 		//	trackEventWorker.RunWorkerAsync();
 		//}
 
+		/*
 		static void browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
 		{
 			try
@@ -83,6 +80,7 @@ namespace MuteFmReloaded.UiPackage
 				MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 			}
 		}
+		*/
 		/*
 				static void webView_DocumentReady(object sender, Awesomium.Core.UrlEventArgs e)
 				{
@@ -528,7 +526,7 @@ namespace MuteFmReloaded.UiPackage
 						case Operation.Play:
 							SmartVolManagerPackage.BgMusicManager.AutoMuted = false; // TODO
 							MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
-							if (track) /*TrackEvent("Play")*/;
+							//if (track) TrackEvent("Play");
 							break;
 
 						case Operation.ChangeMusic:

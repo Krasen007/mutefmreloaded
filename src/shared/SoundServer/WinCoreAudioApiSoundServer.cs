@@ -150,7 +150,7 @@ namespace WinCoreAudioApiSoundServer
 											else
 												ProcFullPathDict[pid] = "";
 										}
-										catch (Exception ex)
+										catch (Exception)
 										{
 											// WMI code from stackoverflow
 											string query = "SELECT ExecutablePath, ProcessID FROM Win32_Process";
