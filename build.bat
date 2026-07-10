@@ -1,0 +1,1 @@
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe /p:Configuration=Release /p:Platform=x86 src\win\mutefm.sln /v:quiet

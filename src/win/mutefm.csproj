@@ -280,16 +280,17 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del $(ProjectDir)\bin\$(ConfigurationName)\mixer\*.* /Q
 
-mkdir $(ProjectDir)\bin\$(ConfigurationName)\mixer
+ mkdir $(ProjectDir)\bin\$(ConfigurationName)\mixer
 
-xcopy /e $(ProjectDir)\..\mixer\*.* $(ProjectDir)\bin\$(ConfigurationName)\mixer\*.* /Q /Y
+ xcopy /e $(ProjectDir)\..\mixer\*.* $(ProjectDir)\bin\$(ConfigurationName)\mixer\*.* /Q /Y
 
-copy $(ProjectDir)\..\..\lib\$(ConfigurationName)\*.*   $(ProjectDir)\bin\$(ConfigurationName)\*.*  /Y
-</PostBuildEvent>
+ copy $(ProjectDir)\..\..\lib\$(ConfigurationName)\*.*   $(ProjectDir)\bin\$(ConfigurationName)\*.*  /Y
+ copy $(ProjectDir)\..\..\lib\*.mid   $(ProjectDir)\bin\$(ConfigurationName)
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
