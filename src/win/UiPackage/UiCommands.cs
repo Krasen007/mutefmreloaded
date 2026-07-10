@@ -7,21 +7,10 @@ namespace MuteFmReloaded.UiPackage
 {
 	public class UiCommands
 	{
-
 		public static PlayerForm mPlayerForm = null;
-#if !NOAWE
-        private static WebBgMusicForm WebBgMusicForm = null;
-#endif
 		private static KeyboardHook _hook = new KeyboardHook();
 		[System.Runtime.InteropServices.DllImport("user32.dll")]
 		private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-#if !NOAWE
-        private static InitWizForm _initWizardForm;
-
-        private static Awesomium.Core.WebView _webView = null;
-        private static Awesomium.Core.WebSession _trackSession;
-#endif
 		private static Operation _validOperation;
 		private static bool _isVisible, _isRunning, _playerVisible;
 
@@ -29,132 +18,13 @@ namespace MuteFmReloaded.UiPackage
 
 		public static bool TrayLoaded = false;
 
-		// what bs is this kind of tracking??? -30.11.24
-		//public static void TrackEvent(string msg)
-		//{
-		//	// Unfortunate that this uses UI thread (moving it to background worker isn't as useful; perhaps undo that)
-		//	System.ComponentModel.BackgroundWorker trackEventWorker = new BackgroundWorker();
-		//	trackEventWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(delegate
-		//	{
-		//		MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
-		//		{
-		//			try
-		//			{
-		//				_uri = "http://www.mutefm.com/track_" + msg.ToLower() + ".html?identity=" + Program.Identity;
-
-		//				_browserControl = new System.Windows.Forms.WebBrowser();
-		//				_browserControl.ScriptErrorsSuppressed = true;
-		//				_browserControl.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(browser_DocumentCompleted);
-		//				_browserControl.Url = new Uri(_uri);
-
-		//				// TODO: use ie for this at least for now
-		//				/* 
-  //                      _trackSession = Awesomium.Core.WebCore.CreateWebSession(new Awesomium.Core.WebPreferences());
-  //                      _webView = Awesomium.Core.WebCore.CreateWebView(100, 100, _trackSession, Awesomium.Core.WebViewType.Offscreen);
-  //                      _webView.DocumentReady += new Awesomium.Core.UrlEventHandler(webView_DocumentReady);
-  //                      _webView.Source = new Uri(_uri); */
-		//			}
-		//			catch (Exception ex)
-		//			{
-		//				MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-		//			}
-		//		});
-		//	});
-		//	trackEventWorker.RunWorkerAsync();
-		//}
-
-		/*
-		static void browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-		{
-			try
-			{
-				System.Threading.Thread.Sleep(500);
-				if (_browserControl != null)
-				{
-					_browserControl.Stop();
-					_browserControl.Dispose();
-				}
-			}
-			catch (Exception ex)
-			{
-				MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-			}
-		}
-		*/
-		/*
-				static void webView_DocumentReady(object sender, Awesomium.Core.UrlEventArgs e)
-				{
-					try
-					{
-						Awesomium.Core.JSValue muteFmObj = _webView.CreateGlobalJavascriptObject("mutefm");
-						System.Threading.Thread.Sleep(500);
-						if (_webView != null)
-						{
-							_webView.Stop();
-							_webView.Dispose();
-						}
-					}
-					catch (Exception ex)
-					{
-						MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-					}
-				}
-				*/
-
-#if !NOAWE
-        // this is now async
-        public static void RunWebCommandAsync(string command)
-        {
-            System.ComponentModel.BackgroundWorker webCommandWorker = new BackgroundWorker();
-            webCommandWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(delegate
-            {
-               // System.Threading.Thread.Sleep(3000);
-
-                MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
-                {                
-                    WebBgMusicForm.ExecuteJS(command);
-                });
-            });
-            webCommandWorker.RunWorkerAsync();
-        }
-#endif
-
-#if !NOAWE
-        public static void CloseGettingStartedWizard()
-        {
-            if (_initWizardForm != null)
-                _initWizardForm.Close();
-        }
-#endif
-
-		public static void ShowGettingStartedWizard()
-		{
-#if NOAWE
-			System.Diagnostics.Process.Start("http://www.mutefm.com/wizard.html");
-#else
-            _initWizardForm = new InitWizForm();
-            _initWizardForm.UpdateUI();
-            _initWizardForm.Show(); 
-#endif
-		}
-
 		// Must be run within UI thread
 		public static void InitUI(bool firstTime)
 		{
-#if !NOAWE
-            WebBgMusicForm = new MuteFm.UiPackage.WebBgMusicForm();
-            WebBgMusicForm.FormClosing += new FormClosingEventHandler(WebBgMusicForm_FormClosing);
-            WebBgMusicForm.Resize += new EventHandler(WebBgMusicForm_Resize);
-            //WebBgMusicForm.Show();
-#endif
-
-			// OLDNOTIFY TopForm.Instance.Show();
-			//UiPackage.UiCommands.SetNotification(Constants.ProgramName + " started (expires " + Constants.GetExpirationDateString() + ")", false);
-			UiPackage.UiCommands.SetNotification(Constants.ProgramName + " started", false);
+			SetNotification(Constants.ProgramName + " started", false);
 
 			if (SmartVolManagerPackage.BgMusicManager.MuteFmConfig.Hotkeys == null)
 				MuteFmConfigUtil.LoadDefaultHotkeys(SmartVolManagerPackage.BgMusicManager.MuteFmConfig);
-
 
 			if (SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.SoundPollIntervalInS == 0)
 				SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.SoundPollIntervalInS = MuteFmConfig.SoundPollIntervalDefault;
@@ -167,16 +37,12 @@ namespace MuteFmReloaded.UiPackage
 			mPlayerForm.FormClosed += new FormClosedEventHandler(mPlayer_FormClosed);
 			mPlayerForm.Init(false);
 
-			//            MuteApp.UiPackage.UiCommands.ShowPlayer();
 			if (firstTime)
 			{
 				System.ComponentModel.BackgroundWorker firstTimeWorker = new BackgroundWorker();
 				firstTimeWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(DoFirstTimeWork);
 				firstTimeWorker.RunWorkerAsync();
 
-#if !NOAWE
-                UiPackage.UiCommands.ShowGettingStartedWizard();
-#endif
 				mPlayerForm.ToggleTopmost(true);
 			}
 			else
@@ -196,7 +62,6 @@ namespace MuteFmReloaded.UiPackage
 							System.ComponentModel.BackgroundWorker firstTimeWorker2 = new BackgroundWorker();
 							firstTimeWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(delegate
 							{
-								//System.Threading.Thread.Sleep(5000); //todo
 								OnOperation(Operation.Play);
 							});
 							firstTimeWorker2.RunWorkerAsync();
@@ -216,7 +81,6 @@ namespace MuteFmReloaded.UiPackage
 			System.Threading.Thread.Sleep(2000);
 			UiPackage.UiCommands.ShowMixer();
 			OnOperation(Operation.Play);
-			//            UiPackage.UiCommands.ShowGettingStartedWizard();
 		}
 
 		private static DateTime _prevNotifyDateTime = DateTime.MinValue;
@@ -246,89 +110,19 @@ namespace MuteFmReloaded.UiPackage
 				{
 					MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.ShowBalloonTip(3000, Constants.ProgramName, text, ToolTipIcon.Info);
 				}
-
-				//OLDNOTIFY
-				/*
-                TopForm.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
-                {
-                    //TODO: the below isn't actually working (it seems to sometimes though)
-                    //            TopForm.Instance.BeginInvoke(new Action(() => TopForm.Instance.Opacity = 0.99)); // via http://stackoverflow.com/questions/10452740/remove-black-flicker-on-first-show-of-winform-with-transparencykey-set to remove initial flicker
-                    TopForm.Instance.Opacity = 0.99;
-                    TopForm.Instance.SetText(text, useBgMusicIcon);
-                    MuteApp.SmartVolManagerPackage.SoundEventLogger.LogMsg("Top text: " + text);
-                }); */
 			}
 			catch (Exception ex)
 			{
 				MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 			}
 		}
-#if !NOAWE
-        public static void StopWebBgMusic()
-        {
-            MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                WebBgMusicForm.StopSounds();
-            });
-        }
-        public static void UnstopWebBgMusic()
-        {
-            MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                WebBgMusicForm.UnstopSounds();
-            });
-        }
-        public static void ShowWebBgMusic()
-        {
-            MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                WebBgMusicForm.UnstopSounds();
-                //System.Threading.Thread.Sleep(4000); //TODO-SHOW
-                WebBgMusicForm.Show();
-                if (WebBgMusicForm.WindowState == System.Windows.Forms.FormWindowState.Minimized)
-                    WebBgMusicForm.WindowState = System.Windows.Forms.FormWindowState.Normal;
-                SetForegroundWindow(WebBgMusicForm.Handle);
-                WebBgMusicForm.UpdateUiForState();
-            });
-        }
-        public static void HideWebBgMusic()
-        {
-            MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                WebBgMusicForm.Hide();
-            });
-        }
-
-        public static bool LoadWebBgMusicSite(string name, string url, string onLoadCommand)
-        {
-            return (bool)MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((Func<bool>)delegate
-            {
-                //url = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\mixer\wizard.html"; //TODO-jared remove this line
-
-                return WebBgMusicForm.LoadSite(name, url, onLoadCommand);
-            });
-        }
-        public static bool IsWebBgMusicSiteCurrent(string url)
-        {
-            bool success = false;
-            MuteFm.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                success = (WebBgMusicForm.GetActiveSite() == url);
-            });
-            return success;
-        }
-#endif
 
 		public static void ShowMixer()
 		{
 			MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
 			{
-				//HidePlayer();
-
 				mPlayerForm.Show();
-				//TODO mPlayerForm.Height = 20;
 				mPlayerForm.Visible = true;
-				//TODO mPlayerForm.Height = 20;
 				_playerVisible = true;
 				mPlayerForm.WindowState = FormWindowState.Normal;
 				mPlayerForm.Activate();
@@ -341,19 +135,12 @@ namespace MuteFmReloaded.UiPackage
 				return;
 			MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance.Invoke((System.Windows.Forms.MethodInvoker)delegate
 			{
-				//mPlayerForm.Close();
-				//mPlayerForm = null;
 				mPlayerForm.Hide();
 				_playerVisible = false;
 				UpdateUiForState();
-				// State gets updated by Close() so we don't handle that here
 			});
 		}
 
-		public static void UpdateWebBgMusicClosed()
-		{
-			UpdateUiForState(_validOperation, false, false, _playerVisible);
-		}
 		public static void UpdatePlayerVisibleState(bool playerVisible)
 		{
 			UpdateUiForState(_validOperation, _isVisible, _isRunning, playerVisible);
@@ -374,7 +161,6 @@ namespace MuteFmReloaded.UiPackage
 				_isVisible = isVisible;
 				_isRunning = isRunning;
 				_playerVisible = playerVisible;
-
 
 				PlayerStateSendData playerState = new PlayerStateSendData(
 					validOperation,
@@ -409,32 +195,9 @@ namespace MuteFmReloaded.UiPackage
 					}
 				}
 
-
-#if !NOAWE
-                // BgMusicForm
-                try
-                {
-                    if ((WebBgMusicForm != null) && (WebBgMusicForm.IsHandleCreated))
-                    {
-                        WebBgMusicForm.Invoke((System.Windows.Forms.MethodInvoker)delegate
-                        {
-                            if (WebBgMusicForm.Visible)
-                                WebBgMusicForm.UpdateUiForState();
-                        });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MuteFm.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-                }
-#endif
-
 				// Mixer
 				if ((mPlayerForm != null) && (mPlayerForm.IsHandleCreated))
 				{
-					bool f = mPlayerForm.InvokeRequired;
-					bool f2 = mPlayerForm.IsDisposed;
-
 					try
 					{
 						mPlayerForm.Invoke((System.Windows.Forms.MethodInvoker)delegate
@@ -447,14 +210,6 @@ namespace MuteFmReloaded.UiPackage
 						MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 					}
 				}
-
-
-				// Web socket connections (not used anymore since mixer now uses native controls)
-				//MixerWebSocketServerHelper.SendCommand("BGSTATE", playerState);
-				//MixerWebSocketServerHelper.SendCommand("FGSTATE", playerState); // TODO: don't send full state for bg and fg and don't always call both
-				// TODO: shouldn't always call this...
-				//BgMusicFavoritesSendData favorites = new BgMusicFavoritesSendData(MuteApp.SmartVolManagerPackage.BgMusicManager.MuteTunesConfig.BgMusics, SmartVolManagerPackage.BgMusicManager.MuteTunesConfig.GeneralSettings.AutoMuteEnabled, SmartVolManagerPackage.BgMusicManager.ForegroundSoundPlaying);
-				//MixerWebSocketServerHelper.SendCommand("FAVORITES", favorites);            
 			}
 			catch (Exception ex)
 			{
@@ -481,9 +236,6 @@ namespace MuteFmReloaded.UiPackage
 		}
 		public static void OnOperation(long musicId, Operation op, string param, bool ignoreCommand, bool track)
 		{
-			//if (Program.LicenseExpired == true)
-			//	return;
-
 			if (MuteFmReloaded.UiPackage.WinSoundServerSysTray.Instance == null)
 				return;
 
@@ -495,11 +247,9 @@ namespace MuteFmReloaded.UiPackage
 				}
 
 				if (op == Operation.Show)
-					System.Threading.Thread.Sleep(250); // Ensure that window is shown after click sets focus to browser (if run in extension); was 750
-
+					System.Threading.Thread.Sleep(250); // Ensure that window is shown after click sets focus to browser
 
 				// Queue up background music if a foreground sound is active
-				// If user clicked play or unmute for bgmusic and music is automuted and countdown hasn't started, then note that user wants bgmusic and smartmute it but don't show fade messages or let it make sound [i.e. queue it up]
 				if ((musicId == SmartVolManagerPackage.BgMusicManager.ActiveBgMusic.Id) &&
 					(((op == Operation.Play) || (op == Operation.Unmute)) &&
 					(SmartVolManagerPackage.BgMusicManager.EffectiveSilenceDateTime == DateTime.MaxValue) &&
@@ -510,11 +260,6 @@ namespace MuteFmReloaded.UiPackage
 					MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.PerformOperation(musicId, Operation.AutoMutedPlay, param, ignoreCommand);
 					return;
 				}
-				else
-				{
-					int x = 0;
-					x++;
-				}
 
 				MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.PerformOperation(musicId, op, param, ignoreCommand);
 
@@ -524,9 +269,8 @@ namespace MuteFmReloaded.UiPackage
 					switch (op)
 					{
 						case Operation.Play:
-							SmartVolManagerPackage.BgMusicManager.AutoMuted = false; // TODO
+							SmartVolManagerPackage.BgMusicManager.AutoMuted = false;
 							MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
-							//if (track) TrackEvent("Play");
 							break;
 
 						case Operation.ChangeMusic:
@@ -537,13 +281,12 @@ namespace MuteFmReloaded.UiPackage
 								if (playerInfo.Id <= 0)
 								{
 									MuteFmConfigUtil.AddSoundPlayerInfo(playerInfo, SmartVolManagerPackage.BgMusicManager.MuteFmConfig);
-									//MixerWebSocketServerHelper.SendCommand("BGMUSICSITES", new GetBgMusicSiteSendData());
 								}
 
 								SmartVolManagerPackage.BgMusicManager.AlbumArtFileName = "";
 								SmartVolManagerPackage.BgMusicManager.TrackName = "";
 
-								if (SmartVolManagerPackage.BgMusicManager.ActiveBgMusic.IsWeb) // Changed 8/16/13 to only do this if web-based
+								if (SmartVolManagerPackage.BgMusicManager.ActiveBgMusic.IsWeb)
 									OnOperation(Operation.Stop);
 								else
 									OnOperation(Operation.Pause);
@@ -589,8 +332,6 @@ namespace MuteFmReloaded.UiPackage
 							_autoShowAfterPlayWorker.WorkerSupportsCancellation = true;
 							_autoShowAfterPlayWorker.DoWork += new DoWorkEventHandler(_isPausing_DoWork);
 							_autoShowAfterPlayWorker.RunWorkerAsync();
-
-							//MuteApp.SmartVolManagerPackage.BgMusicManager.PerformOperation(Operation.ClearHistory);
 							break;
 						case Operation.Unmute:
 							MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = true;
@@ -604,13 +345,6 @@ namespace MuteFmReloaded.UiPackage
 			if (op == Operation.Exit)
 			{
 				Exit();
-				/*//UiPackage.UiCommands.SetTopText("Exiting mute.fm...", false);
-                //System.Threading.Thread.Sleep(3000);
-                WebBgMusicForm.Visible = false;
-                WebBgMusicForm.Close();
-                UiPackage.WinSoundServerSysTray.Instance.Close();
-                Environment.Exit(0);
-                //Application.Exit();*/
 			}
 		}
 		public static void ShowSite(string title, string url)
@@ -620,7 +354,7 @@ namespace MuteFmReloaded.UiPackage
 			MuteFmReloaded.SoundPlayerInfo bgm = new MuteFmReloaded.SoundPlayerInfo();
 			bgm.IsWeb = true;
 			bgm.UrlOrCommandLine = url;
-			bgm.Name = title; // TODO: get title as well and then show domain: title or something similar (like in mutetab)
+			bgm.Name = title;
 			bgm.Id = -1;
 			MuteFmConfigUtil.GenerateIconImage(bgm, false);
 
@@ -635,36 +369,19 @@ namespace MuteFmReloaded.UiPackage
 			{
 				UnregisterHotkeys();
 
-				//if (MuteFm.SmartVolManagerPackage.BgMusicManager.OwnBgMusicPid)
-				//    MuteFm.SmartVolManagerPackage.BgMusicManager.Close();
-
-				//UiPackage.WinSoundServerSysTray.Instance.Close(); // Should happen implicitly when we exit the application?
-
-				//Kill all threads
-				if (Program.SoundServerThread != null)
-					Program.SoundServerThread.Abort();
-				//if (Program.WebSocketServerThread != null)
-				//    Program.WebSocketServerThread.Abort();
-				//if (Program.PidMonitoringThread != null)
-				//    Program.PidMonitoringThread.Abort();
-				//if (Program.WebServerThread != null)
-				//    Program.WebServerThread.Abort();
-				//if (Program.CheckItunesThread != null)
-				//Program.CheckItunesThread.Abort();
-
-				//Restore volumes in case user doesn't run this app again .  This was more important for 'MuteTabMixer' than for mute.fm.
-				// SmartVolManagerPackage.SoundServer.RestoreVolumes();
+				// Signal the sound server thread to stop gracefully
+				if (Program.SoundServerThread != null && !Program.SoundServerThread.Join(1000))
+				{
+					// Thread didn't stop gracefully, but we don't use Thread.Abort anymore
+					// The thread will exit on its own when the application closes
+				}
 			});
 
 			SmartVolManagerPackage.SoundEventLogger.LogMsg("Exiting...");
 			SmartVolManagerPackage.SoundEventLogger.Close();
 			try
 			{
-				//UiPackage.UiCommands.SetTopText("Exiting mute.fm...", false);
-				//System.Threading.Thread.Sleep(3000);
 				UiPackage.WinSoundServerSysTray.Instance.Close();
-				//WebBgMusicForm.Close();
-				//Environment.Exit(0);
 				System.Windows.Forms.Application.Exit();
 			}
 			catch (Exception ex)
@@ -678,7 +395,7 @@ namespace MuteFmReloaded.UiPackage
 			// Prevent automute from seeing a brief pause as something that requires restoring again
 			System.Threading.Thread.CurrentThread.Name = "IsPausing";
 			MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.IsPausing = true;
-			System.Threading.Thread.Sleep(750); // TODO: has to be sufficiently longer than the constant used to try to detect if paused or not
+			System.Threading.Thread.Sleep(750);
 			MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.IsPausing = false;
 		}
 
@@ -704,11 +421,9 @@ namespace MuteFmReloaded.UiPackage
 					catch (Exception ex)
 					{
 						MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-						//MessageBox. Show("Error occurred registering hotkeys");
 					}
 				}
 			}
-
 		}
 
 		private static DateTime _lastKeyPress = DateTime.MinValue;
@@ -761,7 +476,7 @@ namespace MuteFmReloaded.UiPackage
 						case "show":
 							UiCommands.OnOperation(Operation.Show);
 							break;
-						case "toggle muting music/videos": // Could add this to enumeration
+						case "toggle muting music/videos":
 							SmartVolManagerPackage.BgMusicManager.ToggleFgMute();
 							UiCommands.OnOperation(Operation.Restore);
 							break;
@@ -772,36 +487,9 @@ namespace MuteFmReloaded.UiPackage
 			}
 		}
 
-#if !NOAWE
-        private static void WebBgMusicForm_Resize(object sender, EventArgs e)
-        {
-            if (((Form)(sender)).WindowState == FormWindowState.Minimized)
-            {
-                //if (SmartVolManagerPackage.BgMusicManager.UserMustClickPlay == true)
-                //{
-                //    OnOperation(Operation.Stop);
-                //}
-
-                ((Form)(sender)).Hide();
-                UiPackage.UiCommands.UpdateWebBgMusicClosed();
-            }
-        }
-        private static void WebBgMusicForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            ((MuteFm.UiPackage.WebBgMusicForm)(sender)).StopSounds();
-            ((Form)(sender)).Hide();
-            e.Cancel = true;
-
-            SmartVolManagerPackage.BgMusicManager.UserWantsBgMusic = false;
-            OnOperation(Operation.Stop);
-
-            UiPackage.UiCommands.UpdateWebBgMusicClosed();
-        }
-#endif
 		private static void mPlayer_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			mPlayerForm = null;
-			//            UiPackage.UiCommands.UpdatePlayerVisibleState(false);
 		}
 	}
 }

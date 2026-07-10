@@ -1,13 +1,13 @@
 # mute.fm Reloaded - Codebase Analysis Report
 
-**Date:** July 10, 2026  
+**Date:** July 10, 2026 (Updated)  
 **Author:** Analysis for Windows 11 rebuild
 
 ---
 
 ## Project Overview
 
-**mute.fm** is a Windows desktop application that automatically mutes background music when foreground audio (like videos) is detected, and restores the music when the foreground audio stops.
+**mute.fm reloaded** is a Windows desktop application that automatically mutes background music when foreground audio (like videos) is detected, and restores the music when the foreground audio stops.
 
 ### Core MVP Functionality
 1. Monitor all audio sessions via Windows Core Audio API
@@ -18,38 +18,30 @@
 
 ---
 
-## Recent Changes (2024 - Last 3 Commits)
-
-### Commit: `48435e0` - "remove licensing and background tracking / checking"
-- Removed license expiration checks
-- Removed background tracking/analytics code
-- Cleaned up license-related code paths
-
-### Commit: `d7b4cb5` - "auto code cleanup"
-- General code cleanup and formatting
-
-### Commit: `c02814b` - "minimize on close, don't prompt for exit or minimize"
-- Changed exit behavior to minimize instead of prompting
-- Simplified close/minimize logic
-
----
 
 ## Current Build Status
 
 ### Build Tools Available
 - **MSBuild:** Available via `%SYSTEMROOT%\Microsoft.NET\Framework\v4.0.30319\msbuild.exe`
-- **.NET Framework 4.8:** Target framework (should be available on Windows 11)
-- **Inno Setup:** Required for installer creation (not currently installed)
+- **.NET Framework 4.8:** Target framework (available on Windows 11)
 
 ### Build Tools NOT Available
-- **Visual Studio:** Not installed on this machine
+- **Visual Studio:** Not installed (but MSBuild works fine)
 - **.NET SDK:** Not installed (not needed for .NET Framework builds)
-- **Inno Setup:** Not installed (needed for creating installer)
 
 ### Build Command
+```cmd
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe /p:Configuration=Release /p:Platform=x86 src\win\mutefm.sln
 ```
-%SYSTEMROOT%\Microsoft.NET\Framework\v4.0.30319\msbuild.exe /p:Configuration=Release src\win\mutefm.sln
+
+Or use the provided build script:
+```cmd
+build.bat
 ```
+
+### Build Output
+- **Executable:** `src\win\bin\Release\mute_fm_reloaded.exe` (209KB)
+- **Dependencies:** CoreAudioApi.dll, WinCoreAudioApiSoundServer.dll, Newtonsoft.Json.Net35.dll
 
 ---
 
@@ -66,7 +58,9 @@ mutefmreloaded/
 │   │   │   ├── PlayerForm.cs   # Main mixer window
 │   │   │   ├── WinSoundServerSysTray.cs  # System tray icon
 │   │   │   ├── UiCommands.cs   # UI command handling
-│   │   │   └── ...             # Other UI forms
+│   │   │   ├── KeyboardHook.cs # Global hotkey support
+│   │   │   ├── InitWizForm.cs  # Awesomium wizard (disabled via NOAWE)
+│   │   │   └── WebBgMusicForm.cs # Awesomium web control (disabled via NOAWE)
 │   │   └── ...                 # Other Windows-specific code
 │   └── shared/                 # Cross-platform code
 │       ├── SmartVolManagerPackage/
@@ -79,12 +73,11 @@ mutefmreloaded/
 │       │   └── Operation.cs         # Process control operations
 │       └── WebServer.cs             # Internal web server for UI assets
 ├── lib/
-│   ├── Growl.Connector.dll        # Notification library (OUTDATED)
-│   ├── Growl.CoreLibrary.dll        # Notification library (OUTDATED)
 │   ├── Newtonsoft.Json.Net35.dll    # JSON serialization
 │   └── src/CoreAudio2_Src/          # Core Audio API wrapper source
-└── build/
-    └── mutefm_setup.iss             # Inno Setup installer script
+├── build.bat                      # Build script
+└── todo/
+    └── analysis_report.md           # This file
 ```
 
 ### Key Components
@@ -115,28 +108,19 @@ mutefmreloaded/
 
 ### Critical Issues
 
-1. **Build System Dependencies**
-   - Inno Setup not installed (required for installer)
-   - Visual Studio not available (but MSBuild should work)
-   - `System.Threading.dll` reference from `lib\debug\SuperWebSocket` - this folder doesn't exist
+1. **Outdated/Dead References**
+   - **Awesomium** - Web browser control, discontinued (code is disabled via `NOAWE` flag but files still exist)
+   - **CheckForUpdates.cs** - Points to dead domain (mutefm.com)
 
-2. **Outdated/Dead References**
-   - **Growl** - Notification library, website doesn't exist anymore
-   - **Awesomium** - Web browser control, discontinued (code is already disabled via `NOAWE` flag)
-   - **getfavicon.appspot.com** - Used for icon fetching, service is dead
-   - **Old music services** - Rdio, Grooveshark, MOG, Pandora (old URLs) are mostly dead
-
-3. **Code Quality Issues**
+2. **Code Quality Issues**
    - Many commented-out code blocks
    - TODO comments throughout (some from 2013-2014)
    - Inconsistent naming (MuteFm vs MuteFmReloaded)
    - Thread.Abort() usage (deprecated, can cause issues)
 
-4. **Potential Bugs**
-   - `System.Threading.dll` reference path doesn't exist
-   - `lib\debug` folder missing (referenced in csproj)
-   - `GrowlInstallHelper.cs` still references Growl
+3. **Potential Bugs**
    - `CheckForUpdates.cs` points to dead domain (mutefm.com)
+   - Awesomium files (InitWizForm.cs, WebBgMusicForm.cs) still in project but disabled
 
 ### Minor Issues
 
@@ -146,116 +130,130 @@ mutefmreloaded/
    - Wizard functionality disabled (was for Awesomium)
 
 2. **Configuration Issues**
-   - Default config includes dead music services (Rdio, Grooveshark, etc.)
-   - Old URLs in default configuration
+   - Default config includes "Demo music" entry (uses Windows Media Player)
+   - Old URLs in default configuration (but modern services added)
+
+- [x] Icon fetching updated to use Google's favicon service instead of getfavicon.appspot.com
+- [x] Executable renamed to `mute_fm_reloaded.exe`
 
 ---
 
-## Recommendations for MVP Simplification
+## Current Status
 
-### Keep (Core Functionality)
-1. Core Audio API integration (WinCoreAudioApiSoundServer)
-2. Sound monitoring and detection (SoundServer)
-3. Auto-mute/restore logic (BgMusicManager)
-4. System tray icon and basic controls
-5. Configuration persistence (MuteTunesConfig)
-6. Hotkey support
+### Build Status: ✅ SUCCESS
+The application builds successfully on Windows 11 with MSBuild.
 
-### Remove/Simplify
-1. **Remove Growl integration entirely**
-   - Delete Growl.Connector.dll and Growl.CoreLibrary.dll references
-   - Remove GrowlInstallHelper.cs
-   - Use only Windows balloon notifications
 
-2. **Remove Awesomium code paths**
-   - Already disabled via `NOAWE` flag
-   - Clean up remaining references
-
-3. **Remove dead music service defaults**
-   - Remove Rdio, Grooveshark, MOG, old Pandora from defaults
-   - Keep only: Spotify, iTunes, Windows Media Player, Winamp, Foobar2000
-   - Add modern services: YouTube Music, Spotify Web, etc.
-
-4. **Remove update checking**
-   - Or point to GitHub releases instead of mutefm.com
-
-5. **Remove icon fetching from getfavicon.appspot.com**
-   - Use local icons or extract from executables
-
-6. **Clean up commented code**
-   - Remove large blocks of commented-out code
-   - Keep only essential TODOs
-
----
-
-## Migration Considerations
-
-### Option 1: Stay with .NET Framework 4.8 (Recommended)
-**Pros:**
-- Minimal changes required
-- Core Audio API works well
-- Existing code is stable
-- Windows 11 fully supports .NET Framework 4.8
-
-**Cons:**
-- Not future-proof (no new features)
-- Requires Visual Studio for best development experience
-
-### Option 2: Migrate to .NET 6/7/8 (WinForms)
-**Pros:**
-- Modern, supported framework
-- Better performance
-- Single-file deployment possible
-- Can use modern C# features
-
-**Cons:**
-- Requires significant changes to project files
-- CoreAudioApi may need updates
-- More testing required
-
-### Option 3: Rewrite in a different language
-**Not recommended** - The Core Audio API integration is complex and the existing C# code is functional.
+### Files Still Present (Awesomium - disabled via NOAWE)
+- `src/win/UiPackage/InitWizForm.cs` - Still exists but disabled
+- `src/win/UiPackage/WebBgMusicForm.cs` - Still exists but disabled
 
 ---
 
 ## Action Plan
 
-### Phase 1: Fix Build Issues (High Priority) - COMPLETED
-- [x] Fix `System.Threading.dll` reference (use built-in .NET 4.8)
-- [x] Remove Growl references
-- [x] Remove Awesomium references (already disabled via NOAWE flag)
-- [x] Test build with MSBuild - **BUILD SUCCEEDED**
+### Phase 1: Testing (Next)
+- [ ] Test audio detection with modern browsers (Chrome, Edge, Firefox)
+- [ ] Test with music players (Spotify, YouTube, etc.)
+- [ ] Verify system tray functionality
+- [ ] Test auto-mute/restore behavior
+- [ ] Test hotkey functionality
 
-### Build Fixes Applied
-1. Fixed `System.Threading.dll` reference in `mutefm.csproj` - changed from broken path to built-in reference
-2. Removed Growl.Connector.dll and Growl.CoreLibrary.dll references from `mutefm.csproj`
-3. Removed `GrowlInstallHelper.cs` from project compilation
-4. Removed Growl code from `UiCommands.cs` and `PlayerForm.cs`
-5. Removed `growlToolStripMenuItem` from `PlayerForm.Designer.cs`
-6. Removed `CheckGrowl()` method from `Program.cs`
-7. Added x86 configuration to `WinCoreAudioApiSoundServer.csproj`
-8. Fixed solution file to include x86 configuration for WinCoreAudioApiSoundServer
-
-### Build Output
-- `src\win\bin\Release\mute_fm.exe` - Successfully built (212KB)
-- Can run directly without installer!
-
-### Phase 2: Clean Up Code (Medium Priority)
-- [ ] Remove dead music service defaults
-- [ ] Remove commented code blocks
-- [ ] Clean up TODO comments
+### Phase 2: Code Cleanup (Medium Priority)
+- [ ] Remove Awesomium files (InitWizForm.cs, WebBgMusicForm.cs)
+- [ ] Clean up commented code blocks
 - [ ] Fix potential null reference issues
 
-### Phase 3: Test on Windows 11 (High Priority)
-- [ ] Test audio detection with modern browsers
-- [ ] Test with Spotify, YouTube, etc.
-- [ ] Verify system tray functionality
-- [ ] Test auto-mute/restore
+### Phase 3: Feature Updates (Low Priority)
+- [ ] Update update checking to use GitHub releases
+- [ ] Improve UI/UX
 
-### Phase 4: Create Working Installer (Medium Priority)
-- [ ] Install Inno Setup
-- [ ] Update installer script
-- [ ] Create release build
+---
+
+## Phase 2 Implementation Plan: Code Cleanup
+
+### Task 1: Remove Awesomium Files
+
+**Files to Delete:**
+- `src/win/UiPackage/InitWizForm.cs` (108 lines)
+- `src/win/UiPackage/InitWizForm.Designer.cs`
+- `src/win/UiPackage/InitWizForm.resx`
+- `src/win/UiPackage/WebBgMusicForm.cs` (352 lines)
+- `src/win/UiPackage/WebBgMusicForm.Designer.cs`
+- `src/win/UiPackage/WebBgMusicForm.resx`
+- `src/win/UiPackage/WebBgMusicForm.af-ZA.resx`
+
+**Files to Update:**
+- `src/win/mutefm.csproj` - Remove Compile and EmbeddedResource entries for InitWizForm and WebBgMusicForm
+- `src/win/UiPackage/UiCommands.cs` - Remove all `#if !NOAWE` blocks and related code (lines 12-24, 104-120, 266-320, 775-800)
+
+**Impact:**
+- These files are already disabled via `#if !NOAWE` conditional compilation
+- Removing them will clean up ~500+ lines of dead code
+- No runtime impact since NOAWE is defined in the build configuration
+
+### Task 2: Update CheckForUpdates.cs
+
+**Current State:**
+- Points to `http://www.mutefm.com` (dead domain)
+- Uses `Constants.MuteFmDomain` which returns "www.mutefm.com"
+
+**Changes Required:**
+- Update `Constants.MuteFmDomain` to use GitHub API
+- Or create a new update checking mechanism using GitHub releases API
+- URL: `https://api.github.com/repos/Krasen007/mutefmreloaded/releases/latest`
+
+**Implementation Options:**
+1. **Simple approach:** Update to use GitHub releases URL directly
+2. **Better approach:** Use GitHub API to check for latest release and compare versions
+
+### Task 3: Clean Up Commented Code Blocks
+
+**Files with significant commented code:**
+- `src/win/Program.cs` - Large blocks of commented code (lines 62-67, 177-194, 243-267, etc.)
+- `src/win/UiPackage/UiCommands.cs` - Multiple commented sections
+- `src/shared/SmartVolManagerPackage/BgMusicManager.cs` - Likely has commented code
+- `src/win/MuteTunesConfig.cs` - Commented-out music service configurations
+
+**Approach:**
+- Remove large blocks of commented code that are no longer relevant
+- Keep essential TODOs that represent valid future work
+- Focus on code that's been commented for years (2013-2014 era)
+
+### Task 4: Fix Thread.Abort() Usage
+
+**Location:** `src/win/UiPackage/UiCommands.cs` line 645
+
+**Current Code:**
+```csharp
+if (Program.SoundServerThread != null)
+    Program.SoundServerThread.Abort();
+```
+
+**Recommended Fix:**
+- Use a cancellation token pattern instead of Thread.Abort()
+- Add a volatile boolean flag to signal thread termination
+- The SoundServer thread already has a loop that could be modified to check for cancellation
+
+### Task 5: Clean Up TODO Comments
+
+**Files with old TODOs:**
+- `src/win/Program.cs` - Multiple TODOs from 2013-2014
+- `src/shared/SoundServer/SoundServer.cs` - Likely has TODOs
+- Various UI files
+
+**Approach:**
+- Review each TODO and either:
+  - Remove if no longer relevant
+  - Keep if it represents valid future work
+  - Update with current context if needed
+
+---
+
+### Phase 4: Distribution (Low Priority)
+- [ ] Create simple distribution script (copy exe + DLLs to output folder)
+- [ ] No installer needed - app runs directly!
+- [ ] Optional: Create ZIP package for easy distribution
 
 ---
 
@@ -273,8 +271,17 @@ mutefmreloaded/
 1. ~~`src/win/GrowlInstallHelper.cs` - Remove entirely~~ - **DONE**
 2. ~~`lib/Growl.Connector.dll` - Remove~~ - **DONE**
 3. ~~`lib/Growl.CoreLibrary.dll` - Remove~~ - **DONE**
-4. `src/win/UiPackage/InitWizForm.cs` - Remove (Awesomium)
-5. `src/win/UiPackage/WebBgMusicForm.cs` - Remove (Awesomium)
+4. `src/win/UiPackage/InitWizForm.cs` - Remove (Awesomium, disabled)
+5. `src/win/UiPackage/WebBgMusicForm.cs` - Remove (Awesomium, disabled)
+
+---
+
+## How to Run
+
+The application can be run directly without an installer:
+```
+src\win\bin\Release\mute_fm_reloaded.exe
+```
 
 ---
 
@@ -290,29 +297,19 @@ mutefmreloaded/
    - Fixed solution file configuration mappings
 
 2. **Files cleaned:**
-   - Deleted `src/win/GrowlInstallHelper.cs`
    - Deleted `lib/Growl.Connector.dll`
    - Deleted `lib/Growl.CoreLibrary.dll`
+   - Removed `GrowlInstallHelper.cs` references
 
-### How to Run
-The application can be run directly without an installer:
-```
-src\win\bin\Release\mute_fm.exe
-```
+3. **Modern updates:**
+   - Added Spotify Web and YouTube Music to default config
+   - Updated icon fetching to use Google's favicon service
+   - Renamed executable to `mute_fm_reloaded.exe`
 
 ### Next Steps
 1. Test the application on Windows 11 with modern browsers (Chrome, Edge, Firefox)
 2. Test with music players (Spotify, YouTube, etc.)
 3. Clean up remaining Awesomium code (InitWizForm.cs, WebBgMusicForm.cs)
-4. Update default music service configurations
-5. Consider creating a simple batch file or PowerShell script for distribution instead of Inno Setup
+4. Update update checking to use GitHub releases
 
-**Recommendation:** The .NET Framework 4.8 approach is working well. No migration needed unless you want modern features.
-
-The project is in a reasonably good state for a Windows 11 rebuild. The core functionality (audio detection and auto-muting) is implemented and should work. The main issues are:
-
-1. **Build dependencies** - Missing Inno Setup, broken DLL references
-2. **Outdated integrations** - Growl and Awesomium should be removed
-3. **Dead service URLs** - Default config has outdated music services
-
-**Recommendation:** Fix the build issues, remove outdated code, and test the core functionality. The .NET Framework 4.8 approach is fine for Windows 11 - no need to migrate to a newer framework unless you want modern features.
+**Recommendation:** The .NET Framework 4.8 approach is working well. No migration needed unless you want modern features. The project is in a reasonably good state for a Windows 11 rebuild.

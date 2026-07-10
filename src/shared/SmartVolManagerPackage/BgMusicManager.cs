@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-#if WINDOWS
-#endif
 
 
 namespace MuteFmReloaded
@@ -267,11 +265,8 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 
 			UpdateFgMusicState();
 		}
-		public static void OnManualVolumeChange(SoundSourceInfo info)
+public static void OnManualVolumeChange(SoundSourceInfo info)
 		{
-			//if (Program.LicenseExpired)
-			//	return;
-
 			if (SoundSourceInfoIsBgMusic(info, ActiveBgMusic.ShortProcessName) && (FadingThreadCount == 0) && (IsMuting == false) && (IsUnmuting == false))
 			{
 				BgMusicVolume = info.MixerVolume;
@@ -282,13 +277,7 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 					UserWantsBgMusic = false;
 
 				UiPackage.UiCommands.UpdateUiForState();
-				//TODO: doesn't update state correctly
-				/*
-                if (BgMusicMuted == true)
-                    UpdateBgMusicState(BgMusicState.Mute);
-                UpdateBgMusicState(MusicState);*/
 			}
-			// TODO: doesn't update fgvol/muted correctly
 		}
 		// This gets called when an active sound has been added or removed (and every five seconds)
 		public static void OnUpdateSoundSourceInfos(SoundSourceInfo[] soundSourceInfos)
@@ -667,13 +656,10 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 			// TODO: have this only update fgmusic info.  And maybe only for a specific id
 			UiPackage.UiCommands.UpdateUiForState(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), BgMusicWindowShown, IsRunning());
 		}
-		private static void UpdateWindowShownState(bool visible)
+private static void UpdateWindowShownState(bool visible)
 		{
 			BgMusicWindowShown = visible;
 			bool notRunning = (BgMusicPids.Length == 0);
-#if !NOAWE
-            notRunning = notRunning || ((ActiveBgMusic.IsWeb == true) && !UiPackage.UiCommands.IsWebBgMusicSiteCurrent(ActiveBgMusic.UrlOrCommandLine)); // (MusicState == BgMusicState.Stop));
-#endif
 			UiPackage.UiCommands.UpdateUiForState(MuteFmReloaded.SmartVolManagerPackage.BgMusicManager.GetValidOperation(), BgMusicWindowShown, !notRunning);
 		}
 		#endregion
@@ -822,23 +808,16 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 							Mute(new PostVolumeOp(delegate () { FadingThreadCount--; }), 0);
 							break;
 
-						case Operation.Stop:
+case Operation.Stop:
 							if (ActiveBgMusic.IsWeb == false)
 							{
 								if (!_runCommand(ActiveBgMusic.StopCommand))
 									Close();
 							}
-							else
-							{
-#if !NOAWE
-                                MuteFm.UiPackage.UiCommands.StopWebBgMusic();
-                                PerformOperation(playerInfoId, Operation.Hide, null, ignoreCommand);
-#endif
-							}
 
 							UpdateBgMusicState(BgMusicState.Stop);
 							break;
-						case Operation.Show:
+case Operation.Show:
 							if (BgMusicPids.Length == 0)
 							{
 								_run();
@@ -846,13 +825,7 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 									return;
 							}
 
-							if (ActiveBgMusic.IsWeb)
-							{
-#if !NOAWE
-                                MuteFm.UiPackage.UiCommands.ShowWebBgMusic();
-#endif
-							}
-							else
+							if (ActiveBgMusic.IsWeb == false)
 							{
 								for (int i = 0; i < BgMusicPids.Length; i++)
 									OperationHelper.Show(BgMusicPids[i]);
@@ -860,14 +833,8 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 
 							UpdateWindowShownState(true);
 							break;
-						case Operation.Hide: // not used
-							if (ActiveBgMusic.IsWeb)
-							{
-#if !NOAWE
-                                UiPackage.UiCommands.HideWebBgMusic();
-#endif
-							}
-							else
+case Operation.Hide: // not used
+							if (ActiveBgMusic.IsWeb == false)
 							{
 								for (int i = 0; i < BgMusicPids.Length; i++)
 									MuteFmReloaded.OperationHelper.Hide(BgMusicPids[i]);
@@ -1007,25 +974,7 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 									IsMuting = false;
 									IsUnmuting = true;
 
-									if (ActiveBgMusic.IsWeb)
-									{
-#if !NOAWE
-                                        // Check for awesomium processes since they might not have existed last time we checked
-                                        Process[] processes = System.Diagnostics.Process.GetProcessesByName(Constants.GetAweProcessName());
-                                        if (processes.Length > 0)
-                                        {
-                                            List<int> bgMusicPidList = new List<int>();
-                                            bgMusicPidList.AddRange(BgMusicPids);
-                                            for (int i = 0; i < processes.Length; i++)
-                                            {
-                                                bgMusicPidList.Add(processes[i].Id);
-                                            }
-                                            BgMusicPids = bgMusicPidList.ToArray();
-                                        }
-#endif
-									}
-
-									FadingThreadCount = 0;
+FadingThreadCount = 0;
 									if (MusicState != BgMusicState.Pause)
 										UpdateBgMusicState(BgMusicState.Pause); // Will be either played or paused.  We set it to pause since state will immediately switch to play once music is heard
 									float volWas = BgMusicVolume;
@@ -1207,14 +1156,10 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 		#endregion
 
 		#region Run Commands
-		private static bool _runCommand(string cmd)
+private static bool _runCommand(string cmd)
 		{
 			if (ActiveBgMusic.IsWeb)
 			{
-#if !NOAWE
-                MuteFm.UiPackage.UiCommands.UnstopWebBgMusic();
-                _runWebCommand(cmd);
-#endif
 				return true;
 			}
 			else
@@ -1364,7 +1309,7 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 					return true;
 			}
 		}
-		private static bool _runProcCommand(string command)
+private static bool _runProcCommand(string command)
 		{
 			if (BgMusicPids.Length == 0)
 			{
@@ -1382,43 +1327,17 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 			string fileName = allArgs[0];
 			var args = allArgs.Skip(1);
 			string argString = string.Join(" ", args.ToArray());
-			System.Diagnostics.Process p = System.Diagnostics.Process.Start(fileName, argString); //TO_DO: maybe logging
-
+			System.Diagnostics.Process p = System.Diagnostics.Process.Start(fileName, argString);
 
 			return true;
 		}
-#if !NOAWE
-        private static bool _runWebCommand(string command)
-        {
-            if (!UiPackage.UiCommands.IsWebBgMusicSiteCurrent(ActiveBgMusic.MostRecentUrl)) 
-                _run();
-
-            if ((command == null) || (command == "") || (command == "\"\""))
-                return false;
-
-            //TO_DO: replace tokens first (or maybe within uicommands)
-
-            MuteFm.UiPackage.UiCommands.RunWebCommandAsync(command);
-
-            return true;
-        }
-#endif
 		private static bool _run()
 		{
 			bool ranSomething = false;
-			if (ActiveBgMusic.IsWeb)
-			{
-#if !NOAWE
-                ranSomething = UiPackage.UiCommands.LoadWebBgMusicSite(ActiveBgMusic.Name, ActiveBgMusic.MostRecentUrl, ActiveBgMusic.OnLoadCommand);
-                System.Diagnostics.Process p = System.Diagnostics.Process.GetCurrentProcess();
-                BgMusicPids = (p != null) ? new int[] { p.Id } : new int[] { };
-                MuteFm.SmartVolManagerPackage.SoundEventLogger.LogBg("RunWeb");
-#endif
-			}
-			else
+			if (ActiveBgMusic.IsWeb == false)
 			{
 				//Figure out procname.
-				string processName = System.IO.Path.GetFileNameWithoutExtension(ActiveBgMusic.UrlOrCommandLine); // TODO: might not work if commandline args
+				string processName = System.IO.Path.GetFileNameWithoutExtension(ActiveBgMusic.UrlOrCommandLine);
 				Process[] processes = (Process.GetProcessesByName(processName));
 				if (processes.Length > 1)
 				{
@@ -1430,10 +1349,6 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 					}
 					BgMusicPids = BgMusicPidList.ToArray();
 					OwnBgMusicPid = false;
-					//TODO: handle raising events, bgmusicprocess object, and if they are all exited
-
-					// process is not unique.  We'll control the volume for all processes with this name.
-					//MuteApp.SmartVolManagerPackage.SoundEventLogger.LogMsg("Process '" + ActiveBgMusic.UrlOrCommandLine + " does not seem to be unique!");
 					return ranSomething;
 				}
 				else if (processes.Length == 1)
@@ -1454,7 +1369,6 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 						if (pid > 0)
 						{
 							ranSomething = true;
-							//TODO-pid;//: also get children processes and include them
 							BgMusicPids = new int[] { (int)pid };
 
 							BgMusicProcess = Process.GetProcessById((int)pid);
@@ -1464,7 +1378,7 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 
 							MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogBg("RunProc");
 
-							System.Threading.Thread.Sleep(2000); // Wait a bit before a command gets run so we don't have a race condition; don't like this but leaving it for now (since it ties up the ui thread for a bit)
+							System.Threading.Thread.Sleep(2000);
 						}
 						else
 							BgMusicPids = new int[] { };
@@ -1475,37 +1389,34 @@ namespace MuteFmReloaded.SmartVolManagerPackage
 					}
 				}
 			}
-			return ranSomething;
+		return ranSomething;
 		}
 		public static void OnBgMusicExited(object sender, EventArgs e)
 		{
 			BgMusicPids = new int[] { };
 			UpdateBgMusicState(BgMusicState.Stop);
 		}
-		#endregion
 
 		static void AutoKillAfterMutedWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
-			System.Threading.Thread.CurrentThread.Name = "AutoKillAfterMuted"; // Shouldn't name the background thread, but we are... (http://stackoverflow.com/questions/3267605/naming-backgroundworker)
+			System.Threading.Thread.CurrentThread.Name = "AutoKillAfterMuted";
 
 			if ((int)MuteFmConfig.GeneralSettings.AutokillMutedTime <= 0)
 				return;
 
-			// We split this up into seconds to get around race conditions (where user cancels the thread and then starts a new one and it seems to automute after only a few seconds.)
 			int totalSleepTime = (int)((int)MuteFmConfig.GeneralSettings.AutokillMutedTime);
 			for (int i = 0; i < totalSleepTime; i++)
 			{
-				// Jump back to UI thread for running 'Stop'
 				System.Threading.Thread.Sleep(new TimeSpan(0, 0, 0, 0, 1000));
 				if ((AutoKillAfterMutedWorker == null) || (AutoKillAfterMutedWorker.CancellationPending))
 					return;
 			}
 
-			//UserWantsBgMusic = false;
 			UiPackage.UiCommands.SetNotification("Stopping background music to maybe save bandwidth...", true);
 			AutoKillAfterMutedWorker = null;
 
 			PerformOperation(Operation.Stop);
 		}
+		#endregion
 	}
 }

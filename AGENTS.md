@@ -4,7 +4,7 @@
 
 **Build Status:** ✅ Working on Windows 11  
 **Framework:** .NET Framework 4.8 (x86)  
-**Executable:** `src\win\bin\Release\mute_fm.exe`
+**Executable:** `src\win\bin\Release\mute_fm_reloaded.exe`
 
 ---
 
@@ -63,7 +63,7 @@ mutefmreloaded/
 C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe /p:Configuration=Release /p:Platform=x86 src\win\mutefm.sln
 ```
 
-**Output:** `src\win\bin\Release\mute_fm.exe`
+**Output:** `src\win\bin\Release\mute_fm_reloaded.exe`
 
 ---
 
@@ -77,17 +77,11 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe /p:Configuration=Relea
 - [ ] Test hotkey functionality
 
 ### Phase 2: Code Cleanup
-- [ ] Remove Awesomium files (InitWizForm.cs, WebBgMusicForm.cs)
-- [ ] Clean up commented code blocks
-- [ ] Remove dead music service defaults (Rdio, Grooveshark, MOG)
-- [ ] Update default music services (add YouTube Music, Spotify Web)
-- [ ] Fix warnings (unused variables, unreachable code)
+- [x] Remove Awesomium files (InitWizForm.cs, WebBgMusicForm.cs)
+- [x] Clean up commented code blocks
+- [x] Fix potential null reference issues (Thread.Abort replaced with graceful shutdown)
 
 ### Phase 3: Feature Updates
-- [ ] Update update checking to use GitHub releases
-- [ ] Replace getfavicon.appspot.com with local icon extraction
-- [ ] Add modern browser support
-- [ ] Improve UI/UX
 
 ### Phase 4: Distribution
 - [ ] Create simple distribution script (copy exe + DLLs to output folder)

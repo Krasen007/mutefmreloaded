@@ -1,19 +1,28 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Windows.Forms;
 
 namespace MuteFmReloaded
 {
 	class CheckForUpdates
 	{
+		private const string GITHUB_REPO = "Krasen007/mutefmreloaded";
+		private const string GITHUB_API_URL = "https://api.github.com/repos/" + GITHUB_REPO + "/releases/latest";
+
 		public static bool Check()
 		{
 			try
 			{
-				string url = "http://" + Constants.MuteFmDomain + "/patcher/update_" + Constants.VersionUnderscores + ".txt";
-				WebRequest request = HttpWebRequest.Create(url);
-				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-				if (response.StatusCode == HttpStatusCode.OK)
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GITHUB_API_URL);
+				request.UserAgent = "mute.fm-reloaded";
+				request.Method = "GET";
+				
+				using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
 				{
-					return true;
+					if (response.StatusCode == HttpStatusCode.OK)
+					{
+						return true;
+					}
 				}
 			}
 			catch
@@ -25,39 +34,19 @@ namespace MuteFmReloaded
 
 		public static void Update()
 		{
-			//TODO: point to github for the updated app
-			if (System.Windows.Forms.MessageBox.Show("A new version of " + Constants.ProgramName + " is available.  Would you like to download it?", Constants.ProgramName, System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+			if (MessageBox.Show("A new version of " + Constants.ProgramName + " is available. Would you like to download it?", Constants.ProgramName, MessageBoxButtons.YesNo) == DialogResult.Yes)
 			{
-				System.Windows.Forms.MessageBox.Show("To update " + Constants.ProgramName + ", please download and run the installer found at http://www.mutefm.com/prerelease/. \n\nIt is safe to install the new version on top of the older version.\n\nThe website will open in your browser after you click OK.", Constants.ProgramName);
-				System.Diagnostics.Process.Start("http://www.mutefm.com/prerelease/");
+				try
+				{
+					string downloadUrl = "https://github.com/" + GITHUB_REPO + "/releases/latest";
+					MessageBox.Show("The latest version will open in your browser. It is safe to install over the existing version.", Constants.ProgramName);
+					System.Diagnostics.Process.Start(downloadUrl);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Error opening browser: " + ex.Message, Constants.ProgramName);
+				}
 			}
 		}
-
-		/*
-        public static void Run()
-        {
-            // TODO: try to retrieve exe with appropriate name. Run it.  End application.
-
-
-            try
-            {
-                string url = "http://" + Constants.MuteFmDomain + "/prerelease/update_" + Constants.VersionUnderscores + ".txt";
-                WebRequest request = HttpWebRequest.Create(url);
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    return true;
-                }
-            }
-            catch
-            {
-            }
-
-            return false;
-
-        }
-         */
-
-		// Issue: should it download the update automatically before asking user about running it???
 	}
 }
