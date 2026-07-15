@@ -1,15 +1,3 @@
-C:\mutefm2\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Release\CoreAudioApi.dll
-C:\mutefm2\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Release\CoreAudioApi.pdb
-C:\mutefm2\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\ResolveAssemblyReference.cache
-C:\mutefm2\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.dll
-C:\mutefm2\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.pdb
-C:\mutefm\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Release\CoreAudioApi.dll
-C:\mutefm\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Release\CoreAudioApi.pdb
-C:\mutefm\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.csprojResolveAssemblyReference.cache
-C:\mutefm\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.dll
-C:\mutefm\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.pdb
 C:\Users\k.ivanov\repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Release\CoreAudioApi.dll
-C:\Users\k.ivanov\repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Release\CoreAudioApi.pdb
 C:\Users\k.ivanov\repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.csprojResolveAssemblyReference.cache
 C:\Users\k.ivanov\repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.dll
-C:\Users\k.ivanov\repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.pdb
