@@ -390,11 +390,11 @@ SmartVolManagerPackage.BgMusicManager.IgnoreProcNameForAutomuteDict[""] = true;
 			}
 		}
 
-		public static bool IsLoadedOnStartup()
+public static bool IsLoadedOnStartup()
 		{
 			try
 			{
-				string executablePath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run", Constants.ProgramName, "");
+				string executablePath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", Constants.ProgramName, "");
 				return (executablePath == System.Windows.Forms.Application.ExecutablePath);
 			}
 			catch
@@ -407,16 +407,20 @@ SmartVolManagerPackage.BgMusicManager.IgnoreProcNameForAutomuteDict[""] = true;
 		{
 			if (loadOnStartup)
 			{
-				Registry.SetValue(@"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run", Constants.ProgramName, System.Windows.Forms.Application.ExecutablePath);
+				Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", Constants.ProgramName, System.Windows.Forms.Application.ExecutablePath);
 			}
 			else
 			{
 				try
 				{
-					RegistryKey registrykeyHKLM = Registry.LocalMachine;
-					string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Run\mute.fm reloaded";
-					registrykeyHKLM.DeleteValue(keyPath);
-					registrykeyHKLM.Close();
+					RegistryKey registrykeyCU = Registry.CurrentUser;
+					string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+					RegistryKey runKey = registrykeyCU.OpenSubKey(keyPath, true);
+					if (runKey != null)
+					{
+						runKey.DeleteValue(Constants.ProgramName, false);
+						runKey.Close();
+					}
 				}
 				catch
 				{

@@ -1,3 +1,0 @@
-C:\Users\k.ivanov\repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\bin\x86\Release\CoreAudioApi.dll
-C:\Users\k.ivanov\repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.csprojResolveAssemblyReference.cache
-C:\Users\k.ivanov\repos\mutefmreloaded\lib\src\CoreAudio2_Src\CoreAudioApi\obj\x86\Release\CoreAudioApi.dll
