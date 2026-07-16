@@ -270,25 +270,7 @@ namespace MuteFmReloaded.UiPackage
 		}
 		private void OnExit(object sender, EventArgs e)
 		{
-			// TODO: investigate a bug when exiting the app -Krasen
-			string msg = "Are you sure you want to exit?";
-			if ((SmartVolManagerPackage.BgMusicManager.MusicState == SmartVolManagerPackage.BgMusicState.Play) || (SmartVolManagerPackage.BgMusicManager.AutoMuted == true))
-				msg = msg + " " + "Your music will be stopped.";
-
-			MessageBoxEx msgBoxEx = new MessageBoxEx(msg, UiCommands.mPlayerForm.WindowState == FormWindowState.Minimized ? "" : "Minimize");
-			msgBoxEx.ShowDialog();
-			switch (msgBoxEx.ButtonPressedIndex)
-			{
-				case 0:
-					UiCommands.Exit();
-					break;
-				case 1:
-					break;
-				case 2:
-					if (UiCommands.mPlayerForm != null)
-						UiCommands.mPlayerForm.WindowState = FormWindowState.Minimized;
-					break;
-			}
+			UiCommands.Exit();
 		}
 	}
 }
