@@ -294,9 +294,6 @@ namespace MuteFmReloaded.UiPackage
 		}
 		private void gettingStartedToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-#if !NOAWE
-            UiCommands.ShowGettingStartedWizard();
-#endif
 		}
 		private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
 		{

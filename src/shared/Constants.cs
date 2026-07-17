@@ -6,11 +6,7 @@ namespace MuteFmReloaded
 	public class Constants
 	{
 		public static string PatcherRoot = "http://www.mutetab.com/patcher";
-#if NOAWE
 		public static string ProgramName = "mute.fm reloaded";
-#else
-        public static string ProgramName = "mute.fm+";
-#endif
 		public static string Os = "Windows";
 
 		public static int ExpireMonth = 3;
@@ -51,11 +47,19 @@ namespace MuteFmReloaded
 			}
 		}
 
+		public static int RevisionVer
+		{
+			get
+			{
+				return GetFileVersionInfo().FilePrivatePart;
+			}
+		}
+
 		public static string Version
 		{
 			get
 			{
-				return string.Format("{0}.{1}.{2}", MajorVer, MinorVer, BuildVer);
+				return string.Format("{0}.{1}.{2}.{3}", MajorVer, MinorVer, BuildVer, RevisionVer);
 			}
 		}
 

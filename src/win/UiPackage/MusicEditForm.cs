@@ -19,26 +19,14 @@ namespace MuteFmReloaded.UiPackage
 			InitializeComponent();
 			this.Text = Constants.ProgramName + " - " + "Edit Sound Player Info";
 
-#if NOAWE
-			mWebsiteRadioButton.Text += " (Requires mute.fm+)";
-#endif
-
 			if (playerInfo == null)
 			{
 				this.Text = Constants.ProgramName + " - Add Sound Info";
 				_musicInfo = new SoundPlayerInfo();
-#if !NOAWE
-                _musicInfo.IsWeb = true;
-                mWebsiteRadioButton.Checked = true;
-                mProgramRadioButton.Enabled = true;
-                mWebsiteRadioButton.Enabled = true;
-#else
-				_musicInfo.IsWeb = false;
-				mWebsiteRadioButton.Enabled = false;
+				_musicInfo.IsWeb = true;
+				mWebsiteRadioButton.Checked = true;
 				mProgramRadioButton.Enabled = true;
-				mProgramRadioButton.Checked = true;
-				mWebsiteRadioButton_CheckedChanged_1(null, null);
-#endif
+				mWebsiteRadioButton.Enabled = true;
 				this.mIgnoreAutomuteCheckbox.Checked = false;
 				this.mIgnoreAutomuteCheckbox.Visible = !_musicInfo.IsWeb;
 				mStopIfMutedTooLongCheckbox.Checked = true;

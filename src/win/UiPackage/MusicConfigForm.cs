@@ -66,12 +66,6 @@ namespace MuteFmReloaded.UiPackage
 			int j = 0;
 			for (int i = 0; i < muteTunesConfig.BgMusics.Length; i++)
 			{
-#if NOAWE
-				// Don't show web-based music in the editor
-				if (muteTunesConfig.BgMusics[i].IsWeb)
-					continue;
-#endif
-
 				node = new TreeNode(muteTunesConfig.BgMusics[i].Name, j + 1 + fgMusics.Length, j + 1 + fgMusics.Length, children);
 				node.Tag = muteTunesConfig.BgMusics[i].Id.ToString();
 				_favoritesNode.Nodes.Add(node);

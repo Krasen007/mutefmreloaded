@@ -70,10 +70,6 @@ namespace MuteFmReloaded
 			{
 				if (((long)BgMusics[i].Id == this.ActiveBgMusicId) && (BgMusics[i].Enabled == true))
 				{
-#if NOAWE
-					if (BgMusics[i].IsWeb)
-						continue;
-#endif
 					activeBgMusic = BgMusics[i];
 					break;
 				}
@@ -84,11 +80,6 @@ namespace MuteFmReloaded
 			{
 				for (int i = 0; i < BgMusics.Length; i++)
 				{
-#if NOAWE
-					if (BgMusics[i].IsWeb)
-						continue;
-#endif
-
 					if (BgMusics[i].Enabled == true)
 					{
 						activeBgMusic = BgMusics[i];
