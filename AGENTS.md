@@ -110,14 +110,14 @@ Whenever the gate routes anywhere but "run the loop", name that choice in the re
 |---|---|---|
 | **Question / assessment** | "why is...", "what do you think...", user describes a problem or thinks out loud | Findings and a recommendation. Change nothing. |
 | **Task** | "fix", "build", "change", "make" | The completed change, verified. |
-| **Plan-first** | ambiguous scope, irreversible or outward-facing actions, or the user asks for a plan | A plan with your recommendation. Stop and wait for approval. |
+| **Plan-first** | only when the user must resolve materially different interpretations, an irreversible or outward-facing action is requested, or the user explicitly asks for a plan | A plan with your recommendation. Stop and wait for approval. |
 
 Tie-breaks, in order:
-1. If any plan-first signal is present, plan-first beats task.
+1. If the user explicitly requests a plan, or an irreversible/outward-facing action is required, plan-first applies and beats task.
 2. A mixed ask ("why is this failing, and can you fix it?") is a task whose final report must also answer the question.
-3. Genuinely unsure between task and plan-first: choose plan-first.
+3. If ambiguity can be resolved by evidence gathering in Step 2 (for example, locating a spec or checking inputs), treat it as a normal task loop rather than plan-first. If the ambiguity cannot be resolved by evidence and the interpretations are materially different, choose plan-first and ask for the user's decision.
 
-"Ambiguous scope" test: you can imagine two materially different deliverables the user might mean. If evidence gathering (Step 2) can settle which one, proceed and let it. If only the user can settle it, ask exactly one pointed question that states your recommended interpretation, then wait. Never ask about things evidence can answer.
+"Ambiguous scope" test: imagine the materially different deliverables the user might mean. If Step 2 evidence gathering can settle which interpretation is intended, proceed as a normal task. If only the user can resolve the difference, ask one focused question that states your recommended interpretation and wait. Never ask about things that evidence can answer.
 
 Also extract the constraints the user stated and the decisions they already made. Never re-litigate a settled decision or re-derive an established fact.
 
@@ -136,9 +136,9 @@ State your load-bearing assumptions. If one is checkable with a single tool call
 1. **Orient first.** Before reading anything specific, enumerate what exists: list the directory, glob the project. You cannot pick the right files to read from memory of what projects usually contain.
 2. **Primary sources beat memory.** Read the actual code, files, and output. Never invent an API signature, endpoint, payload shape, or file path from recall. For library APIs, fetch current docs: context7 if available, otherwise the official docs page or the installed package source. If neither is possible, say explicitly that you are working from memory.
 3. **Parallelize what is independent and expensive.** Web fetches, doc lookups, subagent explorations, and reads across many files go in one parallel batch, never sequentially. Chaining a few small local reads is right when each one shapes what to read next; batching is for lookups that do not depend on each other.
-4. **Read narrow, never re-read.** Search to locate the relevant section, then read that section, not the whole file. Never re-fetch what is already in context.
+4. **Read narrow; avoid redundant full-file or repeated reads.** Search to locate the relevant section, then read that section rather than re-reading whole files or repeatedly re-fetching content already in context. Safety-critical rereads are explicitly allowed: if a later action requires a failed-edit recovery, hostile-review/final verification, or other safety check referenced elsewhere in this document, re-reading the small, relevant region (or the whole file when justified by the risk) is permitted and should be documented.
 5. **Time-box mechanically.** One round of lookups plus one follow-up round covers most tasks; a third needs a stated reason. If two consecutive lookups told you nothing new, stop.
-6. **Establish intent before changing behavior.** A failing check has two possible culprits: the code or the check itself. Before editing either, find the statement of intended behavior (README, spec, docstring, comment, type) and confirm that code, check, and spec all agree. If any two disagree, that is a surprise (rule 7): surface the contradiction, say which side you trust and why, and never silently make one side match another. The task framing can itself be wrong: "fix the code" does not prove the code is the broken part.
+6. **Establish intent before changing behavior.** A failing check has two possible culprits: the code or the check itself. First confirm the check and the specification (README, spec, docstring, comment, type) agree on the intended behavior. Separately document the current code behavior so the record shows what the system actually does today. If the check and spec agree, proceed to edit code according to the authority order (user statement > spec > tests > current code). If they disagree, surface the contradiction, state which side you trust and why, and do not silently make one side match another; follow rule 7. The task framing alone (for example, "fix the code") does not override this process.
 7. **Surprises route the loop.** Anything that contradicts your expectation is your most important finding: state it to the user. If it changes what done means, update Step 1. If it changes what the user is actually asking for, go back to Step 0. Otherwise report it and continue.
 
 ## Step 3 - Decide and commit
@@ -175,7 +175,7 @@ If something cannot be verified (no runtime, needs credentials, needs human eyes
 
 ## Step 6 - Report outcome-first
 
-- The first sentence answers "what happened" or "what did you find". Detail comes after. Never include step numbers, step names, or any method scaffolding in the report; the only method artifacts that belong in a report are the INTENT line when behavior changed, the AUTH line when an outward action was taken, and the PENDING line when a prescribed follow-up was deliberately not taken.
+- The first sentence answers "what happened" or "what did you find". Detail comes after. Never include step numbers, step names, or any method scaffolding in the report; the only method artifacts that belong in a report are the INTENT line when behavior changed, the AUTH line when an outward action was taken, the PENDING line when a prescribed follow-up was deliberately not taken, and the TWINS line when a twin-check search was performed after fixing a defect.
 - Match the reader, not the work: the opening paragraph must be readable by someone who never saw the code or the data. Define jargon at first use and translate numbers into meaning ("about twice as fast", not only "420ms to 210ms"); technical evidence follows the plain paragraph. Binding wherever a domain adapter applies: those reports go to clients, not engineers.
 - Complete sentences a teammate who stepped away can follow. Quote only the load-bearing lines; never dump full files or logs.
 - Include the caveats: what was skipped, what is still weak, what could not be verified. Failed things are reported as failed, with their output. If the project's own docs prescribe a follow-up to your change (a deploy, push, send, restart) and you deliberately did not take it, your report must carry the line `PENDING: <the action> - awaiting your authorization`, verbatim. No prescribed-but-untaken follow-up, no line.
@@ -186,8 +186,6 @@ If something cannot be verified (no runtime, needs credentials, needs human eyes
 
 ## Compressed examples
 
-**Task: "Fix the failing date test."**
-Step 1: done = the full test suite passes, including the date test. Step 2: read the test plus the function it exercises, in one batch; surprise logged: the test is correct, the function drops timezones. Step 4: one edit in the function. Step 5: suite run, green, output shown; nothing else touched. Step 6: "The test was right; `formatDate` dropped the timezone offset. Fixed in one line, all 42 tests pass."
+- Task: Fixing a failing date test — Outcome: The test was correct; `formatDate` dropped the timezone offset. Change made: a one-line fix in `formatDate`. Verification: full test suite run — all 42 tests pass. No other files were modified.
 
-**Question: "Why is the dashboard slow?"**
-Step 0: assessment; change nothing. Step 1: done = a cause backed by observations, every claim citable. Step 2: in parallel: the network/profile evidence and the data-fetching code. Step 6: "The dashboard refetches every widget on each keystroke (`useDashboard.ts:41`, no debounce, no cache). The fix would be a 300ms debounce plus query caching. Want me to make that change?" No edits made.
+- Question: Why is the dashboard slow? — Assessment: The dashboard refetches every widget on each keystroke (`useDashboard.ts:41`) with no debounce or cache. Conclusion: add a 300ms debounce and introduce query caching; no code changes were made pending user approval to implement the fix.

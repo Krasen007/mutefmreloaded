@@ -31,5 +31,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
+// INTENT: prior assembly versions were 0.10.0.1; this release targets 0.10.0.2.
+// INTENT: revision metadata must match the four-part `Constants.Version` output at runtime.
 [assembly: AssemblyVersion("0.10.0.2")]
 [assembly: AssemblyFileVersion("0.10.0.2")]

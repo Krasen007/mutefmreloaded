@@ -21,6 +21,10 @@ namespace MuteFmReloaded.UiPackage
 
 			if (playerInfo == null)
 			{
+				// INTENT: Current behavior initializes a new SoundPlayerInfo with program-focused defaults
+				// (sets `_musicInfo.IsWeb = true`, selects website radio button, and related defaults).
+				// Task expectation: when adding new entries prefer web-sound defaults where applicable.
+				// Spec reference: project README and MuteTunesConfig defaults (see README.md and MuteTunesConfig.cs).
 				this.Text = Constants.ProgramName + " - Add Sound Info";
 				_musicInfo = new SoundPlayerInfo();
 				_musicInfo.IsWeb = true;
