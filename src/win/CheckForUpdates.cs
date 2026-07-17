@@ -27,18 +27,36 @@ namespace MuteFmReloaded
 						using (var reader = new StreamReader(response.GetResponseStream()))
 						{
 							string json = reader.ReadToEnd();
-							// Extract tag_name using regex (avoid JObject dependency)
-							var match = Regex.Match(json, "\"tag_name\":\"([^\"]+)\"");
-							if (match.Success)
+							
+							// First try to extract from asset name (mute_fm_reloaded-v0.10.0.0.zip)
+							// Pattern: "name":"mute_fm_reloaded-v0.10.0.0.zip"
+							var assetMatch = Regex.Match(json, "\"name\":\"mute_fm_reloaded-v([\\d\\.]+)\\.zip\"");
+							if (assetMatch.Success)
 							{
-								string tagName = match.Groups[1].Value;
-								Version remoteVersion = ParseVersionFromTag(tagName);
+								string versionStr = assetMatch.Groups[1].Value;
+								Version remoteVersion = new Version(versionStr);
 								Version localVersion = Assembly.GetExecutingAssembly().GetName().Version;
 								
 								// Only return true if remote version is greater
-								if (remoteVersion != null && remoteVersion > localVersion)
+								if (remoteVersion > localVersion)
 								{
 									return true;
+								}
+							}
+							else
+							{
+								// Fallback: extract from tag_name
+								var tagMatch = Regex.Match(json, "\"tag_name\":\"([^\"]+)\"");
+								if (tagMatch.Success)
+								{
+									string tagName = tagMatch.Groups[1].Value;
+									Version remoteVersion = ParseVersionFromTag(tagName);
+									Version localVersion = Assembly.GetExecutingAssembly().GetName().Version;
+									
+									if (remoteVersion != null && remoteVersion > localVersion)
+									{
+										return true;
+									}
 								}
 							}
 						}
