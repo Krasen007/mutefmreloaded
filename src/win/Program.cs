@@ -124,24 +124,22 @@ namespace MuteFmReloaded
 
 		public static void DoPeriodicTasks()
 		{
-			bool updateFound = false;
-			TimeSpan timeSpan = new TimeSpan(4, 0, 0);
+			// Check for updates only on startup (once)
+			try
+			{
+				if (SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.NotifyAboutUpdates == true && CheckForUpdates.Check())
+				{
+					CheckForUpdates.Update();
+				}
+			}
+			catch (Exception ex)
+			{
+				MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
+			}
+
 			DateTime prevTime = DateTime.MinValue;
 			while (true)
 			{
-				try
-				{
-					if ((SmartVolManagerPackage.BgMusicManager.MuteFmConfig.GeneralSettings.NotifyAboutUpdates == true) && !updateFound && CheckForUpdates.Check())
-					{
-						updateFound = true;
-						CheckForUpdates.Update();
-					}
-				}
-				catch (Exception ex)
-				{
-					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
-				}
-
 				try
 				{
 					WebServer.ClearOldEntries(prevTime);
@@ -152,7 +150,7 @@ namespace MuteFmReloaded
 					MuteFmReloaded.SmartVolManagerPackage.SoundEventLogger.LogException(ex);
 				}
 
-				System.Threading.Thread.Sleep(timeSpan);
+				System.Threading.Thread.Sleep(new TimeSpan(4, 0, 0));
 			}
 		}
 

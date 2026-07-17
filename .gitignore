@@ -409,3 +409,4 @@ lib/src/CoreAudio2_Src/CoreAudioApi/bin/x86/Release/CoreAudioApi.dll
 lib/src/CoreAudio2_Src/CoreAudioApi/bin/x86/Release/CoreAudioApi.pdb
 lib/src/CoreAudio2_Src/CoreAudioApi/obj/x86/Release/CoreAudioApi.dll
 lib/src/CoreAudio2_Src/CoreAudioApi/obj/x86/Release/CoreAudioApi.pdb
+mute_fm_reloaded-v0.*

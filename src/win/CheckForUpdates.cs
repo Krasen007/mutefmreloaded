@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Net;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace MuteFmReloaded
@@ -21,7 +24,24 @@ namespace MuteFmReloaded
 				{
 					if (response.StatusCode == HttpStatusCode.OK)
 					{
-						return true;
+						using (var reader = new StreamReader(response.GetResponseStream()))
+						{
+							string json = reader.ReadToEnd();
+							// Extract tag_name using regex (avoid JObject dependency)
+							var match = Regex.Match(json, "\"tag_name\":\"([^\"]+)\"");
+							if (match.Success)
+							{
+								string tagName = match.Groups[1].Value;
+								Version remoteVersion = ParseVersionFromTag(tagName);
+								Version localVersion = Assembly.GetExecutingAssembly().GetName().Version;
+								
+								// Only return true if remote version is greater
+								if (remoteVersion != null && remoteVersion > localVersion)
+								{
+									return true;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -30,6 +50,20 @@ namespace MuteFmReloaded
 			}
 
 			return false;
+		}
+
+		private static Version ParseVersionFromTag(string tagName)
+		{
+			if (string.IsNullOrEmpty(tagName))
+				return null;
+			
+			// Match version patterns like "v0.10.0.0" or "v0.10.0.0"
+			var match = Regex.Match(tagName, @"(\d+\.\d+\.\d+\.\d+)");
+			if (match.Success)
+			{
+				return new Version(match.Groups[1].Value);
+			}
+			return null;
 		}
 
 		public static void Update()
